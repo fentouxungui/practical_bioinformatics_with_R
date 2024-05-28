@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>References | Master Real-world Bioinformatics analysis in R</title>
+  <meta name="description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="References | Master Real-world Bioinformatics analysis in R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="References | Master Real-world Bioinformatics analysis in R" />
+  
+  <meta name="twitter:description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  
+
+<meta name="author" content="Ming Tommy Tang" />
+
+
+<meta name="date" content="2024-05-22" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="controlling-the-flow-of-our-programs.html"/>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#preface" id="toc-preface"><span class="toc-section-number">1</span> Preface</a></li>
+<li><a href="intro.html#intro" id="toc-intro"><span class="toc-section-number">2</span> Introduction</a>
+<ul>
+<li><a href="intro.html#meet-your-instructor" id="toc-meet-your-instructor"><span class="toc-section-number">2.1</span> Meet your Instructor</a></li>
+<li><a href="intro.html#leveraging-our-online-community" id="toc-leveraging-our-online-community"><span class="toc-section-number">2.2</span> Leveraging our online community</a></li>
+<li><a href="intro.html#install-r-and-r-studio" id="toc-install-r-and-r-studio"><span class="toc-section-number">2.3</span> Install R and R studio</a></li>
+<li><a href="intro.html#the-role-of-programming-in-biology" id="toc-the-role-of-programming-in-biology"><span class="toc-section-number">2.4</span> The role of programming in Biology</a>
+<ul>
+<li><a href="intro.html#what-are-programming-languages" id="toc-what-are-programming-languages"><span class="toc-section-number">2.4.1</span> What are programming languages?</a></li>
+<li><a href="intro.html#why-programming-is-important-in-biology" id="toc-why-programming-is-important-in-biology"><span class="toc-section-number">2.4.2</span> Why programming is important in biology?</a></li>
+<li><a href="intro.html#what-are-the-most-used-programming-languages-within-biology" id="toc-what-are-the-most-used-programming-languages-within-biology"><span class="toc-section-number">2.4.3</span> What are the most used programming languages within biology?</a></li>
+</ul></li>
+</ul></li>
+<li><a href="introduction-to-programming.html#introduction-to-programming" id="toc-introduction-to-programming"><span class="toc-section-number">3</span> Introduction to programming</a>
+<ul>
+<li><a href="introduction-to-programming.html#what-is-an-algorithm" id="toc-what-is-an-algorithm"><span class="toc-section-number">3.1</span> What is an algorithm?</a></li>
+<li><a href="introduction-to-programming.html#why-are-algorithms-important-in-programming" id="toc-why-are-algorithms-important-in-programming"><span class="toc-section-number">3.2</span> Why are Algorithms Important in Programming?</a></li>
+<li><a href="introduction-to-programming.html#a-real-world-example" id="toc-a-real-world-example"><span class="toc-section-number">3.3</span> A Real World Example:</a></li>
+<li><a href="introduction-to-programming.html#variables-data-types-and-expressions" id="toc-variables-data-types-and-expressions"><span class="toc-section-number">3.4</span> Variables, Data Types, and Expressions</a>
+<ul>
+<li><a href="introduction-to-programming.html#variables" id="toc-variables"><span class="toc-section-number">3.4.1</span> Variables</a></li>
+<li><a href="introduction-to-programming.html#data-types" id="toc-data-types"><span class="toc-section-number">3.4.2</span> Data Types</a></li>
+<li><a href="introduction-to-programming.html#expressions" id="toc-expressions"><span class="toc-section-number">3.4.3</span> Expressions</a></li>
+<li><a href="introduction-to-programming.html#example-finding-the-average-number-of-bases-appearances-in-a-set-of-dna-strings" id="toc-example-finding-the-average-number-of-bases-appearances-in-a-set-of-dna-strings"><span class="toc-section-number">3.4.4</span> Example: Finding the average number of bases appearances in a set of DNA strings</a></li>
+</ul></li>
+</ul></li>
+<li><a href="getting-started-with-r-and-rstudio.html#getting-started-with-r-and-rstudio" id="toc-getting-started-with-r-and-rstudio"><span class="toc-section-number">4</span> Getting started with R and RStudio</a>
+<ul>
+<li><a href="getting-started-with-r-and-rstudio.html#what-is-r-and-why-is-it-used-in-biology" id="toc-what-is-r-and-why-is-it-used-in-biology"><span class="toc-section-number">4.1</span> What is R and why is it used in Biology?</a></li>
+<li><a href="getting-started-with-r-and-rstudio.html#what-is-r" id="toc-what-is-r"><span class="toc-section-number">4.2</span> What is R?</a></li>
+<li><a href="getting-started-with-r-and-rstudio.html#why-is-r-used-in-biology" id="toc-why-is-r-used-in-biology"><span class="toc-section-number">4.3</span> Why is R Used in Biology?</a></li>
+<li><a href="getting-started-with-r-and-rstudio.html#introduction-to-r-studio" id="toc-introduction-to-r-studio"><span class="toc-section-number">4.4</span> Introduction to R-Studio</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#introduction-to-r-for-biologists" id="toc-introduction-to-r-for-biologists"><span class="toc-section-number">5</span> Introduction to R for biologists</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#basic-data-types-in-r" id="toc-basic-data-types-in-r"><span class="toc-section-number">5.1</span> Basic Data Types in R</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#before-starting" id="toc-before-starting"><span class="toc-section-number">5.1.1</span> Before Starting</a></li>
+<li><a href="introduction-to-r-for-biologists.html#numeric" id="toc-numeric"><span class="toc-section-number">5.1.2</span> 1. Numeric</a></li>
+<li><a href="introduction-to-r-for-biologists.html#character-string" id="toc-character-string"><span class="toc-section-number">5.1.3</span> 2. Character (String)</a></li>
+<li><a href="introduction-to-r-for-biologists.html#integer" id="toc-integer"><span class="toc-section-number">5.1.4</span> 3. Integer</a></li>
+<li><a href="introduction-to-r-for-biologists.html#logical-boolean" id="toc-logical-boolean"><span class="toc-section-number">5.1.5</span> 4. Logical (Boolean)</a></li>
+<li><a href="introduction-to-r-for-biologists.html#factor" id="toc-factor"><span class="toc-section-number">5.1.6</span> 5. Factor</a></li>
+<li><a href="introduction-to-r-for-biologists.html#date-and-time" id="toc-date-and-time"><span class="toc-section-number">5.1.7</span> 6. Date and Time</a></li>
+<li><a href="introduction-to-r-for-biologists.html#complex" id="toc-complex"><span class="toc-section-number">5.1.8</span> 7. Complex</a></li>
+<li><a href="introduction-to-r-for-biologists.html#missing-values-na" id="toc-missing-values-na"><span class="toc-section-number">5.1.9</span> 8. Missing Values (NA)</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#the-key-concept-of-r-vectors" id="toc-the-key-concept-of-r-vectors"><span class="toc-section-number">5.2</span> The key concept of R: Vectors</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#creating-numeric-and-character-vectors" id="toc-creating-numeric-and-character-vectors"><span class="toc-section-number">5.2.1</span> Creating Numeric and Character Vectors</a></li>
+<li><a href="introduction-to-r-for-biologists.html#saving-vectors-to-variables" id="toc-saving-vectors-to-variables"><span class="toc-section-number">5.2.2</span> Saving Vectors to Variables</a></li>
+<li><a href="introduction-to-r-for-biologists.html#vectorized-calculations" id="toc-vectorized-calculations"><span class="toc-section-number">5.2.3</span> Vectorized Calculations</a></li>
+<li><a href="introduction-to-r-for-biologists.html#performing-vectorized-calculations" id="toc-performing-vectorized-calculations"><span class="toc-section-number">5.2.4</span> Performing Vectorized Calculations</a></li>
+<li><a href="introduction-to-r-for-biologists.html#operations-with-character-vectors" id="toc-operations-with-character-vectors"><span class="toc-section-number">5.2.5</span> Operations with character vectors</a></li>
+<li><a href="introduction-to-r-for-biologists.html#logical-vectors" id="toc-logical-vectors"><span class="toc-section-number">5.2.6</span> Logical Vectors</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion" id="toc-conclusion"><span class="toc-section-number">5.2.7</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#subsetting-and-indexing" id="toc-subsetting-and-indexing"><span class="toc-section-number">5.3</span> Subsetting and Indexing</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#indexing-in-r" id="toc-indexing-in-r"><span class="toc-section-number">5.3.1</span> Indexing in R</a></li>
+<li><a href="introduction-to-r-for-biologists.html#slicing-in-r" id="toc-slicing-in-r"><span class="toc-section-number">5.3.2</span> Slicing in R</a></li>
+<li><a href="introduction-to-r-for-biologists.html#negative-indexing" id="toc-negative-indexing"><span class="toc-section-number">5.3.3</span> Negative Indexing</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion-1" id="toc-conclusion-1"><span class="toc-section-number">5.3.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#understanding-and-manipulating-matrices" id="toc-understanding-and-manipulating-matrices"><span class="toc-section-number">5.4</span> Understanding and Manipulating Matrices</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#creating-a-matrix" id="toc-creating-a-matrix"><span class="toc-section-number">5.4.1</span> Creating a Matrix</a></li>
+<li><a href="introduction-to-r-for-biologists.html#adding-row-and-column-names" id="toc-adding-row-and-column-names"><span class="toc-section-number">5.4.2</span> Adding Row and Column Names</a></li>
+<li><a href="introduction-to-r-for-biologists.html#subsetting-a-matrix" id="toc-subsetting-a-matrix"><span class="toc-section-number">5.4.3</span> Subsetting a Matrix</a></li>
+<li><a href="introduction-to-r-for-biologists.html#calculations-with-matrices" id="toc-calculations-with-matrices"><span class="toc-section-number">5.4.4</span> Calculations with Matrices</a></li>
+<li><a href="introduction-to-r-for-biologists.html#normalization" id="toc-normalization"><span class="toc-section-number">5.4.5</span> Normalization</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion-2" id="toc-conclusion-2"><span class="toc-section-number">5.4.6</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#essential-functions-in-r" id="toc-essential-functions-in-r"><span class="toc-section-number">5.5</span> Essential Functions in R</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#length-function" id="toc-length-function"><span class="toc-section-number">5.5.1</span> <code>length</code> Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#unique-function" id="toc-unique-function"><span class="toc-section-number">5.5.2</span> <code>unique</code> Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#sort-function" id="toc-sort-function"><span class="toc-section-number">5.5.3</span> <code>sort</code> Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#cor-function" id="toc-cor-function"><span class="toc-section-number">5.5.4</span> <code>cor</code> Function</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#functions-organizing-your-code-for-reusability" id="toc-functions-organizing-your-code-for-reusability"><span class="toc-section-number">5.6</span> Functions: Organizing Your Code for Reusability</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#what-is-a-function" id="toc-what-is-a-function"><span class="toc-section-number">5.6.1</span> What is a Function?</a></li>
+<li><a href="introduction-to-r-for-biologists.html#creating-a-basic-function-calculating-the-mean" id="toc-creating-a-basic-function-calculating-the-mean"><span class="toc-section-number">5.6.2</span> Creating a Basic Function: Calculating the Mean</a></li>
+<li><a href="introduction-to-r-for-biologists.html#using-the-custom-function" id="toc-using-the-custom-function"><span class="toc-section-number">5.6.3</span> Using the Custom Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#returning-a-value-from-the-function" id="toc-returning-a-value-from-the-function"><span class="toc-section-number">5.6.4</span> Returning a Value from the Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#optional-omitting-the-return-statement" id="toc-optional-omitting-the-return-statement"><span class="toc-section-number">5.6.5</span> Optional: Omitting the return Statement</a></li>
+<li><a href="introduction-to-r-for-biologists.html#using-more-than-one-argument" id="toc-using-more-than-one-argument"><span class="toc-section-number">5.6.6</span> Using more than one argument</a></li>
+<li><a href="introduction-to-r-for-biologists.html#understanding-missing-values-nas-in-r" id="toc-understanding-missing-values-nas-in-r"><span class="toc-section-number">5.6.7</span> Understanding Missing Values (NAs) in R</a></li>
+<li><a href="introduction-to-r-for-biologists.html#initial-attempt-a-function-without-handling-nas" id="toc-initial-attempt-a-function-without-handling-nas"><span class="toc-section-number">5.6.8</span> Initial Attempt: A Function Without Handling NAs</a></li>
+<li><a href="introduction-to-r-for-biologists.html#adding-the-remove_na-argument" id="toc-adding-the-remove_na-argument"><span class="toc-section-number">5.6.9</span> Adding the <code>remove_na</code> Argument</a></li>
+<li><a href="introduction-to-r-for-biologists.html#practical-application" id="toc-practical-application"><span class="toc-section-number">5.6.10</span> Practical Application</a></li>
+<li><a href="introduction-to-r-for-biologists.html#getting-help-with-functions" id="toc-getting-help-with-functions"><span class="toc-section-number">5.6.11</span> Getting help with functions</a></li>
+<li><a href="introduction-to-r-for-biologists.html#a-real-world-example-1" id="toc-a-real-world-example-1"><span class="toc-section-number">5.6.12</span> A Real World Example</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion-3" id="toc-conclusion-3"><span class="toc-section-number">5.6.13</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#common-mistakes-to-avoid" id="toc-common-mistakes-to-avoid"><span class="toc-section-number">5.7</span> Common Mistakes to avoid</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#mixing-data-types" id="toc-mixing-data-types"><span class="toc-section-number">5.7.1</span> Mixing Data Types</a></li>
+<li><a href="introduction-to-r-for-biologists.html#forgetting-function-parentheses" id="toc-forgetting-function-parentheses"><span class="toc-section-number">5.7.2</span> Forgetting Function Parentheses</a></li>
+<li><a href="introduction-to-r-for-biologists.html#overwriting-built-in-functions" id="toc-overwriting-built-in-functions"><span class="toc-section-number">5.7.3</span> Overwriting Built-in Functions</a></li>
+<li><a href="introduction-to-r-for-biologists.html#misunderstanding-variable-scoping" id="toc-misunderstanding-variable-scoping"><span class="toc-section-number">5.7.4</span> Misunderstanding Variable Scoping</a></li>
+<li><a href="introduction-to-r-for-biologists.html#best-practices-for-variable-scoping-include" id="toc-best-practices-for-variable-scoping-include"><span class="toc-section-number">5.7.5</span> Best practices for variable scoping include</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion-4" id="toc-conclusion-4"><span class="toc-section-number">5.7.6</span> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#controlling-the-flow-of-our-programs" id="toc-controlling-the-flow-of-our-programs"><span class="toc-section-number">6</span> Controlling the flow of our programs</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#boolean-operators" id="toc-boolean-operators"><span class="toc-section-number">6.1</span> Boolean Operators</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#comparison-operators" id="toc-comparison-operators"><span class="toc-section-number">6.1.1</span> Comparison Operators</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#logical-operators" id="toc-logical-operators"><span class="toc-section-number">6.1.2</span> Logical Operators</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conclusion-5" id="toc-conclusion-5"><span class="toc-section-number">6.1.3</span> Conclusion</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conditional-statements-if-else" id="toc-conditional-statements-if-else"><span class="toc-section-number">6.2</span> Conditional statements (<code>if</code>, <code>else</code>)</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#the-if-statement" id="toc-the-if-statement"><span class="toc-section-number">6.2.1</span> The <code>if</code> Statement</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#else-statement" id="toc-else-statement"><span class="toc-section-number">6.2.2</span> <code>else</code> statement</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#else-if" id="toc-else-if"><span class="toc-section-number">6.2.3</span> <code>else if</code></a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#exercise" id="toc-exercise"><span class="toc-section-number">6.2.4</span> Exercise</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conclusion-6" id="toc-conclusion-6"><span class="toc-section-number">6.2.5</span> Conclusion</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#loops" id="toc-loops"><span class="toc-section-number">6.3</span> Loops</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#the-while-loop" id="toc-the-while-loop"><span class="toc-section-number">6.3.1</span> The <code>while</code> Loop</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#while-loops-in-real-life" id="toc-while-loops-in-real-life"><span class="toc-section-number">6.3.2</span> While Loops in Real Life</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#the-for-loop" id="toc-the-for-loop"><span class="toc-section-number">6.3.3</span> The <code>for</code> Loop</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conclusion-7" id="toc-conclusion-7"><span class="toc-section-number">6.3.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#gene-expression-annotation-using-loops-and-control-structures" id="toc-gene-expression-annotation-using-loops-and-control-structures"><span class="toc-section-number">6.4</span> Gene Expression Annotation using Loops and Control Structures</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#the-data" id="toc-the-data"><span class="toc-section-number">6.4.1</span> The Data</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#creating-annotations" id="toc-creating-annotations"><span class="toc-section-number">6.4.2</span> Creating Annotations</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#the-loop" id="toc-the-loop"><span class="toc-section-number">6.4.3</span> The Loop</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#output" id="toc-output"><span class="toc-section-number">6.4.4</span> Output</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#putting-it-all-together" id="toc-putting-it-all-together"><span class="toc-section-number">6.4.5</span> Putting it all together</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conclusion-8" id="toc-conclusion-8"><span class="toc-section-number">6.4.6</span> Conclusion</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#lets-solve-a-challenge" id="toc-lets-solve-a-challenge"><span class="toc-section-number">6.5</span> Let’s solve a Challenge</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#solution" id="toc-solution"><span class="toc-section-number">6.6</span> Solution</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#using-a-for-loop" id="toc-using-a-for-loop"><span class="toc-section-number">6.6.1</span> using a for loop</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#vectorized-solution" id="toc-vectorized-solution"><span class="toc-section-number">6.6.2</span> vectorized solution</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#section-complete" id="toc-section-complete"><span class="toc-section-number">6.7</span> Section complete</a></li>
+</ul></li>
+<li><a href="references.html#references" id="toc-references">References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Master Real-world Bioinformatics analysis in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="controlling-the-flow-of-our-programs.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/06-references.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

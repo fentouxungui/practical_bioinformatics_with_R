@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 8 Fundamental Data Structures in R | Master Real-world Bioinformatics analysis in R</title>
+  <meta name="description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 8 Fundamental Data Structures in R | Master Real-world Bioinformatics analysis in R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 8 Fundamental Data Structures in R | Master Real-world Bioinformatics analysis in R" />
+  
+  <meta name="twitter:description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  
+
+<meta name="author" content="Ming Tommy Tang" />
+
+
+<meta name="date" content="2024-05-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="going-more-in-depth-with-r.html"/>
+<link rel="next" href="introduction-to-the-tidyverse-ecosystem.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#preface" id="toc-preface"><span class="toc-section-number">1</span> Preface</a></li>
+<li><a href="intro.html#intro" id="toc-intro"><span class="toc-section-number">2</span> Introduction</a>
+<ul>
+<li><a href="intro.html#meet-your-instructor" id="toc-meet-your-instructor"><span class="toc-section-number">2.1</span> Meet your Instructor</a></li>
+<li><a href="intro.html#leveraging-our-online-community" id="toc-leveraging-our-online-community"><span class="toc-section-number">2.2</span> Leveraging our online community</a></li>
+<li><a href="intro.html#install-r-and-r-studio" id="toc-install-r-and-r-studio"><span class="toc-section-number">2.3</span> Install R and R studio</a></li>
+<li><a href="intro.html#the-role-of-programming-in-biology" id="toc-the-role-of-programming-in-biology"><span class="toc-section-number">2.4</span> The role of programming in Biology</a>
+<ul>
+<li><a href="intro.html#what-are-programming-languages" id="toc-what-are-programming-languages"><span class="toc-section-number">2.4.1</span> What are programming languages?</a></li>
+<li><a href="intro.html#why-programming-is-important-in-biology" id="toc-why-programming-is-important-in-biology"><span class="toc-section-number">2.4.2</span> Why programming is important in biology?</a></li>
+<li><a href="intro.html#what-are-the-most-used-programming-languages-within-biology" id="toc-what-are-the-most-used-programming-languages-within-biology"><span class="toc-section-number">2.4.3</span> What are the most used programming languages within biology?</a></li>
+</ul></li>
+</ul></li>
+<li><a href="introduction-to-programming.html#introduction-to-programming" id="toc-introduction-to-programming"><span class="toc-section-number">3</span> Introduction to programming</a>
+<ul>
+<li><a href="introduction-to-programming.html#what-is-an-algorithm" id="toc-what-is-an-algorithm"><span class="toc-section-number">3.1</span> What is an algorithm?</a></li>
+<li><a href="introduction-to-programming.html#why-are-algorithms-important-in-programming" id="toc-why-are-algorithms-important-in-programming"><span class="toc-section-number">3.2</span> Why are Algorithms Important in Programming?</a></li>
+<li><a href="introduction-to-programming.html#a-real-world-example" id="toc-a-real-world-example"><span class="toc-section-number">3.3</span> A Real World Example:</a></li>
+<li><a href="introduction-to-programming.html#variables-data-types-and-expressions" id="toc-variables-data-types-and-expressions"><span class="toc-section-number">3.4</span> Variables, Data Types, and Expressions</a>
+<ul>
+<li><a href="introduction-to-programming.html#variables" id="toc-variables"><span class="toc-section-number">3.4.1</span> Variables</a></li>
+<li><a href="introduction-to-programming.html#data-types" id="toc-data-types"><span class="toc-section-number">3.4.2</span> Data Types</a></li>
+<li><a href="introduction-to-programming.html#expressions" id="toc-expressions"><span class="toc-section-number">3.4.3</span> Expressions</a></li>
+<li><a href="introduction-to-programming.html#example-finding-the-average-number-of-bases-appearances-in-a-set-of-dna-strings" id="toc-example-finding-the-average-number-of-bases-appearances-in-a-set-of-dna-strings"><span class="toc-section-number">3.4.4</span> Example: Finding the average number of bases appearances in a set of DNA strings</a></li>
+</ul></li>
+</ul></li>
+<li><a href="getting-started-with-r-and-rstudio.html#getting-started-with-r-and-rstudio" id="toc-getting-started-with-r-and-rstudio"><span class="toc-section-number">4</span> Getting started with R and RStudio</a>
+<ul>
+<li><a href="getting-started-with-r-and-rstudio.html#what-is-r-and-why-is-it-used-in-biology" id="toc-what-is-r-and-why-is-it-used-in-biology"><span class="toc-section-number">4.1</span> What is R and why is it used in Biology?</a></li>
+<li><a href="getting-started-with-r-and-rstudio.html#what-is-r" id="toc-what-is-r"><span class="toc-section-number">4.2</span> What is R?</a></li>
+<li><a href="getting-started-with-r-and-rstudio.html#why-is-r-used-in-biology" id="toc-why-is-r-used-in-biology"><span class="toc-section-number">4.3</span> Why is R Used in Biology?</a></li>
+<li><a href="getting-started-with-r-and-rstudio.html#introduction-to-r-studio" id="toc-introduction-to-r-studio"><span class="toc-section-number">4.4</span> Introduction to R-Studio</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#introduction-to-r-for-biologists" id="toc-introduction-to-r-for-biologists"><span class="toc-section-number">5</span> Introduction to R for biologists</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#basic-data-types-in-r" id="toc-basic-data-types-in-r"><span class="toc-section-number">5.1</span> Basic Data Types in R</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#before-starting" id="toc-before-starting"><span class="toc-section-number">5.1.1</span> Before Starting</a></li>
+<li><a href="introduction-to-r-for-biologists.html#numeric" id="toc-numeric"><span class="toc-section-number">5.1.2</span> 1. Numeric</a></li>
+<li><a href="introduction-to-r-for-biologists.html#character-string" id="toc-character-string"><span class="toc-section-number">5.1.3</span> 2. Character (String)</a></li>
+<li><a href="introduction-to-r-for-biologists.html#integer" id="toc-integer"><span class="toc-section-number">5.1.4</span> 3. Integer</a></li>
+<li><a href="introduction-to-r-for-biologists.html#logical-boolean" id="toc-logical-boolean"><span class="toc-section-number">5.1.5</span> 4. Logical (Boolean)</a></li>
+<li><a href="introduction-to-r-for-biologists.html#factor" id="toc-factor"><span class="toc-section-number">5.1.6</span> 5. Factor</a></li>
+<li><a href="introduction-to-r-for-biologists.html#date-and-time" id="toc-date-and-time"><span class="toc-section-number">5.1.7</span> 6. Date and Time</a></li>
+<li><a href="introduction-to-r-for-biologists.html#complex" id="toc-complex"><span class="toc-section-number">5.1.8</span> 7. Complex</a></li>
+<li><a href="introduction-to-r-for-biologists.html#missing-values-na" id="toc-missing-values-na"><span class="toc-section-number">5.1.9</span> 8. Missing Values (NA)</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#the-key-concept-of-r-vectors" id="toc-the-key-concept-of-r-vectors"><span class="toc-section-number">5.2</span> The key concept of R: Vectors</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#creating-numeric-and-character-vectors" id="toc-creating-numeric-and-character-vectors"><span class="toc-section-number">5.2.1</span> Creating Numeric and Character Vectors</a></li>
+<li><a href="introduction-to-r-for-biologists.html#saving-vectors-to-variables" id="toc-saving-vectors-to-variables"><span class="toc-section-number">5.2.2</span> Saving Vectors to Variables</a></li>
+<li><a href="introduction-to-r-for-biologists.html#vectorized-calculations" id="toc-vectorized-calculations"><span class="toc-section-number">5.2.3</span> Vectorized Calculations</a></li>
+<li><a href="introduction-to-r-for-biologists.html#performing-vectorized-calculations" id="toc-performing-vectorized-calculations"><span class="toc-section-number">5.2.4</span> Performing Vectorized Calculations</a></li>
+<li><a href="introduction-to-r-for-biologists.html#operations-with-character-vectors" id="toc-operations-with-character-vectors"><span class="toc-section-number">5.2.5</span> Operations with character vectors</a></li>
+<li><a href="introduction-to-r-for-biologists.html#logical-vectors" id="toc-logical-vectors"><span class="toc-section-number">5.2.6</span> Logical Vectors</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion" id="toc-conclusion"><span class="toc-section-number">5.2.7</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#subsetting-and-indexing" id="toc-subsetting-and-indexing"><span class="toc-section-number">5.3</span> Subsetting and Indexing</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#indexing-in-r" id="toc-indexing-in-r"><span class="toc-section-number">5.3.1</span> Indexing in R</a></li>
+<li><a href="introduction-to-r-for-biologists.html#slicing-in-r" id="toc-slicing-in-r"><span class="toc-section-number">5.3.2</span> Slicing in R</a></li>
+<li><a href="introduction-to-r-for-biologists.html#negative-indexing" id="toc-negative-indexing"><span class="toc-section-number">5.3.3</span> Negative Indexing</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion-1" id="toc-conclusion-1"><span class="toc-section-number">5.3.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#understanding-and-manipulating-matrices" id="toc-understanding-and-manipulating-matrices"><span class="toc-section-number">5.4</span> Understanding and Manipulating Matrices</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#creating-a-matrix" id="toc-creating-a-matrix"><span class="toc-section-number">5.4.1</span> Creating a Matrix</a></li>
+<li><a href="introduction-to-r-for-biologists.html#adding-row-and-column-names" id="toc-adding-row-and-column-names"><span class="toc-section-number">5.4.2</span> Adding Row and Column Names</a></li>
+<li><a href="introduction-to-r-for-biologists.html#subsetting-a-matrix" id="toc-subsetting-a-matrix"><span class="toc-section-number">5.4.3</span> Subsetting a Matrix</a></li>
+<li><a href="introduction-to-r-for-biologists.html#calculations-with-matrices" id="toc-calculations-with-matrices"><span class="toc-section-number">5.4.4</span> Calculations with Matrices</a></li>
+<li><a href="introduction-to-r-for-biologists.html#normalization" id="toc-normalization"><span class="toc-section-number">5.4.5</span> Normalization</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion-2" id="toc-conclusion-2"><span class="toc-section-number">5.4.6</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#essential-functions-in-r" id="toc-essential-functions-in-r"><span class="toc-section-number">5.5</span> Essential Functions in R</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#length-function" id="toc-length-function"><span class="toc-section-number">5.5.1</span> <code>length</code> Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#unique-function" id="toc-unique-function"><span class="toc-section-number">5.5.2</span> <code>unique</code> Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#sort-function" id="toc-sort-function"><span class="toc-section-number">5.5.3</span> <code>sort</code> Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#cor-function" id="toc-cor-function"><span class="toc-section-number">5.5.4</span> <code>cor</code> Function</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#functions-organizing-your-code-for-reusability" id="toc-functions-organizing-your-code-for-reusability"><span class="toc-section-number">5.6</span> Functions: Organizing Your Code for Reusability</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#what-is-a-function" id="toc-what-is-a-function"><span class="toc-section-number">5.6.1</span> What is a Function?</a></li>
+<li><a href="introduction-to-r-for-biologists.html#creating-a-basic-function-calculating-the-mean" id="toc-creating-a-basic-function-calculating-the-mean"><span class="toc-section-number">5.6.2</span> Creating a Basic Function: Calculating the Mean</a></li>
+<li><a href="introduction-to-r-for-biologists.html#using-the-custom-function" id="toc-using-the-custom-function"><span class="toc-section-number">5.6.3</span> Using the Custom Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#returning-a-value-from-the-function" id="toc-returning-a-value-from-the-function"><span class="toc-section-number">5.6.4</span> Returning a Value from the Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#optional-omitting-the-return-statement" id="toc-optional-omitting-the-return-statement"><span class="toc-section-number">5.6.5</span> Optional: Omitting the return Statement</a></li>
+<li><a href="introduction-to-r-for-biologists.html#using-more-than-one-argument" id="toc-using-more-than-one-argument"><span class="toc-section-number">5.6.6</span> Using more than one argument</a></li>
+<li><a href="introduction-to-r-for-biologists.html#understanding-missing-values-nas-in-r" id="toc-understanding-missing-values-nas-in-r"><span class="toc-section-number">5.6.7</span> Understanding Missing Values (NAs) in R</a></li>
+<li><a href="introduction-to-r-for-biologists.html#initial-attempt-a-function-without-handling-nas" id="toc-initial-attempt-a-function-without-handling-nas"><span class="toc-section-number">5.6.8</span> Initial Attempt: A Function Without Handling NAs</a></li>
+<li><a href="introduction-to-r-for-biologists.html#adding-the-remove_na-argument" id="toc-adding-the-remove_na-argument"><span class="toc-section-number">5.6.9</span> Adding the <code>remove_na</code> Argument</a></li>
+<li><a href="introduction-to-r-for-biologists.html#practical-application" id="toc-practical-application"><span class="toc-section-number">5.6.10</span> Practical Application</a></li>
+<li><a href="introduction-to-r-for-biologists.html#getting-help-with-functions" id="toc-getting-help-with-functions"><span class="toc-section-number">5.6.11</span> Getting help with functions</a></li>
+<li><a href="introduction-to-r-for-biologists.html#a-real-world-example-1" id="toc-a-real-world-example-1"><span class="toc-section-number">5.6.12</span> A Real World Example</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion-3" id="toc-conclusion-3"><span class="toc-section-number">5.6.13</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#common-mistakes-to-avoid" id="toc-common-mistakes-to-avoid"><span class="toc-section-number">5.7</span> Common Mistakes to avoid</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#mixing-data-types" id="toc-mixing-data-types"><span class="toc-section-number">5.7.1</span> Mixing Data Types</a></li>
+<li><a href="introduction-to-r-for-biologists.html#forgetting-function-parentheses" id="toc-forgetting-function-parentheses"><span class="toc-section-number">5.7.2</span> Forgetting Function Parentheses</a></li>
+<li><a href="introduction-to-r-for-biologists.html#overwriting-built-in-functions" id="toc-overwriting-built-in-functions"><span class="toc-section-number">5.7.3</span> Overwriting Built-in Functions</a></li>
+<li><a href="introduction-to-r-for-biologists.html#misunderstanding-variable-scoping" id="toc-misunderstanding-variable-scoping"><span class="toc-section-number">5.7.4</span> Misunderstanding Variable Scoping</a></li>
+<li><a href="introduction-to-r-for-biologists.html#best-practices-for-variable-scoping-include" id="toc-best-practices-for-variable-scoping-include"><span class="toc-section-number">5.7.5</span> Best practices for variable scoping include</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion-4" id="toc-conclusion-4"><span class="toc-section-number">5.7.6</span> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#controlling-the-flow-of-our-programs" id="toc-controlling-the-flow-of-our-programs"><span class="toc-section-number">6</span> Controlling the flow of our programs</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#boolean-operators" id="toc-boolean-operators"><span class="toc-section-number">6.1</span> Boolean Operators</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#comparison-operators" id="toc-comparison-operators"><span class="toc-section-number">6.1.1</span> Comparison Operators</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#logical-operators" id="toc-logical-operators"><span class="toc-section-number">6.1.2</span> Logical Operators</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conclusion-5" id="toc-conclusion-5"><span class="toc-section-number">6.1.3</span> Conclusion</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conditional-statements-if-else" id="toc-conditional-statements-if-else"><span class="toc-section-number">6.2</span> Conditional statements (<code>if</code>, <code>else</code>)</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#the-if-statement" id="toc-the-if-statement"><span class="toc-section-number">6.2.1</span> The <code>if</code> Statement</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#else-statement" id="toc-else-statement"><span class="toc-section-number">6.2.2</span> <code>else</code> statement</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#else-if" id="toc-else-if"><span class="toc-section-number">6.2.3</span> <code>else if</code></a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#exercise" id="toc-exercise"><span class="toc-section-number">6.2.4</span> Exercise</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conclusion-6" id="toc-conclusion-6"><span class="toc-section-number">6.2.5</span> Conclusion</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#loops" id="toc-loops"><span class="toc-section-number">6.3</span> Loops</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#the-while-loop" id="toc-the-while-loop"><span class="toc-section-number">6.3.1</span> The <code>while</code> Loop</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#while-loops-in-real-life" id="toc-while-loops-in-real-life"><span class="toc-section-number">6.3.2</span> While Loops in Real Life</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#the-for-loop" id="toc-the-for-loop"><span class="toc-section-number">6.3.3</span> The <code>for</code> Loop</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conclusion-7" id="toc-conclusion-7"><span class="toc-section-number">6.3.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#gene-expression-annotation-using-loops-and-control-structures" id="toc-gene-expression-annotation-using-loops-and-control-structures"><span class="toc-section-number">6.4</span> Gene Expression Annotation using Loops and Control Structures</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#the-data" id="toc-the-data"><span class="toc-section-number">6.4.1</span> The Data</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#creating-annotations" id="toc-creating-annotations"><span class="toc-section-number">6.4.2</span> Creating Annotations</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#the-loop" id="toc-the-loop"><span class="toc-section-number">6.4.3</span> The Loop</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#output" id="toc-output"><span class="toc-section-number">6.4.4</span> Output</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#putting-it-all-together" id="toc-putting-it-all-together"><span class="toc-section-number">6.4.5</span> Putting it all together</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conclusion-8" id="toc-conclusion-8"><span class="toc-section-number">6.4.6</span> Conclusion</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#lets-solve-a-challenge" id="toc-lets-solve-a-challenge"><span class="toc-section-number">6.5</span> Let’s solve a Challenge</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#solution" id="toc-solution"><span class="toc-section-number">6.6</span> Solution</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#using-a-for-loop" id="toc-using-a-for-loop"><span class="toc-section-number">6.6.1</span> using a for loop</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#vectorized-solution" id="toc-vectorized-solution"><span class="toc-section-number">6.6.2</span> vectorized solution</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#section-complete" id="toc-section-complete"><span class="toc-section-number">6.7</span> Section complete</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#going-more-in-depth-with-r" id="toc-going-more-in-depth-with-r"><span class="toc-section-number">7</span> Going more in-depth with R</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#handling-missing-values" id="toc-handling-missing-values"><span class="toc-section-number">7.1</span> Handling Missing Values</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#understanding-na-in-r" id="toc-understanding-na-in-r"><span class="toc-section-number">7.1.1</span> Understanding NA in R</a></li>
+<li><a href="going-more-in-depth-with-r.html#identifying-missing-values" id="toc-identifying-missing-values"><span class="toc-section-number">7.1.2</span> Identifying Missing Values</a></li>
+<li><a href="going-more-in-depth-with-r.html#remove-missing-values" id="toc-remove-missing-values"><span class="toc-section-number">7.1.3</span> remove missing values</a></li>
+<li><a href="going-more-in-depth-with-r.html#real-life-note" id="toc-real-life-note"><span class="toc-section-number">7.1.4</span> real-life note</a></li>
+<li><a href="going-more-in-depth-with-r.html#conclusion-9" id="toc-conclusion-9"><span class="toc-section-number">7.1.5</span> Conclusion</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#introduction-to-statistical-tests-and-p-values" id="toc-introduction-to-statistical-tests-and-p-values"><span class="toc-section-number">7.2</span> Introduction to Statistical Tests and P-Values</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#practical-application-of-statistical-test-with-r" id="toc-practical-application-of-statistical-test-with-r"><span class="toc-section-number">7.2.1</span> Practical Application of statistical test with R</a></li>
+<li><a href="going-more-in-depth-with-r.html#conclusion-10" id="toc-conclusion-10"><span class="toc-section-number">7.2.2</span> Conclusion</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#understanding-r-packages" id="toc-understanding-r-packages"><span class="toc-section-number">7.3</span> Understanding R Packages</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#what-is-an-r-package" id="toc-what-is-an-r-package"><span class="toc-section-number">7.3.1</span> What is an R Package?</a></li>
+<li><a href="going-more-in-depth-with-r.html#why-use-r-packages" id="toc-why-use-r-packages"><span class="toc-section-number">7.3.2</span> Why Use R Packages?</a></li>
+<li><a href="going-more-in-depth-with-r.html#how-to-use-a-package" id="toc-how-to-use-a-package"><span class="toc-section-number">7.3.3</span> How to use a package?</a></li>
+<li><a href="going-more-in-depth-with-r.html#embracing-errors" id="toc-embracing-errors"><span class="toc-section-number">7.3.4</span> Embracing Errors</a></li>
+<li><a href="going-more-in-depth-with-r.html#how-to-look-for-package-docs-within-r-studio" id="toc-how-to-look-for-package-docs-within-r-studio"><span class="toc-section-number">7.3.5</span> How to look for package docs within R studio?</a></li>
+<li><a href="going-more-in-depth-with-r.html#exploring-package-vignettes" id="toc-exploring-package-vignettes"><span class="toc-section-number">7.3.6</span> Exploring Package Vignettes</a></li>
+<li><a href="going-more-in-depth-with-r.html#practical-tip" id="toc-practical-tip"><span class="toc-section-number">7.3.7</span> Practical Tip</a></li>
+<li><a href="going-more-in-depth-with-r.html#conclusion-11" id="toc-conclusion-11"><span class="toc-section-number">7.3.8</span> Conclusion</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#exploring-functions-in-different-packages-avoiding-collisions-and-accessing-them" id="toc-exploring-functions-in-different-packages-avoiding-collisions-and-accessing-them"><span class="toc-section-number">7.4</span> Exploring Functions in Different Packages: Avoiding Collisions and Accessing Them</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#using-double-colon" id="toc-using-double-colon"><span class="toc-section-number">7.4.1</span> Using Double Colon (<code>::</code>)</a></li>
+<li><a href="going-more-in-depth-with-r.html#conclusion-12" id="toc-conclusion-12"><span class="toc-section-number">7.4.2</span> Conclusion</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#writing-custom-scripts" id="toc-writing-custom-scripts"><span class="toc-section-number">7.5</span> Writing Custom Scripts</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#your-working-directory" id="toc-your-working-directory"><span class="toc-section-number">7.5.1</span> Your Working Directory</a></li>
+<li><a href="going-more-in-depth-with-r.html#writing-functions-in-scripts" id="toc-writing-functions-in-scripts"><span class="toc-section-number">7.5.2</span> Writing Functions in Scripts</a></li>
+<li><a href="going-more-in-depth-with-r.html#importing-functions-from-scripts" id="toc-importing-functions-from-scripts"><span class="toc-section-number">7.5.3</span> Importing Functions from Scripts</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#data-io" id="toc-data-io"><span class="toc-section-number">7.6</span> Data I/O</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#built-in-functions" id="toc-built-in-functions"><span class="toc-section-number">7.6.1</span> Built-In Functions</a></li>
+<li><a href="going-more-in-depth-with-r.html#real-world-applications" id="toc-real-world-applications"><span class="toc-section-number">7.6.2</span> Real-World Applications</a></li>
+<li><a href="going-more-in-depth-with-r.html#conclusion-13" id="toc-conclusion-13"><span class="toc-section-number">7.6.3</span> Conclusion</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#best-practices-in-modular-programming-and-project-management" id="toc-best-practices-in-modular-programming-and-project-management"><span class="toc-section-number">7.7</span> Best Practices in Modular Programming and Project Management</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#introduction-to-modular-programming" id="toc-introduction-to-modular-programming"><span class="toc-section-number">7.7.1</span> Introduction to Modular Programming</a></li>
+<li><a href="going-more-in-depth-with-r.html#breaking-down-your-project" id="toc-breaking-down-your-project"><span class="toc-section-number">7.7.2</span> Breaking Down Your Project</a></li>
+<li><a href="going-more-in-depth-with-r.html#conclusion-14" id="toc-conclusion-14"><span class="toc-section-number">7.7.3</span> Conclusion</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#section-complete-1" id="toc-section-complete-1"><span class="toc-section-number">7.8</span> Section complete</a></li>
+</ul></li>
+<li><a href="fundamental-data-structures-in-r.html#fundamental-data-structures-in-r" id="toc-fundamental-data-structures-in-r"><span class="toc-section-number">8</span> Fundamental Data Structures in R</a>
+<ul>
+<li><a href="fundamental-data-structures-in-r.html#named-vectors" id="toc-named-vectors"><span class="toc-section-number">8.1</span> Named Vectors</a>
+<ul>
+<li><a href="fundamental-data-structures-in-r.html#what-is-a-named-vector" id="toc-what-is-a-named-vector"><span class="toc-section-number">8.1.1</span> What is a Named Vector?</a></li>
+<li><a href="fundamental-data-structures-in-r.html#using-names-to-subset-a-vector" id="toc-using-names-to-subset-a-vector"><span class="toc-section-number">8.1.2</span> Using Names to Subset a Vector</a></li>
+<li><a href="fundamental-data-structures-in-r.html#named-vectors-as-dictionary-like-structures" id="toc-named-vectors-as-dictionary-like-structures"><span class="toc-section-number">8.1.3</span> Named Vectors as Dictionary-Like Structures</a></li>
+<li><a href="fundamental-data-structures-in-r.html#real-life-example" id="toc-real-life-example"><span class="toc-section-number">8.1.4</span> Real-life example</a></li>
+<li><a href="fundamental-data-structures-in-r.html#reordering-and-subsetting-with-names" id="toc-reordering-and-subsetting-with-names"><span class="toc-section-number">8.1.5</span> Reordering and Subsetting with Names</a></li>
+<li><a href="fundamental-data-structures-in-r.html#conclusion-15" id="toc-conclusion-15"><span class="toc-section-number">8.1.6</span> Conclusion</a></li>
+</ul></li>
+<li><a href="fundamental-data-structures-in-r.html#lists" id="toc-lists"><span class="toc-section-number">8.2</span> Lists</a>
+<ul>
+<li><a href="fundamental-data-structures-in-r.html#introduction-to-lists" id="toc-introduction-to-lists"><span class="toc-section-number">8.2.1</span> Introduction to Lists</a></li>
+<li><a href="fundamental-data-structures-in-r.html#creating-a-list" id="toc-creating-a-list"><span class="toc-section-number">8.2.2</span> Creating a List</a></li>
+<li><a href="fundamental-data-structures-in-r.html#accessing-list-elements" id="toc-accessing-list-elements"><span class="toc-section-number">8.2.3</span> Accessing List Elements</a></li>
+<li><a href="fundamental-data-structures-in-r.html#conclusions" id="toc-conclusions"><span class="toc-section-number">8.2.4</span> Conclusions</a></li>
+</ul></li>
+<li><a href="fundamental-data-structures-in-r.html#dataframes" id="toc-dataframes"><span class="toc-section-number">8.3</span> Dataframes</a>
+<ul>
+<li><a href="fundamental-data-structures-in-r.html#what-is-a-data-frame" id="toc-what-is-a-data-frame"><span class="toc-section-number">8.3.1</span> What is a Data Frame?</a></li>
+<li><a href="fundamental-data-structures-in-r.html#creating-a-data-frame" id="toc-creating-a-data-frame"><span class="toc-section-number">8.3.2</span> Creating a Data Frame</a></li>
+<li><a href="fundamental-data-structures-in-r.html#accessing-columns" id="toc-accessing-columns"><span class="toc-section-number">8.3.3</span> Accessing Columns</a></li>
+<li><a href="fundamental-data-structures-in-r.html#subsetting-a-data-frame" id="toc-subsetting-a-data-frame"><span class="toc-section-number">8.3.4</span> Subsetting a Data Frame</a></li>
+<li><a href="fundamental-data-structures-in-r.html#conclusion-16" id="toc-conclusion-16"><span class="toc-section-number">8.3.5</span> Conclusion</a></li>
+</ul></li>
+<li><a href="fundamental-data-structures-in-r.html#how-to-represent-categorical-data-in-r-understanding-factors" id="toc-how-to-represent-categorical-data-in-r-understanding-factors"><span class="toc-section-number">8.4</span> How to Represent Categorical Data in R? Understanding Factors</a>
+<ul>
+<li><a href="fundamental-data-structures-in-r.html#creating-factors" id="toc-creating-factors"><span class="toc-section-number">8.4.1</span> Creating Factors</a></li>
+<li><a href="fundamental-data-structures-in-r.html#changing-levels" id="toc-changing-levels"><span class="toc-section-number">8.4.2</span> Changing levels</a></li>
+<li><a href="fundamental-data-structures-in-r.html#converting-factors" id="toc-converting-factors"><span class="toc-section-number">8.4.3</span> Converting Factors</a></li>
+<li><a href="fundamental-data-structures-in-r.html#customizing-factor-levels" id="toc-customizing-factor-levels"><span class="toc-section-number">8.4.4</span> Customizing Factor Levels</a></li>
+<li><a href="fundamental-data-structures-in-r.html#creating-factors-from-character-vectors" id="toc-creating-factors-from-character-vectors"><span class="toc-section-number">8.4.5</span> Creating Factors from Character Vectors</a></li>
+<li><a href="fundamental-data-structures-in-r.html#subsetting-factors" id="toc-subsetting-factors"><span class="toc-section-number">8.4.6</span> Subsetting Factors</a></li>
+<li><a href="fundamental-data-structures-in-r.html#removing-unused-levels" id="toc-removing-unused-levels"><span class="toc-section-number">8.4.7</span> Removing Unused Levels</a></li>
+<li><a href="fundamental-data-structures-in-r.html#conclusion-17" id="toc-conclusion-17"><span class="toc-section-number">8.4.8</span> Conclusion</a></li>
+</ul></li>
+<li><a href="fundamental-data-structures-in-r.html#section-complete-2" id="toc-section-complete-2"><span class="toc-section-number">8.5</span> Section Complete</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#introduction-to-the-tidyverse-ecosystem" id="toc-introduction-to-the-tidyverse-ecosystem"><span class="toc-section-number">9</span> Introduction to the tidyverse ecosystem</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#what-is-the-tidyverse" id="toc-what-is-the-tidyverse"><span class="toc-section-number">9.1</span> What is the Tidyverse?</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#key-tidyverse-packages" id="toc-key-tidyverse-packages"><span class="toc-section-number">9.2</span> Key Tidyverse Packages</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#dplyr" id="toc-dplyr"><span class="toc-section-number">9.2.1</span> dplyr</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#a-note-on-the-pipe" id="toc-a-note-on-the-pipe"><span class="toc-section-number">9.2.2</span> A note on the pipe</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#ggplot2" id="toc-ggplot2"><span class="toc-section-number">9.2.3</span> ggplot2</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#tidyr" id="toc-tidyr"><span class="toc-section-number">9.2.4</span> tidyr</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#readr" id="toc-readr"><span class="toc-section-number">9.2.5</span> readr</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#tibble" id="toc-tibble"><span class="toc-section-number">9.2.6</span> tibble</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#stringr" id="toc-stringr"><span class="toc-section-number">9.2.7</span> stringr</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#forcats" id="toc-forcats"><span class="toc-section-number">9.2.8</span> forcats</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#real-world-applications-1" id="toc-real-world-applications-1"><span class="toc-section-number">9.2.9</span> Real-World Applications</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#tibble-and-readr---modern-data-structures-in-r" id="toc-tibble-and-readr---modern-data-structures-in-r"><span class="toc-section-number">9.3</span> Tibble and Readr - Modern Data Structures in R</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#tibbles-a-better-way-to-store-data" id="toc-tibbles-a-better-way-to-store-data"><span class="toc-section-number">9.3.1</span> Tibbles: A Better Way to Store Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#rownames-and-tibbles" id="toc-rownames-and-tibbles"><span class="toc-section-number">9.3.2</span> Rownames and Tibbles</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#reading-data-with-readr" id="toc-reading-data-with-readr"><span class="toc-section-number">9.3.3</span> Reading Data with readr</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#using-tibbles-with-imported-data" id="toc-using-tibbles-with-imported-data"><span class="toc-section-number">9.3.4</span> Using Tibbles with Imported Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#note-on-reading-excel-files" id="toc-note-on-reading-excel-files"><span class="toc-section-number">9.3.5</span> Note on reading Excel files</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-18" id="toc-conclusion-18"><span class="toc-section-number">9.3.6</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#the-tidy-data-format" id="toc-the-tidy-data-format"><span class="toc-section-number">9.4</span> The tidy data format</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#the-importance-of-tidy-data" id="toc-the-importance-of-tidy-data"><span class="toc-section-number">9.4.1</span> The Importance of Tidy Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#long-format-vs.-wide-format" id="toc-long-format-vs.-wide-format"><span class="toc-section-number">9.4.2</span> Long Format vs. Wide Format</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#introducing-dplyr-your-data-wrangling-toolkit" id="toc-introducing-dplyr-your-data-wrangling-toolkit"><span class="toc-section-number">9.5</span> Introducing dplyr: Your Data Wrangling Toolkit</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#selecting-specific-columns" id="toc-selecting-specific-columns"><span class="toc-section-number">9.5.1</span> Selecting Specific Columns</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#adding-new-columns" id="toc-adding-new-columns"><span class="toc-section-number">9.5.2</span> Adding New Columns</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#reordering-columns" id="toc-reordering-columns"><span class="toc-section-number">9.5.3</span> Reordering Columns</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#filtering-data" id="toc-filtering-data"><span class="toc-section-number">9.5.4</span> Filtering Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#summarizing-data" id="toc-summarizing-data"><span class="toc-section-number">9.5.5</span> Summarizing Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#sorting-data" id="toc-sorting-data"><span class="toc-section-number">9.5.6</span> Sorting Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-19" id="toc-conclusion-19"><span class="toc-section-number">9.5.7</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#stringr-your-essential-toolkit-to-manipulate-strings" id="toc-stringr-your-essential-toolkit-to-manipulate-strings"><span class="toc-section-number">9.6</span> stringr: your essential toolkit to manipulate strings</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#purrr-ditch-your-for-loops" id="toc-purrr-ditch-your-for-loops"><span class="toc-section-number">9.7</span> purrr: ditch your for loops</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#nesting-data-with-nest" id="toc-nesting-data-with-nest"><span class="toc-section-number">9.7.1</span> Nesting Data with nest()</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#map-and-its-variants" id="toc-map-and-its-variants"><span class="toc-section-number">9.7.2</span> <code>map()</code> and Its Variants</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#note-on-anonymous-functions" id="toc-note-on-anonymous-functions"><span class="toc-section-number">9.7.3</span> Note on Anonymous functions</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-20" id="toc-conclusion-20"><span class="toc-section-number">9.7.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#tidying-metadata-from-geo." id="toc-tidying-metadata-from-geo."><span class="toc-section-number">9.8</span> Tidying metadata from GEO.</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#prerequisites" id="toc-prerequisites"><span class="toc-section-number">9.8.1</span> Prerequisites</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#getting-started" id="toc-getting-started"><span class="toc-section-number">9.8.2</span> Getting Started</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#tidying-the-metadata" id="toc-tidying-the-metadata"><span class="toc-section-number">9.8.3</span> Tidying the Metadata</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#converting-to-a-tidy-data-frame" id="toc-converting-to-a-tidy-data-frame"><span class="toc-section-number">9.8.4</span> Converting to a Tidy Data Frame</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#bonus-reading-multiple-tsv-files" id="toc-bonus-reading-multiple-tsv-files"><span class="toc-section-number">9.8.5</span> Bonus: Reading Multiple TSV Files</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#section-complete-3" id="toc-section-complete-3"><span class="toc-section-number">9.9</span> Section Complete</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-21" id="toc-conclusion-21"><span class="toc-section-number">9.9.1</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#data-visualization-with-ggplot2" id="toc-data-visualization-with-ggplot2"><span class="toc-section-number">9.10</span> Data visualization with ggplot2</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#creating-scatter-plots" id="toc-creating-scatter-plots"><span class="toc-section-number">9.11</span> Creating Scatter Plots</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#prerequisites-1" id="toc-prerequisites-1"><span class="toc-section-number">9.11.1</span> Prerequisites</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#loading-and-exploring-the-data" id="toc-loading-and-exploring-the-data"><span class="toc-section-number">9.11.2</span> Loading and Exploring the Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#filtering-the-data" id="toc-filtering-the-data"><span class="toc-section-number">9.11.3</span> Filtering the Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#creating-a-scatter-plot" id="toc-creating-a-scatter-plot"><span class="toc-section-number">9.11.4</span> Creating a Scatter Plot</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#calculating-correlation" id="toc-calculating-correlation"><span class="toc-section-number">9.11.5</span> Calculating Correlation</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#hypothesis-testing" id="toc-hypothesis-testing"><span class="toc-section-number">9.11.6</span> Hypothesis Testing</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#adding-a-regression-line" id="toc-adding-a-regression-line"><span class="toc-section-number">9.11.7</span> Adding a Regression Line</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-22" id="toc-conclusion-22"><span class="toc-section-number">9.11.8</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#understanding-distributions-with-histograms" id="toc-understanding-distributions-with-histograms"><span class="toc-section-number">9.12</span> Understanding Distributions with Histograms</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#creating-a-basic-histogram" id="toc-creating-a-basic-histogram"><span class="toc-section-number">9.12.1</span> Creating a Basic Histogram</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#customizing-histogram-bins" id="toc-customizing-histogram-bins"><span class="toc-section-number">9.12.2</span> Customizing Histogram Bins</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-23" id="toc-conclusion-23"><span class="toc-section-number">9.12.3</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#visualizing-data-distribution-with-boxplots-and-violin-plots" id="toc-visualizing-data-distribution-with-boxplots-and-violin-plots"><span class="toc-section-number">9.13</span> Visualizing Data Distribution with Boxplots and Violin Plots</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#creating-a-basic-boxplot" id="toc-creating-a-basic-boxplot"><span class="toc-section-number">9.13.1</span> Creating a Basic Boxplot</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#rotating-x-axis-labels" id="toc-rotating-x-axis-labels"><span class="toc-section-number">9.13.2</span> Rotating X-axis Labels</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#adding-color-to-boxplots" id="toc-adding-color-to-boxplots"><span class="toc-section-number">9.13.3</span> Adding Color to Boxplots</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#customizing-color-palettes" id="toc-customizing-color-palettes"><span class="toc-section-number">9.13.4</span> Customizing Color Palettes</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#applying-custom-color-palette" id="toc-applying-custom-color-palette"><span class="toc-section-number">9.13.5</span> Applying Custom Color Palette</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#reordering-boxplots" id="toc-reordering-boxplots"><span class="toc-section-number">9.13.6</span> Reordering Boxplots</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#using-violin-plots" id="toc-using-violin-plots"><span class="toc-section-number">9.13.7</span> Using Violin Plots</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-24" id="toc-conclusion-24"><span class="toc-section-number">9.13.8</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#creating-bar-plots-to-visualize-median-epcam-levels-by-cancer-type" id="toc-creating-bar-plots-to-visualize-median-epcam-levels-by-cancer-type"><span class="toc-section-number">9.14</span> Creating Bar Plots to Visualize Median EPCAM Levels by Cancer Type</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#calculating-median-epcam-levels-by-cancer-type" id="toc-calculating-median-epcam-levels-by-cancer-type"><span class="toc-section-number">9.14.1</span> Calculating Median EPCAM Levels by Cancer Type</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#creating-a-basic-bar-plot" id="toc-creating-a-basic-bar-plot"><span class="toc-section-number">9.14.2</span> Creating a Basic Bar Plot</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#reordering-the-bars" id="toc-reordering-the-bars"><span class="toc-section-number">9.14.3</span> Reordering the Bars</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#reversing-the-order" id="toc-reversing-the-order"><span class="toc-section-number">9.14.4</span> Reversing the Order</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#note-on-factor-levels" id="toc-note-on-factor-levels"><span class="toc-section-number">9.14.5</span> Note on factor levels</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-25" id="toc-conclusion-25"><span class="toc-section-number">9.14.6</span> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li><a href="introduction-to-bioconductor.html#introduction-to-bioconductor" id="toc-introduction-to-bioconductor"><span class="toc-section-number">10</span> Introduction to BioConductor</a>
+<ul>
+<li><a href="introduction-to-bioconductor.html#introduction-to-biocmanager" id="toc-introduction-to-biocmanager"><span class="toc-section-number">10.1</span> Introduction to BiocManager</a>
+<ul>
+<li><a href="introduction-to-bioconductor.html#why-use-biocmanager" id="toc-why-use-biocmanager"><span class="toc-section-number">10.1.1</span> Why Use BiocManager?</a></li>
+<li><a href="introduction-to-bioconductor.html#installing-biocmanager" id="toc-installing-biocmanager"><span class="toc-section-number">10.1.2</span> Installing BiocManager</a></li>
+<li><a href="introduction-to-bioconductor.html#installing-bioconductor-packages" id="toc-installing-bioconductor-packages"><span class="toc-section-number">10.1.3</span> Installing Bioconductor Packages</a></li>
+<li><a href="introduction-to-bioconductor.html#updating-bioconductor-packages" id="toc-updating-bioconductor-packages"><span class="toc-section-number">10.1.4</span> Updating Bioconductor Packages</a></li>
+<li><a href="introduction-to-bioconductor.html#checking-for-valid-bioconductor-versions" id="toc-checking-for-valid-bioconductor-versions"><span class="toc-section-number">10.1.5</span> Checking for Valid Bioconductor Versions</a></li>
+<li><a href="introduction-to-bioconductor.html#conclusion-26" id="toc-conclusion-26"><span class="toc-section-number">10.1.6</span> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Master Real-world Bioinformatics analysis in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="fundamental-data-structures-in-r" class="section level1" number="8">
+<h1><span class="header-section-number">Chapter 8</span> Fundamental Data Structures in R</h1>
+<div id="named-vectors" class="section level2" number="8.1">
+<h2><span class="header-section-number">8.1</span> Named Vectors</h2>
+<p>A named vector allows you to assign names to individual elements within the vector. This may seem like a small feature, but it can greatly enhance your ability to organize, manipulate, and analyze data effectively.</p>
+<div id="what-is-a-named-vector" class="section level3" number="8.1.1">
+<h3><span class="header-section-number">8.1.1</span> What is a Named Vector?</h3>
+<p>In R, a vector can be named, meaning that each element within the vector can have a descriptive name associated with it. Think of it as a way to label your data. You can use the <code>names()</code> function to create a named vector by assigning names to the elements within the vector.</p>
+<p>Let’s start with a simple example:</p>
+<div class="sourceCode" id="cb259"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb259-1"><a href="fundamental-data-structures-in-r.html#cb259-1" tabindex="-1"></a><span class="co"># Create a numeric vector</span></span>
+<span id="cb259-2"><a href="fundamental-data-structures-in-r.html#cb259-2" tabindex="-1"></a>expression_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">12</span>, <span class="dv">20</span>)</span>
+<span id="cb259-3"><a href="fundamental-data-structures-in-r.html#cb259-3" tabindex="-1"></a></span>
+<span id="cb259-4"><a href="fundamental-data-structures-in-r.html#cb259-4" tabindex="-1"></a><span class="co"># Assign names to the vector elements</span></span>
+<span id="cb259-5"><a href="fundamental-data-structures-in-r.html#cb259-5" tabindex="-1"></a><span class="fu">names</span>(expression_vec) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;gene1&quot;</span>, <span class="st">&quot;gene2&quot;</span>, <span class="st">&quot;gene3&quot;</span>, <span class="st">&quot;gene4&quot;</span>, <span class="st">&quot;gene5&quot;</span>)</span>
+<span id="cb259-6"><a href="fundamental-data-structures-in-r.html#cb259-6" tabindex="-1"></a></span>
+<span id="cb259-7"><a href="fundamental-data-structures-in-r.html#cb259-7" tabindex="-1"></a><span class="co"># View the named vector</span></span>
+<span id="cb259-8"><a href="fundamental-data-structures-in-r.html#cb259-8" tabindex="-1"></a>expression_vec</span></code></pre></div>
+<pre><code>## gene1 gene2 gene3 gene4 gene5 
+##    10    25    30    12    20</code></pre>
+<p>As you can see, each element now has a corresponding name, making it easier to identify and work with specific values in the vector.</p>
+</div>
+<div id="using-names-to-subset-a-vector" class="section level3" number="8.1.2">
+<h3><span class="header-section-number">8.1.2</span> Using Names to Subset a Vector</h3>
+<p>One of the key advantages of named vectors is the ability to subset them based on the names. This allows you to access specific elements of the vector easily.</p>
+<p>For example, if you want to select only the values associated with “gene1” and “gene3,” you can do so like this:</p>
+<div class="sourceCode" id="cb261"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb261-1"><a href="fundamental-data-structures-in-r.html#cb261-1" tabindex="-1"></a><span class="co"># Subset the vector using names</span></span>
+<span id="cb261-2"><a href="fundamental-data-structures-in-r.html#cb261-2" tabindex="-1"></a>selected_genes <span class="ot">&lt;-</span> expression_vec[<span class="fu">c</span>(<span class="st">&quot;gene1&quot;</span>, <span class="st">&quot;gene3&quot;</span>)]</span>
+<span id="cb261-3"><a href="fundamental-data-structures-in-r.html#cb261-3" tabindex="-1"></a></span>
+<span id="cb261-4"><a href="fundamental-data-structures-in-r.html#cb261-4" tabindex="-1"></a><span class="co"># View the selected genes</span></span>
+<span id="cb261-5"><a href="fundamental-data-structures-in-r.html#cb261-5" tabindex="-1"></a>selected_genes</span></code></pre></div>
+<pre><code>## gene1 gene3 
+##    10    30</code></pre>
+</div>
+<div id="named-vectors-as-dictionary-like-structures" class="section level3" number="8.1.3">
+<h3><span class="header-section-number">8.1.3</span> Named Vectors as Dictionary-Like Structures</h3>
+<p>Unlike some programming languages like Python, R doesn’t have a built-in dictionary data structure. However, named vectors can serve as a similar tool because they establish a one-to-one mapping between names and values.</p>
+<p>Imagine you have gene expression measurements across various conditions that you want to analyze. You can create a named vector like this:</p>
+<div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="fundamental-data-structures-in-r.html#cb263-1" tabindex="-1"></a><span class="co"># Create a named vector from scratch</span></span>
+<span id="cb263-2"><a href="fundamental-data-structures-in-r.html#cb263-2" tabindex="-1"></a>expression <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">normal =</span> <span class="fl">2.3</span>, <span class="at">treated =</span> <span class="fl">5.1</span>, <span class="at">resistant =</span> <span class="fl">3.8</span>, <span class="at">sensitive =</span> <span class="fl">1.2</span>)</span>
+<span id="cb263-3"><a href="fundamental-data-structures-in-r.html#cb263-3" tabindex="-1"></a></span>
+<span id="cb263-4"><a href="fundamental-data-structures-in-r.html#cb263-4" tabindex="-1"></a><span class="co"># View the named vector</span></span>
+<span id="cb263-5"><a href="fundamental-data-structures-in-r.html#cb263-5" tabindex="-1"></a>expression</span></code></pre></div>
+<pre><code>##    normal   treated resistant sensitive 
+##       2.3       5.1       3.8       1.2</code></pre>
+<p>Now, if you want to retrieve the expression value for the “resistant” condition, you can do so by using the name as follows:</p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="fundamental-data-structures-in-r.html#cb265-1" tabindex="-1"></a><span class="co"># Access the expression value for &quot;resistant&quot; condition</span></span>
+<span id="cb265-2"><a href="fundamental-data-structures-in-r.html#cb265-2" tabindex="-1"></a>expression[<span class="st">&quot;resistant&quot;</span>]</span></code></pre></div>
+<pre><code>## resistant 
+##       3.8</code></pre>
+</div>
+<div id="real-life-example" class="section level3" number="8.1.4">
+<h3><span class="header-section-number">8.1.4</span> Real-life example</h3>
+<p>In single-cell RNAseq analysis, you have tens of thousands of cells in the experiment and you cluster the cells into different clusters (cell types). Usually, you get the cluster id as numeric numbers:1,2,3,4,5,…</p>
+<p>After you annotate the clusters with marker genes, you can give the clusters a specific name.</p>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="fundamental-data-structures-in-r.html#cb267-1" tabindex="-1"></a>cells<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;cell1&quot;</span>, <span class="st">&quot;cell2&quot;</span>, <span class="st">&quot;cell3&quot;</span>, <span class="st">&quot;cell4&quot;</span>, <span class="st">&quot;cell5&quot;</span>, <span class="st">&quot;cell6&quot;</span>)</span>
+<span id="cb267-2"><a href="fundamental-data-structures-in-r.html#cb267-2" tabindex="-1"></a></span>
+<span id="cb267-3"><a href="fundamental-data-structures-in-r.html#cb267-3" tabindex="-1"></a><span class="co"># the clustering algorithum assign each cell to cluster 1-4 </span></span>
+<span id="cb267-4"><a href="fundamental-data-structures-in-r.html#cb267-4" tabindex="-1"></a>clusters<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">4</span>)</span>
+<span id="cb267-5"><a href="fundamental-data-structures-in-r.html#cb267-5" tabindex="-1"></a></span>
+<span id="cb267-6"><a href="fundamental-data-structures-in-r.html#cb267-6" tabindex="-1"></a><span class="co"># we have annotated the clusters 1-4 as follows:</span></span>
+<span id="cb267-7"><a href="fundamental-data-structures-in-r.html#cb267-7" tabindex="-1"></a>annotation<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;CD4T&quot;</span>, <span class="st">&quot;CD8T&quot;</span>, <span class="st">&quot;NK&quot;</span>, <span class="st">&quot;B cell&quot;</span>)</span>
+<span id="cb267-8"><a href="fundamental-data-structures-in-r.html#cb267-8" tabindex="-1"></a></span>
+<span id="cb267-9"><a href="fundamental-data-structures-in-r.html#cb267-9" tabindex="-1"></a><span class="co"># create a named vector</span></span>
+<span id="cb267-10"><a href="fundamental-data-structures-in-r.html#cb267-10" tabindex="-1"></a><span class="fu">names</span>(annotation)<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>)</span>
+<span id="cb267-11"><a href="fundamental-data-structures-in-r.html#cb267-11" tabindex="-1"></a></span>
+<span id="cb267-12"><a href="fundamental-data-structures-in-r.html#cb267-12" tabindex="-1"></a>annotation</span></code></pre></div>
+<pre><code>##        1        2        3        4 
+##   &quot;CD4T&quot;   &quot;CD8T&quot;     &quot;NK&quot; &quot;B cell&quot;</code></pre>
+<p>We can use this named vector to re-annotate the original cells</p>
+<div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="fundamental-data-structures-in-r.html#cb269-1" tabindex="-1"></a>annotation[clusters]</span></code></pre></div>
+<pre><code>##        1        2        3        2        1        4 
+##   &quot;CD4T&quot;   &quot;CD8T&quot;     &quot;NK&quot;   &quot;CD8T&quot;   &quot;CD4T&quot; &quot;B cell&quot;</code></pre>
+<p>We can then combine the cells and the new annotation as a data frame (which we will cover later).</p>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb271-1"><a href="fundamental-data-structures-in-r.html#cb271-1" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">cell=</span> cells, <span class="at">cell_annotation=</span> annotation[clusters])</span></code></pre></div>
+<pre><code>##    cell cell_annotation
+## 1 cell1            CD4T
+## 2 cell2            CD8T
+## 3 cell3              NK
+## 4 cell4            CD8T
+## 5 cell5            CD4T
+## 6 cell6          B cell</code></pre>
+<p>You see that the named vector can be very useful as a dictionary.</p>
+</div>
+<div id="reordering-and-subsetting-with-names" class="section level3" number="8.1.5">
+<h3><span class="header-section-number">8.1.5</span> Reordering and Subsetting with Names</h3>
+<p>One of the remarkable features of named vectors is their flexibility. Even if the order of names differs from another vector, you can still use the names to reorder or subset the vector effectively.</p>
+<p>Let’s say you have another vector representing fold changes in gene expression:</p>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="fundamental-data-structures-in-r.html#cb273-1" tabindex="-1"></a><span class="co"># Create a vector for fold change of gene expression</span></span>
+<span id="cb273-2"><a href="fundamental-data-structures-in-r.html#cb273-2" tabindex="-1"></a>folds <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">resistant =</span> <span class="fl">1.1</span>, <span class="at">sensitive =</span> <span class="fl">4.2</span>, <span class="at">normal =</span> <span class="fl">1.3</span>, <span class="at">treated =</span> <span class="fl">2.1</span>)</span>
+<span id="cb273-3"><a href="fundamental-data-structures-in-r.html#cb273-3" tabindex="-1"></a></span>
+<span id="cb273-4"><a href="fundamental-data-structures-in-r.html#cb273-4" tabindex="-1"></a><span class="co"># View the fold change vector</span></span>
+<span id="cb273-5"><a href="fundamental-data-structures-in-r.html#cb273-5" tabindex="-1"></a>folds</span></code></pre></div>
+<pre><code>## resistant sensitive    normal   treated 
+##       1.1       4.2       1.3       2.1</code></pre>
+<p>Notice that the order of conditions is different from the expression vector. However, you can use the names from the expression vector to reorder or subset the fold change vector:</p>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="fundamental-data-structures-in-r.html#cb275-1" tabindex="-1"></a><span class="co"># Reorder the fold change vector using names from the expression vector</span></span>
+<span id="cb275-2"><a href="fundamental-data-structures-in-r.html#cb275-2" tabindex="-1"></a>folds[<span class="fu">names</span>(expression)]</span></code></pre></div>
+<pre><code>##    normal   treated resistant sensitive 
+##       1.3       2.1       1.1       4.2</code></pre>
+</div>
+<div id="conclusion-15" class="section level3" number="8.1.6">
+<h3><span class="header-section-number">8.1.6</span> Conclusion</h3>
+<p>Named vectors may seem simple, but they offer a valuable way to organize and manipulate your data, serving as a powerful tool for tasks like subsetting, indexing, and organizing information. This beginner-friendly guide has introduced you to the concept of named vectors and demonstrated their practical use in real-world scenarios. As you delve deeper into R, you’ll find that mastering this fundamental feature will greatly enhance your data analysis capabilities.</p>
+</div>
+</div>
+<div id="lists" class="section level2" number="8.2">
+<h2><span class="header-section-number">8.2</span> Lists</h2>
+<p>Lists in R are versatile data structures that can hold various types of elements, including both numeric values and character strings, and even elements of different lengths. In this section, we will explore the concept of lists, understand how to create and manipulate them, and learn different ways to access their elements.</p>
+<div id="introduction-to-lists" class="section level3" number="8.2.1">
+<h3><span class="header-section-number">8.2.1</span> Introduction to Lists</h3>
+<p>Unlike matrices and vectors, which can only store elements of the same type, lists can accommodate a mix of numeric and character elements with different lengths. This flexibility makes lists a powerful tool for organizing and storing complex data structures.</p>
+</div>
+<div id="creating-a-list" class="section level3" number="8.2.2">
+<h3><span class="header-section-number">8.2.2</span> Creating a List</h3>
+<p>Imagine you are conducting a series of biological experiments over multiple days. For each day, you collect various data, including numeric measurements (e.g., gene expression levels) and descriptive summaries (e.g., experimental conditions). Lists can be used to store this data efficiently. Each list element can represent a day’s data, containing both numeric vectors and character strings to capture the diverse information for each experiment:</p>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="fundamental-data-structures-in-r.html#cb277-1" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">p_values =</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.56</span>),</span>
+<span id="cb277-2"><a href="fundamental-data-structures-in-r.html#cb277-2" tabindex="-1"></a>                <span class="at">summary =</span> <span class="st">&quot;Non-significant&quot;</span>,</span>
+<span id="cb277-3"><a href="fundamental-data-structures-in-r.html#cb277-3" tabindex="-1"></a>                <span class="at">experiments =</span> <span class="fu">c</span>(<span class="st">&quot;day1&quot;</span>, <span class="st">&quot;day2&quot;</span>))</span>
+<span id="cb277-4"><a href="fundamental-data-structures-in-r.html#cb277-4" tabindex="-1"></a>results</span></code></pre></div>
+<pre><code>## $p_values
+## [1] 0.01 0.56
+## 
+## $summary
+## [1] &quot;Non-significant&quot;
+## 
+## $experiments
+## [1] &quot;day1&quot; &quot;day2&quot;</code></pre>
+<p>When we print the <code>results</code> list, you will notice that each element is preceded by a <code>$</code> sign, indicating its name.</p>
+</div>
+<div id="accessing-list-elements" class="section level3" number="8.2.3">
+<h3><span class="header-section-number">8.2.3</span> Accessing List Elements</h3>
+<p>You can access list elements using various methods:</p>
+<div id="using-notation" class="section level4" number="8.2.3.1">
+<h4><span class="header-section-number">8.2.3.1</span> Using $ Notation</h4>
+<p>To access an element by its name, you can use the <code>$</code> notation:</p>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="fundamental-data-structures-in-r.html#cb279-1" tabindex="-1"></a>results<span class="sc">$</span>experiments</span></code></pre></div>
+<pre><code>## [1] &quot;day1&quot; &quot;day2&quot;</code></pre>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="fundamental-data-structures-in-r.html#cb281-1" tabindex="-1"></a>results<span class="sc">$</span>summary</span></code></pre></div>
+<pre><code>## [1] &quot;Non-significant&quot;</code></pre>
+</div>
+<div id="using-single-brackets" class="section level4" number="8.2.3.2">
+<h4><span class="header-section-number">8.2.3.2</span> Using Single Brackets</h4>
+<p>Using single brackets <code>[ ]</code> will return a list:</p>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="fundamental-data-structures-in-r.html#cb283-1" tabindex="-1"></a>results[<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>## $p_values
+## [1] 0.01 0.56</code></pre>
+<p>####Slicing the List
+You can slice a list by specifying a range of indices:</p>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb285-1"><a href="fundamental-data-structures-in-r.html#cb285-1" tabindex="-1"></a>results[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## $p_values
+## [1] 0.01 0.56
+## 
+## $summary
+## [1] &quot;Non-significant&quot;</code></pre>
+</div>
+<div id="using-double-brackets" class="section level4" number="8.2.3.3">
+<h4><span class="header-section-number">8.2.3.3</span> Using <code>[[ ]]</code> Double Brackets</h4>
+<p>To access the actual element rather than a list, use double brackets <code>[[ ]]</code>:</p>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb287-1"><a href="fundamental-data-structures-in-r.html#cb287-1" tabindex="-1"></a>results[[<span class="dv">1</span>]]</span></code></pre></div>
+<pre><code>## [1] 0.01 0.56</code></pre>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb289-1"><a href="fundamental-data-structures-in-r.html#cb289-1" tabindex="-1"></a>results[[<span class="st">&quot;p_values&quot;</span>]]</span></code></pre></div>
+<pre><code>## [1] 0.01 0.56</code></pre>
+</div>
+<div id="using-names" class="section level4" number="8.2.3.4">
+<h4><span class="header-section-number">8.2.3.4</span> Using Names</h4>
+<p>You can also access elements by their names using single brackets and double brackets:</p>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="fundamental-data-structures-in-r.html#cb291-1" tabindex="-1"></a><span class="co"># returns a list</span></span>
+<span id="cb291-2"><a href="fundamental-data-structures-in-r.html#cb291-2" tabindex="-1"></a>results[<span class="st">&quot;p_values&quot;</span>]</span></code></pre></div>
+<pre><code>## $p_values
+## [1] 0.01 0.56</code></pre>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="fundamental-data-structures-in-r.html#cb293-1" tabindex="-1"></a><span class="co"># return the element </span></span>
+<span id="cb293-2"><a href="fundamental-data-structures-in-r.html#cb293-2" tabindex="-1"></a>results[[<span class="st">&quot;p_values&quot;</span>]]</span></code></pre></div>
+<pre><code>## [1] 0.01 0.56</code></pre>
+<p><strong>Tip</strong>: In RStudio, when you type <code>$</code> after the list, it will display a dropdown menu showing all the available names of the list elements, making it easier to access them.</p>
+</div>
+</div>
+<div id="conclusions" class="section level3" number="8.2.4">
+<h3><span class="header-section-number">8.2.4</span> Conclusions</h3>
+<p>Lists are essential for managing diverse data structures efficiently in R. They allow you to store and organize data with different characteristics, making them a valuable tool for data manipulation and analysis in various applications.</p>
+</div>
+</div>
+<div id="dataframes" class="section level2" number="8.3">
+<h2><span class="header-section-number">8.3</span> Dataframes</h2>
+<p>Data frames are one of the fundamental data structures in R, and they play a pivotal role in various data analysis tasks. In the realm of biology research, data frames are exceptionally useful for organizing and manipulating biological data efficiently. In this tutorial, we will explore the basics of data frames, including their creation, column access, and subsetting.</p>
+<div id="what-is-a-data-frame" class="section level3" number="8.3.1">
+<h3><span class="header-section-number">8.3.1</span> What is a Data Frame?</h3>
+<p>A data frame is a two-dimensional tabular data structure in R. It is similar to a spreadsheet or a database table, where rows and columns intersect to form a grid-like structure. In a data frame, each row can hold different types of data, such as numbers, text, or factors, but all columns must have the same number of rows and each column should have the same data type.</p>
+</div>
+<div id="creating-a-data-frame" class="section level3" number="8.3.2">
+<h3><span class="header-section-number">8.3.2</span> Creating a Data Frame</h3>
+<p>To create a data frame, you can use the <code>data.frame()</code> function. Here’s an example of creating a simple data frame for patient data in a biology study.</p>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="fundamental-data-structures-in-r.html#cb295-1" tabindex="-1"></a>patient_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb295-2"><a href="fundamental-data-structures-in-r.html#cb295-2" tabindex="-1"></a>  <span class="at">id =</span> <span class="fu">c</span>(<span class="st">&quot;P1&quot;</span>, <span class="st">&quot;P2&quot;</span>),</span>
+<span id="cb295-3"><a href="fundamental-data-structures-in-r.html#cb295-3" tabindex="-1"></a>  <span class="at">age =</span> <span class="fu">c</span>(<span class="dv">42</span>, <span class="dv">36</span>),</span>
+<span id="cb295-4"><a href="fundamental-data-structures-in-r.html#cb295-4" tabindex="-1"></a>  <span class="at">status =</span> <span class="fu">c</span>(<span class="st">&quot;normal&quot;</span>, <span class="st">&quot;tumor&quot;</span>)</span>
+<span id="cb295-5"><a href="fundamental-data-structures-in-r.html#cb295-5" tabindex="-1"></a>)</span></code></pre></div>
+<p>In this example, we have three vectors (id, age, and status) that are combined into a data frame. The variable names of the vectors become the column names of the data frame. You can see the resulting data frame by simply typing <code>patient_data</code>.</p>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="fundamental-data-structures-in-r.html#cb296-1" tabindex="-1"></a>patient_data</span></code></pre></div>
+<pre><code>##   id age status
+## 1 P1  42 normal
+## 2 P2  36  tumor</code></pre>
+</div>
+<div id="accessing-columns" class="section level3" number="8.3.3">
+<h3><span class="header-section-number">8.3.3</span> Accessing Columns</h3>
+<p>You can access individual columns within a data frame using the <code>$</code> sign, which is similar to accessing elements in a list. For instance:</p>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb298-1"><a href="fundamental-data-structures-in-r.html#cb298-1" tabindex="-1"></a>patient_data<span class="sc">$</span>id</span></code></pre></div>
+<pre><code>## [1] &quot;P1&quot; &quot;P2&quot;</code></pre>
+<p>This command will retrieve the <code>id</code> column from the <code>patient_data</code> data frame.</p>
+<p>Similarly, you can access the <code>status</code> column by using <code>patient_data$status</code>.</p>
+</div>
+<div id="subsetting-a-data-frame" class="section level3" number="8.3.4">
+<h3><span class="header-section-number">8.3.4</span> Subsetting a Data Frame</h3>
+<p>Subsetting a data frame means extracting specific rows and columns based on your analysis needs. You can use square brackets <code>[row_indices, column_indices]</code> to subset or slice the data frame, similar to subsetting a matrix.</p>
+<p>For example, to select the first row and the first and third columns from the patient_data data frame:</p>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="fundamental-data-structures-in-r.html#cb300-1" tabindex="-1"></a>patient_data[<span class="dv">1</span>, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>)]</span></code></pre></div>
+<pre><code>##   id status
+## 1 P1 normal</code></pre>
+<p>This command returns a subset of the data frame with the <code>id</code> and <code>status</code> columns for the first row.</p>
+</div>
+<div id="conclusion-16" class="section level3" number="8.3.5">
+<h3><span class="header-section-number">8.3.5</span> Conclusion</h3>
+<p>In biology research, data frames are invaluable for organizing and analyzing diverse datasets. Imagine you have a dataset with patient information, where each row represents a patient and columns contain attributes like age, gender, and diagnosis. You could use data frames to filter patients by specific criteria, calculate summary statistics, or create visualizations to gain insights into your biological data.</p>
+<p>Data frames in R serve as the backbone for handling and exploring data in a structured and meaningful way, making them an essential tool for any biologist or data scientist working in the field of life sciences.</p>
+</div>
+</div>
+<div id="how-to-represent-categorical-data-in-r-understanding-factors" class="section level2" number="8.4">
+<h2><span class="header-section-number">8.4</span> How to Represent Categorical Data in R? Understanding Factors</h2>
+<p>In R, factors are a fundamental data type used to represent categorical data. Factors are akin to biological categories, such as gene types, experimental conditions, or mutation classes. They provide a structured way to handle and analyze qualitative data. In this tutorial, we will explore factors in R, starting from their creation, manipulation, and practical applications.</p>
+<div id="creating-factors" class="section level3" number="8.4.1">
+<h3><span class="header-section-number">8.4.1</span> Creating Factors</h3>
+<p>Let’s begin with a hypothetical scenario involving phenotypes: wild type (WT), mutant (Mut), and heterozygote (Het). We can create a factor called <code>phenotypes</code> to represent these categories:</p>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb302-1"><a href="fundamental-data-structures-in-r.html#cb302-1" tabindex="-1"></a>phenotypes <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;WT&quot;</span>, <span class="st">&quot;Mut&quot;</span>, <span class="st">&quot;Mut&quot;</span>, <span class="st">&quot;WT&quot;</span>, <span class="st">&quot;Het&quot;</span>))</span></code></pre></div>
+<p>When you print <code>phenotypes</code>, you’ll see the categories along with their associated levels:</p>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb303-1"><a href="fundamental-data-structures-in-r.html#cb303-1" tabindex="-1"></a>phenotypes</span></code></pre></div>
+<pre><code>## [1] WT  Mut Mut WT  Het
+## Levels: Het Mut WT</code></pre>
+<p>In this example, the factor phenotypes has three levels: “Het,” “Mut,” and “WT.”</p>
+</div>
+<div id="changing-levels" class="section level3" number="8.4.2">
+<h3><span class="header-section-number">8.4.2</span> Changing levels</h3>
+<p>By default, the levels are ordered alphabetically. You can use the relevel to change it</p>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="fundamental-data-structures-in-r.html#cb305-1" tabindex="-1"></a><span class="fu">relevel</span>(phenotypes, <span class="at">ref =</span> <span class="st">&quot;WT&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] WT  Mut Mut WT  Het
+## Levels: WT Het Mut</code></pre>
+<p>Now, the <code>WT</code> becomes the base level.</p>
+</div>
+<div id="converting-factors" class="section level3" number="8.4.3">
+<h3><span class="header-section-number">8.4.3</span> Converting Factors</h3>
+<p>Factors can be converted to characters or numeric values. When you convert them to numbers, R assigns a numerical value to each category based on their order in the factor levels. The lowest level gets assigned the number 1, and the highest level gets the highest number.</p>
+<div id="as-character" class="section level4" number="8.4.3.1">
+<h4><span class="header-section-number">8.4.3.1</span> As character</h4>
+<p>This R command converts the phenotypes factor into a character vector. In other words, it changes the factor’s categorical labels into text.</p>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="fundamental-data-structures-in-r.html#cb307-1" tabindex="-1"></a><span class="fu">as.character</span>(phenotypes)</span></code></pre></div>
+<pre><code>## [1] &quot;WT&quot;  &quot;Mut&quot; &quot;Mut&quot; &quot;WT&quot;  &quot;Het&quot;</code></pre>
+</div>
+<div id="converting-to-numbers" class="section level4" number="8.4.3.2">
+<h4><span class="header-section-number">8.4.3.2</span> Converting to numbers</h4>
+<p>This R command converts the <code>phenotypes</code> factor into a numeric vector. It assigns a numerical value to each category based on their order in the factor levels.</p>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="fundamental-data-structures-in-r.html#cb309-1" tabindex="-1"></a><span class="fu">as.numeric</span>(phenotypes)</span></code></pre></div>
+<pre><code>## [1] 3 2 2 3 1</code></pre>
+<p>In this case, “WT” corresponds to 3, “Mut” to 2, and “Het” to 1.</p>
+</div>
+</div>
+<div id="customizing-factor-levels" class="section level3" number="8.4.4">
+<h3><span class="header-section-number">8.4.4</span> Customizing Factor Levels</h3>
+<p>You can customize the order of factor levels to control how they are converted to numbers. Suppose you want “Mut” to be assigned the lowest value. You can specify the desired order when creating the factor:</p>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="fundamental-data-structures-in-r.html#cb311-1" tabindex="-1"></a>phenotypes <span class="ot">&lt;-</span> <span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">&quot;WT&quot;</span>, <span class="st">&quot;Mut&quot;</span>, <span class="st">&quot;Mut&quot;</span>, <span class="st">&quot;WT&quot;</span>, <span class="st">&quot;Het&quot;</span>), </span>
+<span id="cb311-2"><a href="fundamental-data-structures-in-r.html#cb311-2" tabindex="-1"></a>                     <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;Mut&quot;</span>, <span class="st">&quot;Het&quot;</span>, <span class="st">&quot;WT&quot;</span>))</span></code></pre></div>
+<p>Now, when you convert it to numbers, “Mut” will be 1:</p>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="fundamental-data-structures-in-r.html#cb312-1" tabindex="-1"></a><span class="fu">as.numeric</span>(phenotypes)</span></code></pre></div>
+<pre><code>## [1] 3 1 1 3 2</code></pre>
+</div>
+<div id="creating-factors-from-character-vectors" class="section level3" number="8.4.5">
+<h3><span class="header-section-number">8.4.5</span> Creating Factors from Character Vectors</h3>
+<p>You can also create a factor from a character vector and explicitly specify the desired factor levels. For example:</p>
+<div class="sourceCode" id="cb314"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb314-1"><a href="fundamental-data-structures-in-r.html#cb314-1" tabindex="-1"></a>phenotypes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;WT&quot;</span>, <span class="st">&quot;Mut&quot;</span>, <span class="st">&quot;Mut&quot;</span>, <span class="st">&quot;WT&quot;</span>, <span class="st">&quot;Het&quot;</span>)</span>
+<span id="cb314-2"><a href="fundamental-data-structures-in-r.html#cb314-2" tabindex="-1"></a>phenotypes <span class="ot">&lt;-</span> <span class="fu">factor</span>(phenotypes, <span class="at">levels=</span> <span class="fu">c</span>(<span class="st">&quot;Mut&quot;</span>, <span class="st">&quot;Het&quot;</span>, <span class="st">&quot;WT&quot;</span>))</span>
+<span id="cb314-3"><a href="fundamental-data-structures-in-r.html#cb314-3" tabindex="-1"></a></span>
+<span id="cb314-4"><a href="fundamental-data-structures-in-r.html#cb314-4" tabindex="-1"></a>phenotypes</span></code></pre></div>
+<pre><code>## [1] WT  Mut Mut WT  Het
+## Levels: Mut Het WT</code></pre>
+<p>This approach allows you to control the factor levels directly.</p>
+</div>
+<div id="subsetting-factors" class="section level3" number="8.4.6">
+<h3><span class="header-section-number">8.4.6</span> Subsetting Factors</h3>
+<p>When you subset a factor, the factor levels are preserved. For instance:</p>
+<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="fundamental-data-structures-in-r.html#cb316-1" tabindex="-1"></a>phenotypes[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code></pre></div>
+<pre><code>## [1] WT  Mut
+## Levels: Mut Het WT</code></pre>
+<p>Even though we only extracted elements 1 and 2, the factor levels “Mut,” “Het,” and “WT” are still present.</p>
+</div>
+<div id="removing-unused-levels" class="section level3" number="8.4.7">
+<h3><span class="header-section-number">8.4.7</span> Removing Unused Levels</h3>
+<p>Sometimes, you may want to remove unused factor levels to keep your data clean. You can achieve this using the <code>droplevels()</code> function. For example:</p>
+<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="fundamental-data-structures-in-r.html#cb318-1" tabindex="-1"></a><span class="fu">droplevels</span>(phenotypes[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>])</span></code></pre></div>
+<pre><code>## [1] WT  Mut
+## Levels: Mut WT</code></pre>
+<p>In this case, the “Het” level was removed because it was not present in the subset.</p>
+</div>
+<div id="conclusion-17" class="section level3" number="8.4.8">
+<h3><span class="header-section-number">8.4.8</span> Conclusion</h3>
+<p>Factors are invaluable in various fields of research, including biology and genetics, where they are used to represent and analyze categorical data like gene types, mutation classes, or experimental conditions. Understanding factors and their manipulation is essential for accurate data analysis and interpretation.</p>
+<p>Statistical modeling uses factors heavily. For example, when doing differential gene expression analysis, the factor levels determine which group is used as the baseline. Also, when plotting figures, the order of the geometric objects (e.g, the boxes in the boxplot) is ordered by the factor levels. Changing the factor levels will change the look of the plots. We will see an example in the later data visulization lecture.</p>
+<p>In summary, factors in R provide a structured way to work with categorical data, allowing you to control the order of levels and efficiently manage and analyze information. Mastery of factors is a crucial skill for any data scientist or researcher working with categorical data in R.</p>
+</div>
+</div>
+<div id="section-complete-2" class="section level2" number="8.5">
+<h2><span class="header-section-number">8.5</span> Section Complete</h2>
+<p>Congratulations on completing the section!</p>
+<p>You’ve learned about named vectors, lists, data frames, and factors. Understanding these basics is essential for working with data effectively. This knowledge will be valuable as you tackle more advanced data analysis tasks.</p>
+<p>As you move on to the next section, remember to use our Q&amp;A section and comments for any questions you have. Let’s keep exploring and learning together in our R programming journey!</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="going-more-in-depth-with-r.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="introduction-to-the-tidyverse-ecosystem.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/07_Fundamental_Data_Structures_in_R.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

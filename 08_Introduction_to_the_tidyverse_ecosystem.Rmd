@@ -1,0 +1,774 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Introduction to the tidyverse ecosystem
+
+## What is the Tidyverse?
+In this lesson, we will explore the Tidyverse, a powerful collection of R packages designed to simplify and streamline the data science workflow. The Tidyverse is particularly well-suited for beginners and professionals alike, as it encourages a structured and intuitive approach to data manipulation and visualization.
+
+![](images/tidyverse.png)
+
+The Tidyverse is a comprehensive ecosystem of R packages that share common principles for data manipulation and visualization. It encourages the use of tidy data, a specific data structure that makes data analysis more straightforward. Tidy data arranges observations in rows and variables in columns, making it easier to work with and visualize.
+
+## Key Tidyverse Packages
+Let's dive into some of the essential packages within the Tidyverse and understand how they can be beneficial in data analysis.
+
+### dplyr
+Explore dplyr docs [here](https://dplyr.tidyverse.org/).
+
+The core of the Tidyverse is the `dplyr` package. It provides a set of functions for data manipulation, including filtering, summarizing, and transforming data frames. Here's a simple example of how you might use `dplyr` to filter data:
+
+```{r}
+# install.packages("dplyr")
+# Load the dplyr package
+library(dplyr)
+
+# Create a data frame
+data <- data.frame(
+  Name = c("Alice", "Bob", "Charlie"),
+  Age = c(25, 30, 22)
+)
+
+data 
+# Filter the data to select individuals older than 25
+filtered_data <- data %>%
+  filter(Age > 25)
+
+# View the filtered data
+filtered_data
+```
+
+In this example, we used `filter()` to select rows where the "Age" column is greater than 25.
+
+### A note on the pipe
+
+You just saw the `%>%` operator. It is also called a pipe.
+
+`%>%` is from the [magrittr](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html) package and when you load the `dplyr` package, the `%>%` will be available for you to use.
+
+The R language has a new, built-in pipe operator as of R version 4.1: `|>`.
+
+```{r}
+mtcars %>%
+  head()
+
+mtcars |>
+  head()
+```
+
+Think of `%>%` and `|>` in R the same as `|` in the unix commands: the output of the previous command is the input of the next command.
+
+The pipe operator `%>%` is a very useful tool for writing efficient, easy-to-read code in R. You can use as many pipes as you want. I usually build the pipes one by one by looking at the output.
+
+```{r}
+mtcars %>% 
+  head() %>% 
+  tail(n=3)
+```
+This means print out the first 6 rows and then take the last 3 rows.
+
+### ggplot2
+
+Explore `ggplot2` docs [here](https://ggplot2.tidyverse.org/index.html).
+
+The `ggplot2` package is the go-to choice for data visualization in the Tidyverse. It follows the "grammar of graphics" approach, allowing you to build complex plots layer by layer. Here's a basic example:
+
+```{r}
+# install.packages("ggplot2")
+# Load the ggplot2 package
+library(ggplot2)
+
+# Create a scatter plot
+ggplot(data, aes(x = Age, y = Name)) +
+  geom_point()
+```
+
+n this code, we used `ggplot()` to set up the plot and `geom_point()` to add scatterplot points to the canvas.
+
+### tidyr
+
+Explore tidyr docs [here](https://tidyr.tidyverse.org/index.html).
+
+The `tidyr` package assists in reshaping data between **wide** and **long** formats, which is often necessary for analysis and visualization. Suppose you have a dataset with columns representing different years and want to convert it to a long format for easier analysis. `tidyr` can help with this transformation.
+
+```{r, echo=FALSE, out.width='100%', fig.align='default'}
+knitr::include_graphics(c('images/wide.png'))
+```
+
+### readr
+
+Explore readr docs [here](https://readr.tidyverse.org/index.html).
+
+`readr` is a fast and efficient package for reading **tabular** data into R. It's faster than the base R functions like `read.csv()`. When working with large datasets, this can significantly speed up your data loading process.
+
+Tabular data are rectangular:
+
+![](images/tabular.jpeg)
+
+### tibble
+
+Explore tibble docs [here](https://tibble.tidyverse.org/index.html).
+
+the rectangular data will be read into R as a dataframe. `tibble` provides an improved data frame structure that addresses some issues with traditional R data frames. It displays data more neatly and provides better compatibility with the Tidyverse functions.
+
+### stringr
+Explore stringr docs [here](https://stringr.tidyverse.org/index.html).
+
+The `stringr` package offers a range of string manipulation functions that are easier to use and more consistent than the base R functions. It's particularly handy when dealing with text data, such as cleaning and formatting strings.
+
+### forcats
+Explore forcats docs [here](https://forcats.tidyverse.org/index.html).
+
+`forcats` is designed for handling factor variables, which are categorical variables with predefined levels. It provides tools for changing the order of levels and combining levels when necessary.
+
+### Real-World Applications
+To illustrate the practical utility of the Tidyverse, consider the following scenarios:
+
+1. Data Import: `readr` helps you efficiently import data from various sources, such as CSV files, Excel spreadsheets, or even web-based data.
+
+2. Data Cleaning: When working with messy data, `tidyr` and `stringr` can assist in reshaping and cleaning data for analysis.
+
+3. Data Exploration: When you receive a dataset, you can use `dplyr` to quickly filter, summarize, and explore the data, helping you understand its characteristics.
+
+4. Data Visualization: `ggplot2` allows you to create stunning visualizations, making it easier to convey insights to others. For instance, you can create bar charts, scatter plots, and histograms.
+
+5. Working with Factors: `forcats` simplifies tasks like reordering factor levels for better visual representation.
+
+By mastering the Tidyverse, you'll have a powerful set of tools at your disposal for all stages of data analysis, from data preprocessing to visualization and modeling. Happy coding!
+
+## Tibble and Readr - Modern Data Structures in R
+
+In this lesson, we will explore two essential concepts in data manipulation with R: tibbles and the readr package. These tools are designed to make working with data more efficient and user-friendly, especially when dealing with large datasets. We'll see why tibbles are preferred over traditional data frames and how to read and manipulate data using the readr package.
+
+### Tibbles: A Better Way to Store Data
+
+Traditional Data Frames vs. Tibbles:
+![](images/tibble.png)
+
+In R, data frames are widely used for storing and manipulating data. However, tibbles offer several advantages over traditional data frames:
+
+1. Cleaner Printing: Tibbles offer a more organized way to present your data. When you print a tibble, it only displays the first 10 rows and as many columns as can fit on your screen. This ensures a concise overview of your data, which is particularly helpful for large datasets. In contrast, traditional data frames tend to print all rows and columns by default, leading to overwhelming output.
+
+2. Structured Indexing: When you subset a tibble using [ ], it returns another tibble that retains the original data's structure. This means you still have clear column names and data types. In contrast, data frames return vectors, which provide less information about the structure of the data subset. You need to specify drop = FALSE to retain as a data frame and we see examples in previous lectures.
+
+3. Preservation of Variable Types: Tibbles respect the original data types of your variables, even after subsetting. This is important because it ensures that your data remains consistent. In some cases, data frames may convert variables to factors or matrices when you subset them, potentially causing unexpected issues.
+
+4. String Handling: In tibbles, character vectors remain as characters, maintaining the integrity of your data. However, data frames may automatically convert character vectors to factors by default. This behavior can lead to unexpected changes in your data and, subsequently, your analysis.
+
+5. List-Columns: One unique feature of tibbles is their ability to directly contain list-columns. List-columns allow you to store lists within your tibble, providing a convenient way to work with complex data structures. Data frames do not offer this feature, which can limit your ability to represent certain types of data effectively.
+
+6. Enhanced Output: Tibbles enhance the print display by showing data types, highlighting missing values, and truncating output for better readability. This additional information helps you understand your data at a glance, making it easier to spot potential issues or trends.
+
+### Rownames and Tibbles
+In regular data frames, you can assign and work with rownames, which are helpful for labeling and referencing rows. However, tibbles do not support rownames, so you want to add another column that contains the row ids.
+
+### Reading Data with readr
+
+To work with data effectively, you first need to import it into R. The `readr` package provides a powerful toolset for reading various data file formats. Let's see how to read data using readr.
+
+#### Reading CSV Data
+
+Download the TCGA gene expression data (CSV file) to your working directory or specify the correct file path.
+
+>Download the file at https://osf.io/yeun5
+
+Click the `Download`:
+
+![](images/osf.png)
+
+Suppose we have a CSV file named "TCGA_cancer_genes_expression.csv" in the Downloads folder, to read it using `readr::read_csv`, follow these steps:
+
+```{r}
+# Load the readr package (if not already loaded)
+library(readr)
+
+# Read the CSV data into a tibble
+tcga_data <- readr::read_csv("~/Downloads/TCGA_cancer_genes_expression.csv")
+
+# Display the first few rows of the tibble
+head(tcga_data)
+```
+
+Here, we load the `readr` package, use `read_csv` to read the CSV file, and store the data in the `tcga_data` tibble. Finally, we use `head` to display the first few rows of the tibble.
+
+note that the first column's name changes to "...1," which is a default behavior when column names are missing in the source data.
+
+
+#### Understanding the Output
+
+The output shows the data in a neat tabular format. Column names are displayed at the top, followed by rows of data. Each column's data type is indicated (e.g., `dbl` for double-precision floating point numbers or `chr` for character).
+
+
+### Using Tibbles with Imported Data
+When working with tibbles, imported data maintains its format and advantages over data frames. Here's how you can convert the imported data into a tibble:
+
+```{r}
+# Load the dplyr package for tibble conversion
+library(dplyr)
+
+# read in the data using built-in read.csv
+tcga_data<- read.csv("~/Downloads/TCGA_cancer_genes_expression.csv")
+
+# regular dataframe, and the first column name is X if it is empty
+head(tcga_data)
+
+# Convert the data to a tibble
+tcga_data <- tcga_data %>% 
+  tibble::as_tibble()
+
+# Display the first few rows of the tibble
+head(tcga_data)
+```
+
+By using the `%>%` pipe operator and `tibble::as_tibble()`, we convert the data into a tibble while preserving its structure and advantages.
+
+The output remains in a similar format as before, with clear column names and data types.
+
+### Note on reading Excel files
+
+We still deal with a lot of spreadsheets, to read in Excel files, take a look at the [`readxl`](https://readxl.tidyverse.org/) package.
+
+### Conclusion
+
+In this lesson, we learned about `tibbles`, a modern data structure in R that offers several advantages over traditional data frames. We also explored how to read and manipulate data using the readr package, converting imported data into tibbles for efficient data analysis. Tibbles and readr are valuable tools for data scientists and analysts working with R, making data manipulation and exploration more user-friendly and efficient.
+
+## The tidy data format
+
+In this lesson, we will delve into the essential data cleaning and tidying operations in R using the powerful dplyr package. Tidying data is a crucial step in data analysis, especially when dealing with real-world data that can be messy and inconsistent. We will explore the concept of tidy data and learn about the distinction between long and wide dataset formats.
+
+### The Importance of Tidy Data
+Real-world data is often messy, scattered across various files, missing metadata, and inputted in inconsistent formats. Before we can effectively analyze this data, we need to bring it all together into one structured table and resolve any issues. This process of data ingestion and standardization is known as data tidying.
+
+![](images/tidy-data.png)
+
+The tidyverse packages, including `dplyr`, work seamlessly with tidy data. As defined by Hadley Wickham in [R for Data Science](https://r4ds.had.co.nz/), tidy data adheres to three interrelated rules:
+
+1. Each variable must have its own column.
+
+2. Each observation must have its own row.
+
+3. Each value must have its own cell.
+
+Why should we make our data tidy? There are both general and specific advantages:
+
+* General Advantage: Using a consistent data structure makes it easier to learn and work with data manipulation tools because they follow a uniform pattern.
+
+* Specific Advantage: Placing variables in columns allows R's vectorized nature to shine. Most built-in R functions work efficiently with vectors of values. This natural alignment between tidy data and R's capabilities makes data transformation feel particularly intuitive.
+
+### Long Format vs. Wide Format
+
+Before we dive into the practical aspects of tidying data, let's understand the difference between long format and wide format for a dataframe. We'll use an example with the dplyr package:
+
+```{r}
+library(tidyverse)
+
+head(table4a)
+```
+
+The `table4a` dataframe is in the wide format, which is a common way to enter data into software like Excel. In this format, each column often represents a year, and the values are spread across columns for each country.
+
+To convert this data into the long format, we'll use `tidyr::pivot_longer()`. This function reshapes the data, making it easier to work with:
+
+```{r}
+table4a %>% 
+  pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases")
+```
+
+Now, the data fulfills the three rules for tidy data:
+
+1. Each variable (country and year) has its own column.
+
+2. Each observation (combinations of country and year) has its own row.
+
+3. Each value (the number of cases) has its own cell.
+
+Understanding the difference between long and wide formats is essential because it determines how we structure our data for analysis. Once you grasp these concepts, reshaping and tidying data becomes a more comfortable and intuitive process.
+
+Take your time to study and understand these data formats. It will significantly boost your confidence in reshaping and tidying data for your analytical tasks.
+
+## Introducing dplyr: Your Data Wrangling Toolkit
+
+In this lesson, we'll delve into the world of the dplyr package in R, which offers a powerful and concise set of tools for working with data frames. As a biology student new to programming, dplyr will be your trusty companion for effortlessly managing, filtering, and summarizing biological data.
+
+To master dplyr, it's crucial to grasp its five core functions: `mutate()`, `select()`, `filter()`, `summarise()`, and `arrange()`. Each function serves a specific purpose in data manipulation.
+
+### Selecting Specific Columns
+We will be working with the same tibble called tcga_data that has numerous columns, but you're interested in extracting the "EPCAM" column along with other metadata columns. `EPCAM`, short for epithelial cellular adhesion molecule, is highly relevant in the context of epithelial cancer cells.
+
+```{r}
+tcga_data %>%
+  select(EPCAM, tcga.tcga_barcode:sample_type)
+```
+
+This code utilizes the `select()` function to pick specific columns by their names, creating a tidy subset of your data. We used `:` to select a range of columns. Note that the columns are reordered 
+putting `EPCAM` to the first column.
+
+You can also use index to select the columns
+```{r}
+colnames(tcga_data)
+```
+
+The `EPCAM` column is the 16th column; `tcga.tcga_barcode` is the 23rd column;
+`sample_type` is 25th column:
+
+```{r}
+tcga_data %>%
+  select(16, 23:25)
+```
+
+We can even mix the index with column names:
+
+```{r}
+tcga_data %>%
+  select(EPCAM, 23:25)
+
+# save it to a new variable
+
+tcga_data<- tcga_data %>%
+  select(EPCAM, 23:25)
+```
+
+### Adding New Columns
+The `mutate()` function allows you to introduce new variables that are derived from existing ones. For instance, you can create a new column, "log2EPCAM," containing the logarithm base-2 of the EPCAM values:
+
+```{r}
+tcga_data<- tcga_data %>%
+  mutate(log2EPCAM = log2(EPCAM))
+
+tcga_data
+```
+
+### Reordering Columns
+If you want to rearrange the order of columns, you can again use `select()`. Here, we move the "log2EPCAM" column to the front while keeping all other columns intact:
+
+```{r}
+tcga_data %>%
+  select(EPCAM, log2EPCAM, everything())
+
+```
+
+The `everything()` helper function denotes all other columns, ensuring your numeric columns are at the front.
+
+### Filtering Data
+
+`filter()` is your go-to function for extracting observations that meet specific criteria. To isolate data only related to glioblastoma (GBM), you can apply the following filter:
+
+```{r}
+tcga_data %>%
+  filter(study == "GBM")
+```
+  
+This code snippet retains only the rows corresponding to GBM in your dataset.
+
+### Summarizing Data
+Suppose you want to calculate the average EPCAM expression for each cancer type in your dataset. You can utilize `summarise()` in conjunction with `group_by()`:
+
+```{r}
+tcga_data %>%
+  group_by(study) %>%
+  summarise(average_EPCAM = mean(EPCAM))
+```
+
+Here, the data is grouped by the "study" variable, and the `summarise()` function calculates the mean `EPCAM` value for each group.
+
+### Sorting Data
+To sort your data frame based on a specific column, employ `arrange()`. For instance, you can order your dataset by the median level of EPCAM:
+
+```{r}
+tcga_data %>%
+  group_by(study) %>%
+  summarise(average_EPCAM = mean(EPCAM),
+            median_EPCAM = median(EPCAM)) %>%
+  arrange(median_EPCAM)
+```
+
+The default is arrange from the smallest to the biggest. Let’s reverse it by using the helper descending function `desc`:
+
+```{r}
+tcga_data %>%
+  group_by(study) %>%
+  summarise(average_EPCAM = mean(EPCAM),
+            median_EPCAM = median(EPCAM)) %>%
+  arrange(desc(median_EPCAM))
+```
+  
+We see `READ` and `COAD` colon cancers have the highest `EPCAM` expression.
+
+This code sorts the dataset from the smallest to the largest median EPCAM values.
+
+### Conclusion 
+
+In summary:
+
+* mutate() adds new columns.
+
+* filter() extracts specific observations.
+
+* select() picks/reorders columns.
+
+* summarise() reduces multiple values to summaries.
+
+* arrange() reorders rows.
+
+These four fundamental functions empower you to efficiently manipulate, analyze, and summarize biological data frames, providing a more concise and readable approach compared to traditional R methods. As your programming skills grow, `dplyr` will remain an indispensable tool in your data science toolkit.
+
+## stringr: your essential toolkit to manipulate strings
+
+xxxx
+
+## purrr: ditch your for loops
+
+In this lesson, we’ll learn about the `purrr` package in R. `Purrr` provides a set of tools for working with lists and other recursive data structures in a functional programming style.
+
+>A recursive data structure in R refers to a data object that can contain other objects of the same type as its components. For example, a list in R can be recursive because it can contain other lists within it, creating a nested or hierarchical structure.
+
+As a biology student, you’ll likely need to apply the same operation to multiple data sets or columns. That’s where `purrr` becomes really handy! The key functions we’ll cover are:
+
+* `map()` and its variants `map_chr()`, `map_dbl()` - Applies a function to each element of a list or vector. For example, you could calculate the mean of every column in a data frame:
+
+In the previous section, we learned about loops. There is nothing wrong with for loops. However, with `purrr::map()`, I find myself writing less and less for loops.
+
+### Nesting Data with nest()
+
+The `nest()` function in R, when used with tibbles, groups your data based on a specific variable and creates a new column containing nested data frames for each group. It's like putting similar data into separate containers, making it easier to work with and analyze them as a whole or individually.
+
+Imagine you have a large table of information about different types of cancer samples. You want to organize this data in a way that groups all the information related to each type of cancer separately. One way to do this is by using the `tidyr::nest()` function along with the purrr package in R.
+
+Here's how you can achieve this:
+
+```{r}
+# read in the data again
+tcga_data <- readr::read_csv("~/Downloads/TCGA_cancer_genes_expression.csv")
+
+# Group and nest the data
+tcga_nest <- tcga_data %>%
+  filter(sample_type == "cancer") %>%
+  select(EPCAM, tcga.tcga_barcode:sample_type) %>%
+  group_by(study) %>%
+  tidyr::nest()
+
+tcga_nest
+```
+The `tidyr::nest()` function creates a list-column within your tibble, where each element of the list is a nested data frame. This is a powerful feature of tibbles, as they can contain tables within the table.
+
+You can access the nested data using the `$` sign, just like you would with a regular data frame, and use the double bracket to access the element. For example:
+
+```{r}
+# Accessing the first nested data frame
+first_nested_df <- tcga_nest$data[[1]]
+
+first_nested_df
+```
+In this example, first_nested_df contains the first nested data frame, which corresponds to one of the "study" groups.
+
+You can add the names to the list column, and now you can access it by cancer type:
+
+```{r}
+names(tcga_nest$data)<- tcga_nest$study
+
+tcga_nest
+
+tcga_nest$data[["ACC"]]
+```
+
+### `map()` and Its Variants
+Let’s calculate the median value of EPCAM for each cancer type using `map()`.
+
+`map()` takes in a vector or a list, and a function to be applied to every element of the vector or the list.
+
+```{r}
+map(tcga_nest$data, function(x) (median(x$EPCAM)))
+```
+
+In this example, the function takes each element of the list of the data frame and return the median of the EPCAM.
+
+### Note on Anonymous functions
+
+There are three ways to specify a function
+
+```{r eval=TRUE}
+# full function with a function name
+calculate_median<- function(x){
+  return(median(x$EPCAM))
+}
+```
+
+```{r eval=FALSE}
+# base R anonymous function
+function(x) (median(x$EPCAM))
+```
+
+```{r eval=FALSE}
+# purrr anonymouse function using formula ~, note you use .x instead of x
+~ median(.x$EPCAM)
+```
+
+The following will have the same results
+
+```{r eval=FALSE}
+map(tcga_nest$data, calculate_median)
+map(tcga_nest$data, function(x) (median(x$EPCAM)))
+map(tcga_nest$data, ~ median(.x$EPCAM))
+```
+
+read more at https://jennybc.github.io/purrr-tutorial/ls03_map-function-syntax.html#anonymous_function,_conventional.
+
+map always returns a list, it returns a list of median values in this case. If you want to return a vector, use `map_dbl`:
+
+```{r}
+map_dbl(tcga_nest$data, function(x) (median(x$EPCAM)))
+```
+
+Let’s save the output to a new variable
+
+```{r}
+median_EPCAM<- map_dbl(tcga_nest$data, function(x) (median(x$EPCAM)))
+
+# returns a list of log2 values
+map(median_EPCAM, function(x) log2(x))
+
+# returns a vector
+map_dbl(median_EPCAM, function(x) log2(x))
+```
+
+We can stay in the original tibble by just adding the median to a new column with `mutate()`:
+
+```{r}
+tcga_nest %>%
+  mutate(median_EPCAM = map_dbl(data, function(x) (median(x$EPCAM))))
+```
+
+of course, we can use `group_by` followed by summarise as shown above to get the same thing, but it demonstrates how we can combine `map()` function and list column to do powerful data analysis within a data frame.
+
+```{r}
+tcga_data %>%
+  filter(sample_type == "cancer") %>%
+  select(EPCAM, tcga.tcga_barcode:sample_type) %>%
+  group_by(study) %>%
+  summarise(median_EPCAM = median(EPCAM))
+```
+
+Read this https://dplyr.tidyverse.org/reference/summarise.html for more examples using group_by with summarise.
+
+You can even nest by two columns:
+
+```{r}
+tcga_data %>%
+  select(EPCAM, tcga.tcga_barcode:sample_type) %>%
+  group_by(study, sample_type) %>%
+  tidyr::nest()
+```
+
+You can easily see some cancer types have normal and some have metastatic samples and you can do everything within a dataframe.
+
+The other way to check the information is to use the table function:
+
+```{r}
+table(tcga_data$sample_type, tcga_data$study)
+```
+
+The key takeaways is:
+
+* map() applies a function over each element of a list/vector
+
+### Conclusion
+
+With purrr, you get a powerful toolkit for iterating over biological data in a functional programming style. As you advance in bioinformatics, purrr will continue to make your code more clear and more concise. This is introduction is just the tip of the iceberg. To learn more about purrr, read this https://jennybc.github.io/purrr-tutorial/
+
+Some key benefits of the tidyverse include:
+
+1. Consistent language and grammar across packages like piping (%>%) and verb functions (filter(), mutate()).
+
+2. Works well with pipe workflows for transforming and visualizing data.
+
+3. Enhances exploratory data analysis and makes it easy to go from raw data to insights.
+
+4. Large community providing learning resources and support.
+
+The tidyverse packages work seamlessly together, allowing you to conduct complete data science projects in R. From import to wrangling to visualization, the tidyverse provides a set of tools that follow common principles. While we can dedicate a full chapter on each package, we only focused on `dplyr`, `tidyr` and `purrr`.
+
+## Tidying metadata from GEO.
+
+In this lesson, we will learn how to tidy metadata obtained from the [`Gene Expression Omnibus (GEO)`](https://www.ncbi.nlm.nih.gov/geo/) database using the Tidyverse package in R. Tidying metadata is an essential step in preparing data for analysis. We will use a real-world example from GEO to demonstrate the process step-by-step.
+
+### Prerequisites
+
+Before we begin, make sure you have R and the necessary packages installed. You can install the required packages using the following commands:
+
+```{r eval=FALSE}
+BiocManager::install("GEOquery")
+install.packages("tidyverse")
+```
+
+### Getting Started
+
+We'll start by loading the necessary libraries and fetching metadata from a GEO dataset called `GSE176021`. GEO is a repository for gene expression data and other omics data, and it often contains metadata in a wide format, which is not suitable for analysis.
+
+```{r}
+# Load the necessary libraries
+library(GEOquery)
+library(tidyverse)
+
+# Fetch metadata from GEO
+GSE176021_meta <- getGEO(GEO = "GSE176021", GSEMatrix = FALSE)
+```
+
+Let's use the `str` structure command to inspect the GSE176021_meta@gsms object
+
+```{r}
+str(GSE176021_meta@gsms, max.level = 1)
+```
+
+So it is a list of 110 GSM objects. Let's take a look at the first element of the list
+
+```{r}
+GSE176021_meta@gsms[[1]]@header 
+```
+
+It will print out a long text. We only need the `characteristics_ch1`
+
+```{r}
+GSE176021_meta@gsms[[1]]@header$characteristics_ch1
+```
+
+This contains the metadata we need.
+
+Now, let's extract all the metadata for all samples and bind them to a dataframe.
+
+```{r}
+GSE176021_meta <- purrr::map(GSE176021_meta@gsms, 
+                             function(x) x@header$characteristics_ch1) %>%
+  bind_rows() %>%
+  dplyr::slice(c(1, 3))
+
+GSE176021_meta
+```
+
+In this code:
+
+1. We load the `GEOquery` library to access functions related to the Gene Expression Omnibus (GEO) database.
+
+2. We fetch metadata from the GEO dataset "GSE176021" using the `getGEO` function. The `GSEMatrix = FALSE` argument ensures that we retrieve metadata rather than expression data.
+
+3. We use `purrr::map` to extract the "characteristics_ch1" information from each sample within the GEO dataset. This information typically contains details about the samples, such as patient identifiers and response statuses.
+
+4. Next, we use `bind_rows()` to combine these extracted characteristics into a single data frame.
+
+5. We use `dplyr::slice(c(1, 3))` to select only the first and third rows of the resulting data frame, essentially keeping a subset of the metadata for demonstration purposes.
+
+Now, let's take a look at the wide-format metadata:
+
+```{r}
+# Display the first two rows and first ten columns of the wide-format metadata
+GSE176021_meta[1:2, 1:10]
+```
+
+The wide-format metadata is not suitable for analysis. It has many columns, and we need to tidy it before proceeding.
+
+### Tidying the Metadata
+We will follow these steps to tidy the metadata:
+
+1. Add a "meta" column with labels.
+
+2. Reorder the columns to have the "meta" column first.
+
+```{r}
+# Add a "meta" column and reorder the columns
+GSE176021_meta <- GSE176021_meta %>%
+  mutate(meta = c("id", "response")) %>%
+  select(meta, everything())
+```
+
+Now, let's see how it looks like:
+
+```{r}
+# Display the first two rows and first ten columns of the tidied metadata
+GSE176021_meta[1:2, 1:10]
+```
+
+The metadata is ready to be shaped into a long format.
+
+### Converting to a Tidy Data Frame
+To fulfill the three tidy data rules, we will convert the metadata into a tidy data frame using the `pivot_longer` and `pivot_wider` functions:
+
+```{r}
+# pivot it to long format
+GSE176021_meta %>%
+  pivot_longer(cols = -meta)
+
+# pivot to wide format
+GSE176021_meta %>%
+  pivot_longer(cols = -meta) %>%
+  pivot_wider(names_from = meta, values_from = value)
+
+# put it together
+tidy_data <- GSE176021_meta %>%
+  pivot_longer(cols = -meta) %>%
+  pivot_wider(names_from = meta, values_from = value)
+```
+
+Let's take a look at the resulting tidy data frame:
+
+```{r}
+# Display the first 10 rows of the tidy data frame
+head(tidy_data, 10)
+
+```
+Now, our data fulfills the three tidy data rules, making it suitable for analysis.
+
+### Bonus: Reading Multiple TSV Files
+
+If you have multiple TSV (Tab-Separated Values) files in a directory that you want to read into R and combine, here's how you can do it:
+
+```{r eval=FALSE}
+# List all TSV files in the current directory
+files <- as.list(dir(".", pattern = ".tsv"))
+
+# Read and combine all TSV files into a single data frame
+datlist <- lapply(files, function(f) {
+  dat <- read_tsv(f, col_names = TRUE)
+  dat$sample <- gsub(".tsv", "", f)
+  return(dat)
+})
+
+data <- do.call(rbind, datlist)
+```
+
+Alternatively, you can use the `bind_rows` function from the dplyr package:
+
+```{r eval=FALSE}
+# Read and combine all TSV files into a single data frame using bind_rows
+data <- bind_rows(datlist, .id = "sample")
+```
+
+If your files have a common column (e.g., "GeneID"), and you want to create a single data frame with gene IDs and raw counts, you can use the reduce function from the purrr package:
+
+```{r eval=FALSE}
+# Combine data frames using reduce and left_join
+CCLE_counts <- purrr::reduce(datlist, left_join, by = "GeneID")
+```
+
+Watch this video:
+
+```{r echo=FALSE}
+library("vembedr")
+
+embed_url("https://www.youtube.com/watch?v=gIQe5kGEiIA")
+```
+
+## Section Complete
+
+Congratulations on completing this segment of the course!
+
+We've covered the Tidyverse, data manipulation, and analysis techniques, including handling GEO metadata and using purrr for functional programming. These skills are crucial for efficient data analysis in R, simplifying workflows and cleaning up complex datasets.
+
+As you move forward in the course, remember to utilize the Q&A section and comments for support. Engage actively for any clarifications or assistance you need.
+
+
+### Conclusion
+In this lesson, we learned how to tidy metadata from GEO using Tidyverse in R. Tidying data is a crucial step in data preparation for analysis. We also explored how to read and combine multiple TSV files from a directory, which is a common task when dealing with large datasets.
+
+Remember that these skills are valuable in many data analysis and bioinformatics tasks, allowing you to work efficiently with real-world data.
+

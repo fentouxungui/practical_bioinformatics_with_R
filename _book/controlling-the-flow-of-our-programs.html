@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Controlling the flow of our programs | Master Real-world Bioinformatics analysis in R</title>
+  <meta name="description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  <meta name="generator" content="bookdown 0.24 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Controlling the flow of our programs | Master Real-world Bioinformatics analysis in R" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Controlling the flow of our programs | Master Real-world Bioinformatics analysis in R" />
+  
+  <meta name="twitter:description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  
+
+<meta name="author" content="Ming Tommy Tang" />
+
+
+<meta name="date" content="2024-05-25" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction-to-r-for-biologists.html"/>
+<link rel="next" href="going-more-in-depth-with-r.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li><a href="index.html#preface" id="toc-preface"><span class="toc-section-number">1</span> Preface</a></li>
+<li><a href="intro.html#intro" id="toc-intro"><span class="toc-section-number">2</span> Introduction</a>
+<ul>
+<li><a href="intro.html#meet-your-instructor" id="toc-meet-your-instructor"><span class="toc-section-number">2.1</span> Meet your Instructor</a></li>
+<li><a href="intro.html#leveraging-our-online-community" id="toc-leveraging-our-online-community"><span class="toc-section-number">2.2</span> Leveraging our online community</a></li>
+<li><a href="intro.html#install-r-and-r-studio" id="toc-install-r-and-r-studio"><span class="toc-section-number">2.3</span> Install R and R studio</a></li>
+<li><a href="intro.html#the-role-of-programming-in-biology" id="toc-the-role-of-programming-in-biology"><span class="toc-section-number">2.4</span> The role of programming in Biology</a>
+<ul>
+<li><a href="intro.html#what-are-programming-languages" id="toc-what-are-programming-languages"><span class="toc-section-number">2.4.1</span> What are programming languages?</a></li>
+<li><a href="intro.html#why-programming-is-important-in-biology" id="toc-why-programming-is-important-in-biology"><span class="toc-section-number">2.4.2</span> Why programming is important in biology?</a></li>
+<li><a href="intro.html#what-are-the-most-used-programming-languages-within-biology" id="toc-what-are-the-most-used-programming-languages-within-biology"><span class="toc-section-number">2.4.3</span> What are the most used programming languages within biology?</a></li>
+</ul></li>
+</ul></li>
+<li><a href="introduction-to-programming.html#introduction-to-programming" id="toc-introduction-to-programming"><span class="toc-section-number">3</span> Introduction to programming</a>
+<ul>
+<li><a href="introduction-to-programming.html#what-is-an-algorithm" id="toc-what-is-an-algorithm"><span class="toc-section-number">3.1</span> What is an algorithm?</a></li>
+<li><a href="introduction-to-programming.html#why-are-algorithms-important-in-programming" id="toc-why-are-algorithms-important-in-programming"><span class="toc-section-number">3.2</span> Why are Algorithms Important in Programming?</a></li>
+<li><a href="introduction-to-programming.html#a-real-world-example" id="toc-a-real-world-example"><span class="toc-section-number">3.3</span> A Real World Example:</a></li>
+<li><a href="introduction-to-programming.html#variables-data-types-and-expressions" id="toc-variables-data-types-and-expressions"><span class="toc-section-number">3.4</span> Variables, Data Types, and Expressions</a>
+<ul>
+<li><a href="introduction-to-programming.html#variables" id="toc-variables"><span class="toc-section-number">3.4.1</span> Variables</a></li>
+<li><a href="introduction-to-programming.html#data-types" id="toc-data-types"><span class="toc-section-number">3.4.2</span> Data Types</a></li>
+<li><a href="introduction-to-programming.html#expressions" id="toc-expressions"><span class="toc-section-number">3.4.3</span> Expressions</a></li>
+<li><a href="introduction-to-programming.html#example-finding-the-average-number-of-bases-appearances-in-a-set-of-dna-strings" id="toc-example-finding-the-average-number-of-bases-appearances-in-a-set-of-dna-strings"><span class="toc-section-number">3.4.4</span> Example: Finding the average number of bases appearances in a set of DNA strings</a></li>
+</ul></li>
+</ul></li>
+<li><a href="getting-started-with-r-and-rstudio.html#getting-started-with-r-and-rstudio" id="toc-getting-started-with-r-and-rstudio"><span class="toc-section-number">4</span> Getting started with R and RStudio</a>
+<ul>
+<li><a href="getting-started-with-r-and-rstudio.html#what-is-r-and-why-is-it-used-in-biology" id="toc-what-is-r-and-why-is-it-used-in-biology"><span class="toc-section-number">4.1</span> What is R and why is it used in Biology?</a></li>
+<li><a href="getting-started-with-r-and-rstudio.html#what-is-r" id="toc-what-is-r"><span class="toc-section-number">4.2</span> What is R?</a></li>
+<li><a href="getting-started-with-r-and-rstudio.html#why-is-r-used-in-biology" id="toc-why-is-r-used-in-biology"><span class="toc-section-number">4.3</span> Why is R Used in Biology?</a></li>
+<li><a href="getting-started-with-r-and-rstudio.html#introduction-to-r-studio" id="toc-introduction-to-r-studio"><span class="toc-section-number">4.4</span> Introduction to R-Studio</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#introduction-to-r-for-biologists" id="toc-introduction-to-r-for-biologists"><span class="toc-section-number">5</span> Introduction to R for biologists</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#basic-data-types-in-r" id="toc-basic-data-types-in-r"><span class="toc-section-number">5.1</span> Basic Data Types in R</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#before-starting" id="toc-before-starting"><span class="toc-section-number">5.1.1</span> Before Starting</a></li>
+<li><a href="introduction-to-r-for-biologists.html#numeric" id="toc-numeric"><span class="toc-section-number">5.1.2</span> 1. Numeric</a></li>
+<li><a href="introduction-to-r-for-biologists.html#character-string" id="toc-character-string"><span class="toc-section-number">5.1.3</span> 2. Character (String)</a></li>
+<li><a href="introduction-to-r-for-biologists.html#integer" id="toc-integer"><span class="toc-section-number">5.1.4</span> 3. Integer</a></li>
+<li><a href="introduction-to-r-for-biologists.html#logical-boolean" id="toc-logical-boolean"><span class="toc-section-number">5.1.5</span> 4. Logical (Boolean)</a></li>
+<li><a href="introduction-to-r-for-biologists.html#factor" id="toc-factor"><span class="toc-section-number">5.1.6</span> 5. Factor</a></li>
+<li><a href="introduction-to-r-for-biologists.html#date-and-time" id="toc-date-and-time"><span class="toc-section-number">5.1.7</span> 6. Date and Time</a></li>
+<li><a href="introduction-to-r-for-biologists.html#complex" id="toc-complex"><span class="toc-section-number">5.1.8</span> 7. Complex</a></li>
+<li><a href="introduction-to-r-for-biologists.html#missing-values-na" id="toc-missing-values-na"><span class="toc-section-number">5.1.9</span> 8. Missing Values (NA)</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#the-key-concept-of-r-vectors" id="toc-the-key-concept-of-r-vectors"><span class="toc-section-number">5.2</span> The key concept of R: Vectors</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#creating-numeric-and-character-vectors" id="toc-creating-numeric-and-character-vectors"><span class="toc-section-number">5.2.1</span> Creating Numeric and Character Vectors</a></li>
+<li><a href="introduction-to-r-for-biologists.html#saving-vectors-to-variables" id="toc-saving-vectors-to-variables"><span class="toc-section-number">5.2.2</span> Saving Vectors to Variables</a></li>
+<li><a href="introduction-to-r-for-biologists.html#vectorized-calculations" id="toc-vectorized-calculations"><span class="toc-section-number">5.2.3</span> Vectorized Calculations</a></li>
+<li><a href="introduction-to-r-for-biologists.html#performing-vectorized-calculations" id="toc-performing-vectorized-calculations"><span class="toc-section-number">5.2.4</span> Performing Vectorized Calculations</a></li>
+<li><a href="introduction-to-r-for-biologists.html#operations-with-character-vectors" id="toc-operations-with-character-vectors"><span class="toc-section-number">5.2.5</span> Operations with character vectors</a></li>
+<li><a href="introduction-to-r-for-biologists.html#logical-vectors" id="toc-logical-vectors"><span class="toc-section-number">5.2.6</span> Logical Vectors</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion" id="toc-conclusion"><span class="toc-section-number">5.2.7</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#subsetting-and-indexing" id="toc-subsetting-and-indexing"><span class="toc-section-number">5.3</span> Subsetting and Indexing</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#indexing-in-r" id="toc-indexing-in-r"><span class="toc-section-number">5.3.1</span> Indexing in R</a></li>
+<li><a href="introduction-to-r-for-biologists.html#slicing-in-r" id="toc-slicing-in-r"><span class="toc-section-number">5.3.2</span> Slicing in R</a></li>
+<li><a href="introduction-to-r-for-biologists.html#negative-indexing" id="toc-negative-indexing"><span class="toc-section-number">5.3.3</span> Negative Indexing</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion-1" id="toc-conclusion-1"><span class="toc-section-number">5.3.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#understanding-and-manipulating-matrices" id="toc-understanding-and-manipulating-matrices"><span class="toc-section-number">5.4</span> Understanding and Manipulating Matrices</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#creating-a-matrix" id="toc-creating-a-matrix"><span class="toc-section-number">5.4.1</span> Creating a Matrix</a></li>
+<li><a href="introduction-to-r-for-biologists.html#adding-row-and-column-names" id="toc-adding-row-and-column-names"><span class="toc-section-number">5.4.2</span> Adding Row and Column Names</a></li>
+<li><a href="introduction-to-r-for-biologists.html#subsetting-a-matrix" id="toc-subsetting-a-matrix"><span class="toc-section-number">5.4.3</span> Subsetting a Matrix</a></li>
+<li><a href="introduction-to-r-for-biologists.html#calculations-with-matrices" id="toc-calculations-with-matrices"><span class="toc-section-number">5.4.4</span> Calculations with Matrices</a></li>
+<li><a href="introduction-to-r-for-biologists.html#normalization" id="toc-normalization"><span class="toc-section-number">5.4.5</span> Normalization</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion-2" id="toc-conclusion-2"><span class="toc-section-number">5.4.6</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#essential-functions-in-r" id="toc-essential-functions-in-r"><span class="toc-section-number">5.5</span> Essential Functions in R</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#length-function" id="toc-length-function"><span class="toc-section-number">5.5.1</span> <code>length</code> Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#unique-function" id="toc-unique-function"><span class="toc-section-number">5.5.2</span> <code>unique</code> Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#sort-function" id="toc-sort-function"><span class="toc-section-number">5.5.3</span> <code>sort</code> Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#cor-function" id="toc-cor-function"><span class="toc-section-number">5.5.4</span> <code>cor</code> Function</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#functions-organizing-your-code-for-reusability" id="toc-functions-organizing-your-code-for-reusability"><span class="toc-section-number">5.6</span> Functions: Organizing Your Code for Reusability</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#what-is-a-function" id="toc-what-is-a-function"><span class="toc-section-number">5.6.1</span> What is a Function?</a></li>
+<li><a href="introduction-to-r-for-biologists.html#creating-a-basic-function-calculating-the-mean" id="toc-creating-a-basic-function-calculating-the-mean"><span class="toc-section-number">5.6.2</span> Creating a Basic Function: Calculating the Mean</a></li>
+<li><a href="introduction-to-r-for-biologists.html#using-the-custom-function" id="toc-using-the-custom-function"><span class="toc-section-number">5.6.3</span> Using the Custom Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#returning-a-value-from-the-function" id="toc-returning-a-value-from-the-function"><span class="toc-section-number">5.6.4</span> Returning a Value from the Function</a></li>
+<li><a href="introduction-to-r-for-biologists.html#optional-omitting-the-return-statement" id="toc-optional-omitting-the-return-statement"><span class="toc-section-number">5.6.5</span> Optional: Omitting the return Statement</a></li>
+<li><a href="introduction-to-r-for-biologists.html#using-more-than-one-argument" id="toc-using-more-than-one-argument"><span class="toc-section-number">5.6.6</span> Using more than one argument</a></li>
+<li><a href="introduction-to-r-for-biologists.html#understanding-missing-values-nas-in-r" id="toc-understanding-missing-values-nas-in-r"><span class="toc-section-number">5.6.7</span> Understanding Missing Values (NAs) in R</a></li>
+<li><a href="introduction-to-r-for-biologists.html#initial-attempt-a-function-without-handling-nas" id="toc-initial-attempt-a-function-without-handling-nas"><span class="toc-section-number">5.6.8</span> Initial Attempt: A Function Without Handling NAs</a></li>
+<li><a href="introduction-to-r-for-biologists.html#adding-the-remove_na-argument" id="toc-adding-the-remove_na-argument"><span class="toc-section-number">5.6.9</span> Adding the <code>remove_na</code> Argument</a></li>
+<li><a href="introduction-to-r-for-biologists.html#practical-application" id="toc-practical-application"><span class="toc-section-number">5.6.10</span> Practical Application</a></li>
+<li><a href="introduction-to-r-for-biologists.html#getting-help-with-functions" id="toc-getting-help-with-functions"><span class="toc-section-number">5.6.11</span> Getting help with functions</a></li>
+<li><a href="introduction-to-r-for-biologists.html#a-real-world-example-1" id="toc-a-real-world-example-1"><span class="toc-section-number">5.6.12</span> A Real World Example</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion-3" id="toc-conclusion-3"><span class="toc-section-number">5.6.13</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-r-for-biologists.html#common-mistakes-to-avoid" id="toc-common-mistakes-to-avoid"><span class="toc-section-number">5.7</span> Common Mistakes to avoid</a>
+<ul>
+<li><a href="introduction-to-r-for-biologists.html#mixing-data-types" id="toc-mixing-data-types"><span class="toc-section-number">5.7.1</span> Mixing Data Types</a></li>
+<li><a href="introduction-to-r-for-biologists.html#forgetting-function-parentheses" id="toc-forgetting-function-parentheses"><span class="toc-section-number">5.7.2</span> Forgetting Function Parentheses</a></li>
+<li><a href="introduction-to-r-for-biologists.html#overwriting-built-in-functions" id="toc-overwriting-built-in-functions"><span class="toc-section-number">5.7.3</span> Overwriting Built-in Functions</a></li>
+<li><a href="introduction-to-r-for-biologists.html#misunderstanding-variable-scoping" id="toc-misunderstanding-variable-scoping"><span class="toc-section-number">5.7.4</span> Misunderstanding Variable Scoping</a></li>
+<li><a href="introduction-to-r-for-biologists.html#best-practices-for-variable-scoping-include" id="toc-best-practices-for-variable-scoping-include"><span class="toc-section-number">5.7.5</span> Best practices for variable scoping include</a></li>
+<li><a href="introduction-to-r-for-biologists.html#conclusion-4" id="toc-conclusion-4"><span class="toc-section-number">5.7.6</span> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#controlling-the-flow-of-our-programs" id="toc-controlling-the-flow-of-our-programs"><span class="toc-section-number">6</span> Controlling the flow of our programs</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#boolean-operators" id="toc-boolean-operators"><span class="toc-section-number">6.1</span> Boolean Operators</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#comparison-operators" id="toc-comparison-operators"><span class="toc-section-number">6.1.1</span> Comparison Operators</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#logical-operators" id="toc-logical-operators"><span class="toc-section-number">6.1.2</span> Logical Operators</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conclusion-5" id="toc-conclusion-5"><span class="toc-section-number">6.1.3</span> Conclusion</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conditional-statements-if-else" id="toc-conditional-statements-if-else"><span class="toc-section-number">6.2</span> Conditional statements (<code>if</code>, <code>else</code>)</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#the-if-statement" id="toc-the-if-statement"><span class="toc-section-number">6.2.1</span> The <code>if</code> Statement</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#else-statement" id="toc-else-statement"><span class="toc-section-number">6.2.2</span> <code>else</code> statement</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#else-if" id="toc-else-if"><span class="toc-section-number">6.2.3</span> <code>else if</code></a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#exercise" id="toc-exercise"><span class="toc-section-number">6.2.4</span> Exercise</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conclusion-6" id="toc-conclusion-6"><span class="toc-section-number">6.2.5</span> Conclusion</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#loops" id="toc-loops"><span class="toc-section-number">6.3</span> Loops</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#the-while-loop" id="toc-the-while-loop"><span class="toc-section-number">6.3.1</span> The <code>while</code> Loop</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#while-loops-in-real-life" id="toc-while-loops-in-real-life"><span class="toc-section-number">6.3.2</span> While Loops in Real Life</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#the-for-loop" id="toc-the-for-loop"><span class="toc-section-number">6.3.3</span> The <code>for</code> Loop</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conclusion-7" id="toc-conclusion-7"><span class="toc-section-number">6.3.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#gene-expression-annotation-using-loops-and-control-structures" id="toc-gene-expression-annotation-using-loops-and-control-structures"><span class="toc-section-number">6.4</span> Gene Expression Annotation using Loops and Control Structures</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#the-data" id="toc-the-data"><span class="toc-section-number">6.4.1</span> The Data</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#creating-annotations" id="toc-creating-annotations"><span class="toc-section-number">6.4.2</span> Creating Annotations</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#the-loop" id="toc-the-loop"><span class="toc-section-number">6.4.3</span> The Loop</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#output" id="toc-output"><span class="toc-section-number">6.4.4</span> Output</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#putting-it-all-together" id="toc-putting-it-all-together"><span class="toc-section-number">6.4.5</span> Putting it all together</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#conclusion-8" id="toc-conclusion-8"><span class="toc-section-number">6.4.6</span> Conclusion</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#lets-solve-a-challenge" id="toc-lets-solve-a-challenge"><span class="toc-section-number">6.5</span> Let’s solve a Challenge</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#solution" id="toc-solution"><span class="toc-section-number">6.6</span> Solution</a>
+<ul>
+<li><a href="controlling-the-flow-of-our-programs.html#using-a-for-loop" id="toc-using-a-for-loop"><span class="toc-section-number">6.6.1</span> using a for loop</a></li>
+<li><a href="controlling-the-flow-of-our-programs.html#vectorized-solution" id="toc-vectorized-solution"><span class="toc-section-number">6.6.2</span> vectorized solution</a></li>
+</ul></li>
+<li><a href="controlling-the-flow-of-our-programs.html#section-complete" id="toc-section-complete"><span class="toc-section-number">6.7</span> Section complete</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#going-more-in-depth-with-r" id="toc-going-more-in-depth-with-r"><span class="toc-section-number">7</span> Going more in-depth with R</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#handling-missing-values" id="toc-handling-missing-values"><span class="toc-section-number">7.1</span> Handling Missing Values</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#understanding-na-in-r" id="toc-understanding-na-in-r"><span class="toc-section-number">7.1.1</span> Understanding NA in R</a></li>
+<li><a href="going-more-in-depth-with-r.html#identifying-missing-values" id="toc-identifying-missing-values"><span class="toc-section-number">7.1.2</span> Identifying Missing Values</a></li>
+<li><a href="going-more-in-depth-with-r.html#remove-missing-values" id="toc-remove-missing-values"><span class="toc-section-number">7.1.3</span> remove missing values</a></li>
+<li><a href="going-more-in-depth-with-r.html#real-life-note" id="toc-real-life-note"><span class="toc-section-number">7.1.4</span> real-life note</a></li>
+<li><a href="going-more-in-depth-with-r.html#conclusion-9" id="toc-conclusion-9"><span class="toc-section-number">7.1.5</span> Conclusion</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#introduction-to-statistical-tests-and-p-values" id="toc-introduction-to-statistical-tests-and-p-values"><span class="toc-section-number">7.2</span> Introduction to Statistical Tests and P-Values</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#practical-application-of-statistical-test-with-r" id="toc-practical-application-of-statistical-test-with-r"><span class="toc-section-number">7.2.1</span> Practical Application of statistical test with R</a></li>
+<li><a href="going-more-in-depth-with-r.html#conclusion-10" id="toc-conclusion-10"><span class="toc-section-number">7.2.2</span> Conclusion</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#understanding-r-packages" id="toc-understanding-r-packages"><span class="toc-section-number">7.3</span> Understanding R Packages</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#what-is-an-r-package" id="toc-what-is-an-r-package"><span class="toc-section-number">7.3.1</span> What is an R Package?</a></li>
+<li><a href="going-more-in-depth-with-r.html#why-use-r-packages" id="toc-why-use-r-packages"><span class="toc-section-number">7.3.2</span> Why Use R Packages?</a></li>
+<li><a href="going-more-in-depth-with-r.html#how-to-use-a-package" id="toc-how-to-use-a-package"><span class="toc-section-number">7.3.3</span> How to use a package?</a></li>
+<li><a href="going-more-in-depth-with-r.html#embracing-errors" id="toc-embracing-errors"><span class="toc-section-number">7.3.4</span> Embracing Errors</a></li>
+<li><a href="going-more-in-depth-with-r.html#how-to-look-for-package-docs-within-r-studio" id="toc-how-to-look-for-package-docs-within-r-studio"><span class="toc-section-number">7.3.5</span> How to look for package docs within R studio?</a></li>
+<li><a href="going-more-in-depth-with-r.html#exploring-package-vignettes" id="toc-exploring-package-vignettes"><span class="toc-section-number">7.3.6</span> Exploring Package Vignettes</a></li>
+<li><a href="going-more-in-depth-with-r.html#practical-tip" id="toc-practical-tip"><span class="toc-section-number">7.3.7</span> Practical Tip</a></li>
+<li><a href="going-more-in-depth-with-r.html#conclusion-11" id="toc-conclusion-11"><span class="toc-section-number">7.3.8</span> Conclusion</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#exploring-functions-in-different-packages-avoiding-collisions-and-accessing-them" id="toc-exploring-functions-in-different-packages-avoiding-collisions-and-accessing-them"><span class="toc-section-number">7.4</span> Exploring Functions in Different Packages: Avoiding Collisions and Accessing Them</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#using-double-colon" id="toc-using-double-colon"><span class="toc-section-number">7.4.1</span> Using Double Colon (<code>::</code>)</a></li>
+<li><a href="going-more-in-depth-with-r.html#conclusion-12" id="toc-conclusion-12"><span class="toc-section-number">7.4.2</span> Conclusion</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#writing-custom-scripts" id="toc-writing-custom-scripts"><span class="toc-section-number">7.5</span> Writing Custom Scripts</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#your-working-directory" id="toc-your-working-directory"><span class="toc-section-number">7.5.1</span> Your Working Directory</a></li>
+<li><a href="going-more-in-depth-with-r.html#writing-functions-in-scripts" id="toc-writing-functions-in-scripts"><span class="toc-section-number">7.5.2</span> Writing Functions in Scripts</a></li>
+<li><a href="going-more-in-depth-with-r.html#importing-functions-from-scripts" id="toc-importing-functions-from-scripts"><span class="toc-section-number">7.5.3</span> Importing Functions from Scripts</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#data-io" id="toc-data-io"><span class="toc-section-number">7.6</span> Data I/O</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#built-in-functions" id="toc-built-in-functions"><span class="toc-section-number">7.6.1</span> Built-In Functions</a></li>
+<li><a href="going-more-in-depth-with-r.html#real-world-applications" id="toc-real-world-applications"><span class="toc-section-number">7.6.2</span> Real-World Applications</a></li>
+<li><a href="going-more-in-depth-with-r.html#conclusion-13" id="toc-conclusion-13"><span class="toc-section-number">7.6.3</span> Conclusion</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#best-practices-in-modular-programming-and-project-management" id="toc-best-practices-in-modular-programming-and-project-management"><span class="toc-section-number">7.7</span> Best Practices in Modular Programming and Project Management</a>
+<ul>
+<li><a href="going-more-in-depth-with-r.html#introduction-to-modular-programming" id="toc-introduction-to-modular-programming"><span class="toc-section-number">7.7.1</span> Introduction to Modular Programming</a></li>
+<li><a href="going-more-in-depth-with-r.html#breaking-down-your-project" id="toc-breaking-down-your-project"><span class="toc-section-number">7.7.2</span> Breaking Down Your Project</a></li>
+<li><a href="going-more-in-depth-with-r.html#conclusion-14" id="toc-conclusion-14"><span class="toc-section-number">7.7.3</span> Conclusion</a></li>
+</ul></li>
+<li><a href="going-more-in-depth-with-r.html#section-complete-1" id="toc-section-complete-1"><span class="toc-section-number">7.8</span> Section complete</a></li>
+</ul></li>
+<li><a href="fundamental-data-structures-in-r.html#fundamental-data-structures-in-r" id="toc-fundamental-data-structures-in-r"><span class="toc-section-number">8</span> Fundamental Data Structures in R</a>
+<ul>
+<li><a href="fundamental-data-structures-in-r.html#named-vectors" id="toc-named-vectors"><span class="toc-section-number">8.1</span> Named Vectors</a>
+<ul>
+<li><a href="fundamental-data-structures-in-r.html#what-is-a-named-vector" id="toc-what-is-a-named-vector"><span class="toc-section-number">8.1.1</span> What is a Named Vector?</a></li>
+<li><a href="fundamental-data-structures-in-r.html#using-names-to-subset-a-vector" id="toc-using-names-to-subset-a-vector"><span class="toc-section-number">8.1.2</span> Using Names to Subset a Vector</a></li>
+<li><a href="fundamental-data-structures-in-r.html#named-vectors-as-dictionary-like-structures" id="toc-named-vectors-as-dictionary-like-structures"><span class="toc-section-number">8.1.3</span> Named Vectors as Dictionary-Like Structures</a></li>
+<li><a href="fundamental-data-structures-in-r.html#real-life-example" id="toc-real-life-example"><span class="toc-section-number">8.1.4</span> Real-life example</a></li>
+<li><a href="fundamental-data-structures-in-r.html#reordering-and-subsetting-with-names" id="toc-reordering-and-subsetting-with-names"><span class="toc-section-number">8.1.5</span> Reordering and Subsetting with Names</a></li>
+<li><a href="fundamental-data-structures-in-r.html#conclusion-15" id="toc-conclusion-15"><span class="toc-section-number">8.1.6</span> Conclusion</a></li>
+</ul></li>
+<li><a href="fundamental-data-structures-in-r.html#lists" id="toc-lists"><span class="toc-section-number">8.2</span> Lists</a>
+<ul>
+<li><a href="fundamental-data-structures-in-r.html#introduction-to-lists" id="toc-introduction-to-lists"><span class="toc-section-number">8.2.1</span> Introduction to Lists</a></li>
+<li><a href="fundamental-data-structures-in-r.html#creating-a-list" id="toc-creating-a-list"><span class="toc-section-number">8.2.2</span> Creating a List</a></li>
+<li><a href="fundamental-data-structures-in-r.html#accessing-list-elements" id="toc-accessing-list-elements"><span class="toc-section-number">8.2.3</span> Accessing List Elements</a></li>
+<li><a href="fundamental-data-structures-in-r.html#conclusions" id="toc-conclusions"><span class="toc-section-number">8.2.4</span> Conclusions</a></li>
+</ul></li>
+<li><a href="fundamental-data-structures-in-r.html#dataframes" id="toc-dataframes"><span class="toc-section-number">8.3</span> Dataframes</a>
+<ul>
+<li><a href="fundamental-data-structures-in-r.html#what-is-a-data-frame" id="toc-what-is-a-data-frame"><span class="toc-section-number">8.3.1</span> What is a Data Frame?</a></li>
+<li><a href="fundamental-data-structures-in-r.html#creating-a-data-frame" id="toc-creating-a-data-frame"><span class="toc-section-number">8.3.2</span> Creating a Data Frame</a></li>
+<li><a href="fundamental-data-structures-in-r.html#accessing-columns" id="toc-accessing-columns"><span class="toc-section-number">8.3.3</span> Accessing Columns</a></li>
+<li><a href="fundamental-data-structures-in-r.html#subsetting-a-data-frame" id="toc-subsetting-a-data-frame"><span class="toc-section-number">8.3.4</span> Subsetting a Data Frame</a></li>
+<li><a href="fundamental-data-structures-in-r.html#conclusion-16" id="toc-conclusion-16"><span class="toc-section-number">8.3.5</span> Conclusion</a></li>
+</ul></li>
+<li><a href="fundamental-data-structures-in-r.html#how-to-represent-categorical-data-in-r-understanding-factors" id="toc-how-to-represent-categorical-data-in-r-understanding-factors"><span class="toc-section-number">8.4</span> How to Represent Categorical Data in R? Understanding Factors</a>
+<ul>
+<li><a href="fundamental-data-structures-in-r.html#creating-factors" id="toc-creating-factors"><span class="toc-section-number">8.4.1</span> Creating Factors</a></li>
+<li><a href="fundamental-data-structures-in-r.html#changing-levels" id="toc-changing-levels"><span class="toc-section-number">8.4.2</span> Changing levels</a></li>
+<li><a href="fundamental-data-structures-in-r.html#converting-factors" id="toc-converting-factors"><span class="toc-section-number">8.4.3</span> Converting Factors</a></li>
+<li><a href="fundamental-data-structures-in-r.html#customizing-factor-levels" id="toc-customizing-factor-levels"><span class="toc-section-number">8.4.4</span> Customizing Factor Levels</a></li>
+<li><a href="fundamental-data-structures-in-r.html#creating-factors-from-character-vectors" id="toc-creating-factors-from-character-vectors"><span class="toc-section-number">8.4.5</span> Creating Factors from Character Vectors</a></li>
+<li><a href="fundamental-data-structures-in-r.html#subsetting-factors" id="toc-subsetting-factors"><span class="toc-section-number">8.4.6</span> Subsetting Factors</a></li>
+<li><a href="fundamental-data-structures-in-r.html#removing-unused-levels" id="toc-removing-unused-levels"><span class="toc-section-number">8.4.7</span> Removing Unused Levels</a></li>
+<li><a href="fundamental-data-structures-in-r.html#conclusion-17" id="toc-conclusion-17"><span class="toc-section-number">8.4.8</span> Conclusion</a></li>
+</ul></li>
+<li><a href="fundamental-data-structures-in-r.html#section-complete-2" id="toc-section-complete-2"><span class="toc-section-number">8.5</span> Section Complete</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#introduction-to-the-tidyverse-ecosystem" id="toc-introduction-to-the-tidyverse-ecosystem"><span class="toc-section-number">9</span> Introduction to the tidyverse ecosystem</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#what-is-the-tidyverse" id="toc-what-is-the-tidyverse"><span class="toc-section-number">9.1</span> What is the Tidyverse?</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#key-tidyverse-packages" id="toc-key-tidyverse-packages"><span class="toc-section-number">9.2</span> Key Tidyverse Packages</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#dplyr" id="toc-dplyr"><span class="toc-section-number">9.2.1</span> dplyr</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#a-note-on-the-pipe" id="toc-a-note-on-the-pipe"><span class="toc-section-number">9.2.2</span> A note on the pipe</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#ggplot2" id="toc-ggplot2"><span class="toc-section-number">9.2.3</span> ggplot2</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#tidyr" id="toc-tidyr"><span class="toc-section-number">9.2.4</span> tidyr</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#readr" id="toc-readr"><span class="toc-section-number">9.2.5</span> readr</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#tibble" id="toc-tibble"><span class="toc-section-number">9.2.6</span> tibble</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#stringr" id="toc-stringr"><span class="toc-section-number">9.2.7</span> stringr</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#forcats" id="toc-forcats"><span class="toc-section-number">9.2.8</span> forcats</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#real-world-applications-1" id="toc-real-world-applications-1"><span class="toc-section-number">9.2.9</span> Real-World Applications</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#tibble-and-readr---modern-data-structures-in-r" id="toc-tibble-and-readr---modern-data-structures-in-r"><span class="toc-section-number">9.3</span> Tibble and Readr - Modern Data Structures in R</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#tibbles-a-better-way-to-store-data" id="toc-tibbles-a-better-way-to-store-data"><span class="toc-section-number">9.3.1</span> Tibbles: A Better Way to Store Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#rownames-and-tibbles" id="toc-rownames-and-tibbles"><span class="toc-section-number">9.3.2</span> Rownames and Tibbles</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#reading-data-with-readr" id="toc-reading-data-with-readr"><span class="toc-section-number">9.3.3</span> Reading Data with readr</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#using-tibbles-with-imported-data" id="toc-using-tibbles-with-imported-data"><span class="toc-section-number">9.3.4</span> Using Tibbles with Imported Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#note-on-reading-excel-files" id="toc-note-on-reading-excel-files"><span class="toc-section-number">9.3.5</span> Note on reading Excel files</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-18" id="toc-conclusion-18"><span class="toc-section-number">9.3.6</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#the-tidy-data-format" id="toc-the-tidy-data-format"><span class="toc-section-number">9.4</span> The tidy data format</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#the-importance-of-tidy-data" id="toc-the-importance-of-tidy-data"><span class="toc-section-number">9.4.1</span> The Importance of Tidy Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#long-format-vs.-wide-format" id="toc-long-format-vs.-wide-format"><span class="toc-section-number">9.4.2</span> Long Format vs. Wide Format</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#introducing-dplyr-your-data-wrangling-toolkit" id="toc-introducing-dplyr-your-data-wrangling-toolkit"><span class="toc-section-number">9.5</span> Introducing dplyr: Your Data Wrangling Toolkit</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#selecting-specific-columns" id="toc-selecting-specific-columns"><span class="toc-section-number">9.5.1</span> Selecting Specific Columns</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#adding-new-columns" id="toc-adding-new-columns"><span class="toc-section-number">9.5.2</span> Adding New Columns</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#reordering-columns" id="toc-reordering-columns"><span class="toc-section-number">9.5.3</span> Reordering Columns</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#filtering-data" id="toc-filtering-data"><span class="toc-section-number">9.5.4</span> Filtering Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#summarizing-data" id="toc-summarizing-data"><span class="toc-section-number">9.5.5</span> Summarizing Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#sorting-data" id="toc-sorting-data"><span class="toc-section-number">9.5.6</span> Sorting Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-19" id="toc-conclusion-19"><span class="toc-section-number">9.5.7</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#stringr-your-essential-toolkit-to-manipulate-strings" id="toc-stringr-your-essential-toolkit-to-manipulate-strings"><span class="toc-section-number">9.6</span> stringr: your essential toolkit to manipulate strings</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#purrr-ditch-your-for-loops" id="toc-purrr-ditch-your-for-loops"><span class="toc-section-number">9.7</span> purrr: ditch your for loops</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#nesting-data-with-nest" id="toc-nesting-data-with-nest"><span class="toc-section-number">9.7.1</span> Nesting Data with nest()</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#map-and-its-variants" id="toc-map-and-its-variants"><span class="toc-section-number">9.7.2</span> <code>map()</code> and Its Variants</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#note-on-anonymous-functions" id="toc-note-on-anonymous-functions"><span class="toc-section-number">9.7.3</span> Note on Anonymous functions</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-20" id="toc-conclusion-20"><span class="toc-section-number">9.7.4</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#tidying-metadata-from-geo." id="toc-tidying-metadata-from-geo."><span class="toc-section-number">9.8</span> Tidying metadata from GEO.</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#prerequisites" id="toc-prerequisites"><span class="toc-section-number">9.8.1</span> Prerequisites</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#getting-started" id="toc-getting-started"><span class="toc-section-number">9.8.2</span> Getting Started</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#tidying-the-metadata" id="toc-tidying-the-metadata"><span class="toc-section-number">9.8.3</span> Tidying the Metadata</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#converting-to-a-tidy-data-frame" id="toc-converting-to-a-tidy-data-frame"><span class="toc-section-number">9.8.4</span> Converting to a Tidy Data Frame</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#bonus-reading-multiple-tsv-files" id="toc-bonus-reading-multiple-tsv-files"><span class="toc-section-number">9.8.5</span> Bonus: Reading Multiple TSV Files</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#section-complete-3" id="toc-section-complete-3"><span class="toc-section-number">9.9</span> Section Complete</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-21" id="toc-conclusion-21"><span class="toc-section-number">9.9.1</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#data-visualization-with-ggplot2" id="toc-data-visualization-with-ggplot2"><span class="toc-section-number">9.10</span> Data visualization with ggplot2</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#creating-scatter-plots" id="toc-creating-scatter-plots"><span class="toc-section-number">9.11</span> Creating Scatter Plots</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#prerequisites-1" id="toc-prerequisites-1"><span class="toc-section-number">9.11.1</span> Prerequisites</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#loading-and-exploring-the-data" id="toc-loading-and-exploring-the-data"><span class="toc-section-number">9.11.2</span> Loading and Exploring the Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#filtering-the-data" id="toc-filtering-the-data"><span class="toc-section-number">9.11.3</span> Filtering the Data</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#creating-a-scatter-plot" id="toc-creating-a-scatter-plot"><span class="toc-section-number">9.11.4</span> Creating a Scatter Plot</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#calculating-correlation" id="toc-calculating-correlation"><span class="toc-section-number">9.11.5</span> Calculating Correlation</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#hypothesis-testing" id="toc-hypothesis-testing"><span class="toc-section-number">9.11.6</span> Hypothesis Testing</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#adding-a-regression-line" id="toc-adding-a-regression-line"><span class="toc-section-number">9.11.7</span> Adding a Regression Line</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-22" id="toc-conclusion-22"><span class="toc-section-number">9.11.8</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#understanding-distributions-with-histograms" id="toc-understanding-distributions-with-histograms"><span class="toc-section-number">9.12</span> Understanding Distributions with Histograms</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#creating-a-basic-histogram" id="toc-creating-a-basic-histogram"><span class="toc-section-number">9.12.1</span> Creating a Basic Histogram</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#customizing-histogram-bins" id="toc-customizing-histogram-bins"><span class="toc-section-number">9.12.2</span> Customizing Histogram Bins</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-23" id="toc-conclusion-23"><span class="toc-section-number">9.12.3</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#visualizing-data-distribution-with-boxplots-and-violin-plots" id="toc-visualizing-data-distribution-with-boxplots-and-violin-plots"><span class="toc-section-number">9.13</span> Visualizing Data Distribution with Boxplots and Violin Plots</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#creating-a-basic-boxplot" id="toc-creating-a-basic-boxplot"><span class="toc-section-number">9.13.1</span> Creating a Basic Boxplot</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#rotating-x-axis-labels" id="toc-rotating-x-axis-labels"><span class="toc-section-number">9.13.2</span> Rotating X-axis Labels</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#adding-color-to-boxplots" id="toc-adding-color-to-boxplots"><span class="toc-section-number">9.13.3</span> Adding Color to Boxplots</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#customizing-color-palettes" id="toc-customizing-color-palettes"><span class="toc-section-number">9.13.4</span> Customizing Color Palettes</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#applying-custom-color-palette" id="toc-applying-custom-color-palette"><span class="toc-section-number">9.13.5</span> Applying Custom Color Palette</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#reordering-boxplots" id="toc-reordering-boxplots"><span class="toc-section-number">9.13.6</span> Reordering Boxplots</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#using-violin-plots" id="toc-using-violin-plots"><span class="toc-section-number">9.13.7</span> Using Violin Plots</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-24" id="toc-conclusion-24"><span class="toc-section-number">9.13.8</span> Conclusion</a></li>
+</ul></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#creating-bar-plots-to-visualize-median-epcam-levels-by-cancer-type" id="toc-creating-bar-plots-to-visualize-median-epcam-levels-by-cancer-type"><span class="toc-section-number">9.14</span> Creating Bar Plots to Visualize Median EPCAM Levels by Cancer Type</a>
+<ul>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#calculating-median-epcam-levels-by-cancer-type" id="toc-calculating-median-epcam-levels-by-cancer-type"><span class="toc-section-number">9.14.1</span> Calculating Median EPCAM Levels by Cancer Type</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#creating-a-basic-bar-plot" id="toc-creating-a-basic-bar-plot"><span class="toc-section-number">9.14.2</span> Creating a Basic Bar Plot</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#reordering-the-bars" id="toc-reordering-the-bars"><span class="toc-section-number">9.14.3</span> Reordering the Bars</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#reversing-the-order" id="toc-reversing-the-order"><span class="toc-section-number">9.14.4</span> Reversing the Order</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#note-on-factor-levels" id="toc-note-on-factor-levels"><span class="toc-section-number">9.14.5</span> Note on factor levels</a></li>
+<li><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-25" id="toc-conclusion-25"><span class="toc-section-number">9.14.6</span> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li><a href="introduction-to-bioconductor.html#introduction-to-bioconductor" id="toc-introduction-to-bioconductor"><span class="toc-section-number">10</span> Introduction to BioConductor</a>
+<ul>
+<li><a href="introduction-to-bioconductor.html#introduction-to-biocmanager" id="toc-introduction-to-biocmanager"><span class="toc-section-number">10.1</span> Introduction to BiocManager</a>
+<ul>
+<li><a href="introduction-to-bioconductor.html#why-use-biocmanager" id="toc-why-use-biocmanager"><span class="toc-section-number">10.1.1</span> Why Use BiocManager?</a></li>
+<li><a href="introduction-to-bioconductor.html#installing-biocmanager" id="toc-installing-biocmanager"><span class="toc-section-number">10.1.2</span> Installing BiocManager</a></li>
+<li><a href="introduction-to-bioconductor.html#installing-bioconductor-packages" id="toc-installing-bioconductor-packages"><span class="toc-section-number">10.1.3</span> Installing Bioconductor Packages</a></li>
+<li><a href="introduction-to-bioconductor.html#updating-bioconductor-packages" id="toc-updating-bioconductor-packages"><span class="toc-section-number">10.1.4</span> Updating Bioconductor Packages</a></li>
+<li><a href="introduction-to-bioconductor.html#checking-for-valid-bioconductor-versions" id="toc-checking-for-valid-bioconductor-versions"><span class="toc-section-number">10.1.5</span> Checking for Valid Bioconductor Versions</a></li>
+<li><a href="introduction-to-bioconductor.html#conclusion-26" id="toc-conclusion-26"><span class="toc-section-number">10.1.6</span> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Master Real-world Bioinformatics analysis in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="controlling-the-flow-of-our-programs" class="section level1" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Controlling the flow of our programs</h1>
+<div id="boolean-operators" class="section level2" number="6.1">
+<h2><span class="header-section-number">6.1</span> Boolean Operators</h2>
+<p>In R, understanding boolean operators is crucial for making logical comparisons and decisions in your code. Boolean operators are used to compare values and evaluate conditions, providing a foundation for decision-making processes in programming.</p>
+<p>In this tutorial, we will explore the basics of boolean operators, including equality, greater-than, and less-than comparisons. We will also delve into logical operations, introducing the essential concepts of “and” and “or” with both vectorized and non-vectorized forms.</p>
+<div id="comparison-operators" class="section level3" number="6.1.1">
+<h3><span class="header-section-number">6.1.1</span> Comparison Operators</h3>
+<p>Comparison operators allow us to compare values and return a boolean result, either <code>TRUE</code> or <code>FALSE</code>. Let’s start with some common comparison operators:</p>
+<div id="equality" class="section level4" number="6.1.1.1">
+<h4><span class="header-section-number">6.1.1.1</span> Equality (<code>==</code>)</h4>
+<p>The equality operator (<code>==</code>) checks if two values are equal. For example:</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="controlling-the-flow-of-our-programs.html#cb149-1" tabindex="-1"></a><span class="st">&quot;A&quot;</span> <span class="sc">==</span> <span class="st">&quot;A&quot;</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="controlling-the-flow-of-our-programs.html#cb151-1" tabindex="-1"></a><span class="dv">3</span> <span class="sc">==</span> <span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="greater-than" class="section level4" number="6.1.1.2">
+<h4><span class="header-section-number">6.1.1.2</span> Greater Than (<code>&gt;</code>)</h4>
+<p>The greater-than operator (&gt;) checks if one value is greater than another:</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="controlling-the-flow-of-our-programs.html#cb153-1" tabindex="-1"></a><span class="dv">5</span> <span class="sc">&gt;</span> <span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+</div>
+<div id="less-than" class="section level4" number="6.1.1.3">
+<h4><span class="header-section-number">6.1.1.3</span> Less Than (<code>&lt;</code>)</h4>
+<p>The less-than operator (<code>&lt;</code>) checks if one value is less than another:</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="controlling-the-flow-of-our-programs.html#cb155-1" tabindex="-1"></a><span class="dv">5</span> <span class="sc">&lt;</span> <span class="dv">3</span></span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+</div>
+</div>
+<div id="logical-operators" class="section level3" number="6.1.2">
+<h3><span class="header-section-number">6.1.2</span> Logical Operators</h3>
+<p>Now, let’s explore logical operators, which allow us to combine multiple conditions and make more complex decisions in our code.</p>
+<div id="vectorized-and" class="section level4" number="6.1.2.1">
+<h4><span class="header-section-number">6.1.2.1</span> Vectorized “AND” (<code>&amp;</code>)</h4>
+<p>The vectorized “and” operator (<code>&amp;</code>) allows us to perform element-wise comparisons on vectors. It returns a vector of boolean values, which is extremely useful when dealing with data sets. For example:</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="controlling-the-flow-of-our-programs.html#cb157-1" tabindex="-1"></a><span class="co"># Check if elements in -2:2 are greater than or equal to 0</span></span>
+<span id="cb157-2"><a href="controlling-the-flow-of-our-programs.html#cb157-2" tabindex="-1"></a><span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span> <span class="sc">&gt;=</span> <span class="dv">0</span></span></code></pre></div>
+<pre><code>## [1] FALSE FALSE  TRUE  TRUE  TRUE</code></pre>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="controlling-the-flow-of-our-programs.html#cb159-1" tabindex="-1"></a><span class="co"># Check if elements in -2:2 are less than or equal to 0</span></span>
+<span id="cb159-2"><a href="controlling-the-flow-of-our-programs.html#cb159-2" tabindex="-1"></a><span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span> <span class="sc">&lt;=</span> <span class="dv">0</span></span></code></pre></div>
+<pre><code>## [1]  TRUE  TRUE  TRUE FALSE FALSE</code></pre>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="controlling-the-flow-of-our-programs.html#cb161-1" tabindex="-1"></a><span class="co"># Combine the two conditions using vectorized &quot;and&quot;</span></span>
+<span id="cb161-2"><a href="controlling-the-flow-of-our-programs.html#cb161-2" tabindex="-1"></a>(<span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span> <span class="sc">&gt;=</span> <span class="dv">0</span>) <span class="sc">&amp;</span> (<span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span> <span class="sc">&lt;=</span> <span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] FALSE FALSE  TRUE FALSE FALSE</code></pre>
+</div>
+<div id="vectorized-or" class="section level4" number="6.1.2.2">
+<h4><span class="header-section-number">6.1.2.2</span> Vectorized “OR” (<code>|</code>)</h4>
+<p>Similar to the “and” operator, the vectorized “or” operator (<code>|</code>) performs element-wise comparisons and returns a vector of boolean values. Here’s an example:</p>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="controlling-the-flow-of-our-programs.html#cb163-1" tabindex="-1"></a><span class="co"># Check if elements in -2:2 are greater than or equal to 0</span></span>
+<span id="cb163-2"><a href="controlling-the-flow-of-our-programs.html#cb163-2" tabindex="-1"></a><span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span> <span class="sc">&gt;=</span> <span class="dv">0</span></span></code></pre></div>
+<pre><code>## [1] FALSE FALSE  TRUE  TRUE  TRUE</code></pre>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="controlling-the-flow-of-our-programs.html#cb165-1" tabindex="-1"></a><span class="co"># Check if elements in 2:6 are less than or equal to 0</span></span>
+<span id="cb165-2"><a href="controlling-the-flow-of-our-programs.html#cb165-2" tabindex="-1"></a><span class="dv">2</span><span class="sc">:</span><span class="dv">6</span> <span class="sc">&lt;=</span> <span class="dv">0</span></span></code></pre></div>
+<pre><code>## [1] FALSE FALSE FALSE FALSE FALSE</code></pre>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="controlling-the-flow-of-our-programs.html#cb167-1" tabindex="-1"></a><span class="co"># Combine the two conditions using vectorized &quot;or&quot;</span></span>
+<span id="cb167-2"><a href="controlling-the-flow-of-our-programs.html#cb167-2" tabindex="-1"></a>(<span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span> <span class="sc">&gt;=</span> <span class="dv">0</span>) <span class="sc">|</span> (<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span> <span class="sc">&lt;=</span> <span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] FALSE FALSE  TRUE  TRUE  TRUE</code></pre>
+</div>
+<div id="non-vectorized-and-and-or" class="section level4" number="6.1.2.3">
+<h4><span class="header-section-number">6.1.2.3</span> Non-Vectorized “AND” (<code>&amp;&amp;</code>) and “OR” (<code>||</code>)</h4>
+<p>Non-vectorized “and” (<code>&amp;&amp;</code>) and “or” (<code>||</code>) operators in R are used for performing logical operations that return a <strong>single</strong> boolean value based on the evaluation of multiple conditions</p>
+<p>The non-vectorized forms of “and” (<code>&amp;&amp;</code>) and “or” (<code>||</code>) return a single value and are typically used for non-vectorized logical operations. For example:</p>
+<div class="sourceCode" id="cb169"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb169-1"><a href="controlling-the-flow-of-our-programs.html#cb169-1" tabindex="-1"></a><span class="co"># Non-vectorized &quot;and&quot; operator</span></span>
+<span id="cb169-2"><a href="controlling-the-flow-of-our-programs.html#cb169-2" tabindex="-1"></a>(<span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span> <span class="sc">&gt;=</span> <span class="dv">0</span>) <span class="sc">&amp;&amp;</span> (<span class="sc">-</span><span class="dv">2</span><span class="sc">:</span><span class="dv">2</span> <span class="sc">&lt;=</span> <span class="dv">0</span>)</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<p>Keep in mind that as of <code>R 4.3.0</code>, these operators must be given inputs of length 1.</p>
+</div>
+</div>
+<div id="conclusion-5" class="section level3" number="6.1.3">
+<h3><span class="header-section-number">6.1.3</span> Conclusion</h3>
+<p>Understanding boolean operators and logical operations is fundamental in programming with R. These operators enable you to make decisions based on comparisons, creating more dynamic and powerful code. Whether you are comparing values or combining conditions, boolean operators are essential tools in your programming toolkit. Experiment with different comparisons and logical combinations to gain a deeper understanding of their versatility and practicality in R.</p>
+</div>
+</div>
+<div id="conditional-statements-if-else" class="section level2" number="6.2">
+<h2><span class="header-section-number">6.2</span> Conditional statements (<code>if</code>, <code>else</code>)</h2>
+<p>In the world of programming, making decisions based on data is crucial. Imagine you’re analyzing gene expression data, and you want to process it differently depending on whether a gene is highly expressed or not. In R, this decision-making ability is known as control flow, and it’s essential for creating flexible and adaptive programs. In this tutorial, we’ll explore the power of the if statement, which allows us to control the flow of our R code based on specific conditions. We’ll walk through practical examples, starting with gene expression analysis.</p>
+<div id="the-if-statement" class="section level3" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> The <code>if</code> Statement</h3>
+<p>The <code>if</code> statement is a fundamental tool for controlling program flow in R. It checks whether a specified condition evaluates to <code>TRUE</code> or <code>FALSE</code>. Depending on the result, either the code within the if block or the else block (if defined) gets executed.</p>
+<p>Imagine you’re working with DNA sequences, and you want to check if a given sequence contains the sequence motif “ATG” which is a start codon in genetics. Here’s a basic example using the if statement:</p>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="controlling-the-flow-of-our-programs.html#cb171-1" tabindex="-1"></a><span class="co"># Bioinformatics example: DNA sequence</span></span>
+<span id="cb171-2"><a href="controlling-the-flow-of-our-programs.html#cb171-2" tabindex="-1"></a>sequence <span class="ot">&lt;-</span> <span class="st">&quot;GCTAGTGTAGCGT&quot;</span></span>
+<span id="cb171-3"><a href="controlling-the-flow-of-our-programs.html#cb171-3" tabindex="-1"></a></span>
+<span id="cb171-4"><a href="controlling-the-flow-of-our-programs.html#cb171-4" tabindex="-1"></a><span class="co"># Check if the sequence contains the start codon &quot;ATG&quot;</span></span>
+<span id="cb171-5"><a href="controlling-the-flow-of-our-programs.html#cb171-5" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">&quot;ATG&quot;</span>, sequence)) {</span>
+<span id="cb171-6"><a href="controlling-the-flow-of-our-programs.html#cb171-6" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">&quot;Start codon found&quot;</span>)</span>
+<span id="cb171-7"><a href="controlling-the-flow-of-our-programs.html#cb171-7" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb171-8"><a href="controlling-the-flow-of-our-programs.html#cb171-8" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">&quot;Start codon not found&quot;</span>)</span>
+<span id="cb171-9"><a href="controlling-the-flow-of-our-programs.html#cb171-9" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;Start codon not found&quot;</code></pre>
+<blockquote>
+<p>In this scenario, the if statement checks whether the sequence contains “ATG” using the grepl function. If it’s found, it prints a message indicating that the start codon is present; otherwise, it prints a message indicating that the start codon is not found.</p>
+</blockquote>
+<p>If you want to check whether both start codon and stop codon are in the DNA sequence:</p>
+<div class="sourceCode" id="cb173"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb173-1"><a href="controlling-the-flow-of-our-programs.html#cb173-1" tabindex="-1"></a>sequence <span class="ot">&lt;-</span> <span class="st">&quot;GCTAGTGTAGCGT&quot;</span></span>
+<span id="cb173-2"><a href="controlling-the-flow-of-our-programs.html#cb173-2" tabindex="-1"></a></span>
+<span id="cb173-3"><a href="controlling-the-flow-of-our-programs.html#cb173-3" tabindex="-1"></a><span class="co"># Check if the sequence contains the start codon &quot;ATG&quot; or the stop codon &quot;TAA&quot;</span></span>
+<span id="cb173-4"><a href="controlling-the-flow-of-our-programs.html#cb173-4" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">&quot;ATG&quot;</span>, sequence) <span class="sc">||</span> <span class="fu">grepl</span>(<span class="st">&quot;TAA&quot;</span>, sequence)) {</span>
+<span id="cb173-5"><a href="controlling-the-flow-of-our-programs.html#cb173-5" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">&quot;Start codon or Stop Codon are found&quot;</span>)</span>
+<span id="cb173-6"><a href="controlling-the-flow-of-our-programs.html#cb173-6" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb173-7"><a href="controlling-the-flow-of-our-programs.html#cb173-7" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">&quot;No Start codon or Stop codon are found&quot;</span>)</span>
+<span id="cb173-8"><a href="controlling-the-flow-of-our-programs.html#cb173-8" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;No Start codon or Stop codon are found&quot;</code></pre>
+<p>Note we use <code>||</code> , the non-vectorized version or for condition checking.</p>
+</div>
+<div id="else-statement" class="section level3" number="6.2.2">
+<h3><span class="header-section-number">6.2.2</span> <code>else</code> statement</h3>
+<p>Now, let’s explore the <code>else</code> statement in the context of DNA sequence analysis. Suppose you want to perform a different action if the sequence doesn’t contain the start codon. For instance, you might want to check for a stop codon. Here’s a simplified example:</p>
+<div class="sourceCode" id="cb175"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb175-1"><a href="controlling-the-flow-of-our-programs.html#cb175-1" tabindex="-1"></a><span class="co"># Bioinformatics example: DNA sequence without the start codon</span></span>
+<span id="cb175-2"><a href="controlling-the-flow-of-our-programs.html#cb175-2" tabindex="-1"></a>sequence <span class="ot">&lt;-</span> <span class="st">&quot;CGTACTAGCGT&quot;</span></span>
+<span id="cb175-3"><a href="controlling-the-flow-of-our-programs.html#cb175-3" tabindex="-1"></a></span>
+<span id="cb175-4"><a href="controlling-the-flow-of-our-programs.html#cb175-4" tabindex="-1"></a><span class="co"># Check if the sequence contains the start codon &quot;ATG&quot;</span></span>
+<span id="cb175-5"><a href="controlling-the-flow-of-our-programs.html#cb175-5" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">&quot;ATG&quot;</span>, sequence)) {</span>
+<span id="cb175-6"><a href="controlling-the-flow-of-our-programs.html#cb175-6" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">&quot;Start codon found&quot;</span>)</span>
+<span id="cb175-7"><a href="controlling-the-flow-of-our-programs.html#cb175-7" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb175-8"><a href="controlling-the-flow-of-our-programs.html#cb175-8" tabindex="-1"></a>    <span class="fu">print</span>(<span class="st">&quot;Start codon not found, checking for stop codon&quot;</span>)</span>
+<span id="cb175-9"><a href="controlling-the-flow-of-our-programs.html#cb175-9" tabindex="-1"></a>    </span>
+<span id="cb175-10"><a href="controlling-the-flow-of-our-programs.html#cb175-10" tabindex="-1"></a>    <span class="co"># Check if the sequence contains the stop codon &quot;TAA&quot;</span></span>
+<span id="cb175-11"><a href="controlling-the-flow-of-our-programs.html#cb175-11" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">grepl</span>(<span class="st">&quot;TAA&quot;</span>,sequence)) {</span>
+<span id="cb175-12"><a href="controlling-the-flow-of-our-programs.html#cb175-12" tabindex="-1"></a>        <span class="fu">print</span>(<span class="st">&quot;Stop codon found&quot;</span>)</span>
+<span id="cb175-13"><a href="controlling-the-flow-of-our-programs.html#cb175-13" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb175-14"><a href="controlling-the-flow-of-our-programs.html#cb175-14" tabindex="-1"></a>        <span class="fu">print</span>(<span class="st">&quot;No start or stop codon found&quot;</span>)</span>
+<span id="cb175-15"><a href="controlling-the-flow-of-our-programs.html#cb175-15" tabindex="-1"></a>    }</span>
+<span id="cb175-16"><a href="controlling-the-flow-of-our-programs.html#cb175-16" tabindex="-1"></a>}</span></code></pre></div>
+<pre><code>## [1] &quot;Start codon not found, checking for stop codon&quot;
+## [1] &quot;No start or stop codon found&quot;</code></pre>
+<blockquote>
+<p>In this example, the if statement first checks for the presence of the start codon “ATG.” If it’s not found, it enters the else block and checks for the stop codon “TAA.” Depending on the outcome, it prints the corresponding message.</p>
+</blockquote>
+</div>
+<div id="else-if" class="section level3" number="6.2.3">
+<h3><span class="header-section-number">6.2.3</span> <code>else if</code></h3>
+<p>If you have multiple conditions and want to test them one by one, the pseudo-code is:</p>
+<div class="sourceCode" id="cb177"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb177-1"><a href="controlling-the-flow-of-our-programs.html#cb177-1" tabindex="-1"></a><span class="cf">if</span> (condition1) { </span>
+<span id="cb177-2"><a href="controlling-the-flow-of-our-programs.html#cb177-2" tabindex="-1"></a>    expr1</span>
+<span id="cb177-3"><a href="controlling-the-flow-of-our-programs.html#cb177-3" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (condition2) {</span>
+<span id="cb177-4"><a href="controlling-the-flow-of-our-programs.html#cb177-4" tabindex="-1"></a>    expr2</span>
+<span id="cb177-5"><a href="controlling-the-flow-of-our-programs.html#cb177-5" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span>  (condition3) {</span>
+<span id="cb177-6"><a href="controlling-the-flow-of-our-programs.html#cb177-6" tabindex="-1"></a>    expr3</span>
+<span id="cb177-7"><a href="controlling-the-flow-of-our-programs.html#cb177-7" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb177-8"><a href="controlling-the-flow-of-our-programs.html#cb177-8" tabindex="-1"></a>    expr4</span>
+<span id="cb177-9"><a href="controlling-the-flow-of-our-programs.html#cb177-9" tabindex="-1"></a>}</span></code></pre></div>
+</div>
+<div id="exercise" class="section level3" number="6.2.4">
+<h3><span class="header-section-number">6.2.4</span> Exercise</h3>
+<p>In real biology, there are multiple stop codons: UAA, UAG, and UGA (T is converted to U in RNA). Use the multiple else if clauses to find the stop codon: TAA, TAG, and TGA in a DNA sequence.</p>
+<p><img src="images/codon.png" /></p>
+</div>
+<div id="conclusion-6" class="section level3" number="6.2.5">
+<h3><span class="header-section-number">6.2.5</span> Conclusion</h3>
+<p>In conclusion, the if and else statements in R provide bioinformaticians with the means to adapt their analyses and make data-driven decisions. By employing these control flow structures, researchers can enhance the reproducibility and adaptability of their bioinformatics workflows, ultimately advancing our understanding of biological systems. Whether you’re searching for genetic elements or classifying sequences, mastering control flow is an essential skill in the bioinformatics toolbox.</p>
+</div>
+</div>
+<div id="loops" class="section level2" number="6.3">
+<h2><span class="header-section-number">6.3</span> Loops</h2>
+<p>In the world of data analysis and programming, loops are indispensable tools for executing repetitive tasks efficiently. They allow us to automate processes like processing multiple files or iterating through steps in an analysis pipeline. In R, we have two main types of loops: the <code>while</code> loop and the <code>for</code> loop. In this section, we’ll delve into their usage with real-world examples and explore when to employ each type.</p>
+<div id="the-while-loop" class="section level3" number="6.3.1">
+<h3><span class="header-section-number">6.3.1</span> The <code>while</code> Loop</h3>
+<p><img src="images/while.png" /></p>
+<p>The <code>while</code> loop repeatedly runs a block of code as long as a specified condition remains true. A practical scenario could involve quality-controlling sequencing files one by one until we encounter a file that fails a test. Here’s an example:</p>
+<div class="sourceCode" id="cb178"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb178-1"><a href="controlling-the-flow-of-our-programs.html#cb178-1" tabindex="-1"></a>expression_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">16</span>, <span class="dv">32</span>)</span>
+<span id="cb178-2"><a href="controlling-the-flow-of-our-programs.html#cb178-2" tabindex="-1"></a>new_expression_vec <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb178-3"><a href="controlling-the-flow-of-our-programs.html#cb178-3" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb178-4"><a href="controlling-the-flow-of-our-programs.html#cb178-4" tabindex="-1"></a></span>
+<span id="cb178-5"><a href="controlling-the-flow-of-our-programs.html#cb178-5" tabindex="-1"></a><span class="cf">while</span> (i <span class="sc">&lt;=</span> <span class="fu">length</span>(expression_vec)) {</span>
+<span id="cb178-6"><a href="controlling-the-flow-of-our-programs.html#cb178-6" tabindex="-1"></a>  expression_value <span class="ot">&lt;-</span> expression_vec[i]</span>
+<span id="cb178-7"><a href="controlling-the-flow-of-our-programs.html#cb178-7" tabindex="-1"></a>  new_expression_vec[i] <span class="ot">&lt;-</span> <span class="fu">log2</span>(expression_value)  <span class="co"># Calculate the base-2 logarithm</span></span>
+<span id="cb178-8"><a href="controlling-the-flow-of-our-programs.html#cb178-8" tabindex="-1"></a>  i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span>  <span class="co"># Increment the index to process the next element</span></span>
+<span id="cb178-9"><a href="controlling-the-flow-of-our-programs.html#cb178-9" tabindex="-1"></a>}</span>
+<span id="cb178-10"><a href="controlling-the-flow-of-our-programs.html#cb178-10" tabindex="-1"></a></span>
+<span id="cb178-11"><a href="controlling-the-flow-of-our-programs.html#cb178-11" tabindex="-1"></a>new_expression_vec</span></code></pre></div>
+<pre><code>## [1] -Inf    2    3    4    5</code></pre>
+<p>In the given code, the loop counter <code>i</code> is initially set to 1. The while loop iterates as long as <code>i</code> is less than or equal to the length of the <code>expression_vec</code> vector. In each iteration, it calculates the base-2 logarithm of the current element in <code>expression_vec</code> and stores it in <code>new_expression_vec</code>, while incrementing the value of i by 1. This incrementing of <code>i</code> ensures that the loop processes the next element in the vector during each iteration until all elements have been processed.</p>
+<p>Note, the calculation in R is vectorized, you can use:</p>
+<div class="sourceCode" id="cb180"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb180-1"><a href="controlling-the-flow-of-our-programs.html#cb180-1" tabindex="-1"></a><span class="fu">log2</span>(expression_vec)</span></code></pre></div>
+<pre><code>## [1] -Inf    2    3    4    5</code></pre>
+<p>to get the same results.</p>
+</div>
+<div id="while-loops-in-real-life" class="section level3" number="6.3.2">
+<h3><span class="header-section-number">6.3.2</span> While Loops in Real Life</h3>
+<p>Researchers often work with large datasets generated from DNA sequencing machines. These machines produce files containing vast amounts of genetic information, and it’s crucial to ensure the quality of this data before using it in further analyses. Imagine these files as a collection of books, each representing genetic information from a different sample.</p>
+<p>To ensure that the data is reliable, scientists perform a process called quality control (QC). It’s similar to checking books for errors, missing pages, or smudged ink before studying their contents. One important aspect of QC in sequencing data is assessing the quality of the readings from the sequencing machine. This quality is often represented as a <a href="https://en.wikipedia.org/wiki/Phred_quality_score">numerical score</a>, with higher scores indicating better data. Researchers typically set a threshold value, like a score of 30, which they consider acceptable quality.</p>
+<p>The code snippet below (this is just a pseudo-code) illustrates how to iterate through a vector of file names, read each file, and check if the mean quality score falls below a specified threshold:</p>
+<div class="sourceCode" id="cb182"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb182-1"><a href="controlling-the-flow-of-our-programs.html#cb182-1" tabindex="-1"></a>files <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;sample1.fq&quot;</span>, <span class="st">&quot;sample2.fq&quot;</span>, <span class="st">&quot;sample3.fq&quot;</span>)</span>
+<span id="cb182-2"><a href="controlling-the-flow-of-our-programs.html#cb182-2" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb182-3"><a href="controlling-the-flow-of-our-programs.html#cb182-3" tabindex="-1"></a></span>
+<span id="cb182-4"><a href="controlling-the-flow-of-our-programs.html#cb182-4" tabindex="-1"></a><span class="co"># Start a `while` loop with the condition: while `i` is less than or equal to the length of `files`</span></span>
+<span id="cb182-5"><a href="controlling-the-flow-of-our-programs.html#cb182-5" tabindex="-1"></a><span class="cf">while</span> (i <span class="sc">&lt;=</span> <span class="fu">length</span>(files)) {</span>
+<span id="cb182-6"><a href="controlling-the-flow-of-our-programs.html#cb182-6" tabindex="-1"></a>  </span>
+<span id="cb182-7"><a href="controlling-the-flow-of-our-programs.html#cb182-7" tabindex="-1"></a>  <span class="co"># Read the current file</span></span>
+<span id="cb182-8"><a href="controlling-the-flow-of-our-programs.html#cb182-8" tabindex="-1"></a>  fq <span class="ot">&lt;-</span> <span class="fu">readFastq</span>(files[i])</span>
+<span id="cb182-9"><a href="controlling-the-flow-of-our-programs.html#cb182-9" tabindex="-1"></a>  </span>
+<span id="cb182-10"><a href="controlling-the-flow-of-our-programs.html#cb182-10" tabindex="-1"></a>  <span class="co"># Check if the mean quality score is below 30</span></span>
+<span id="cb182-11"><a href="controlling-the-flow-of-our-programs.html#cb182-11" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">meanQual</span>(fq) <span class="sc">&lt;</span> <span class="dv">30</span>) {</span>
+<span id="cb182-12"><a href="controlling-the-flow-of-our-programs.html#cb182-12" tabindex="-1"></a>     <span class="co"># Print a failure message if the quality check fails</span></span>
+<span id="cb182-13"><a href="controlling-the-flow-of-our-programs.html#cb182-13" tabindex="-1"></a>     <span class="fu">print</span>(<span class="fu">paste</span>(files[i], <span class="st">&quot;failed QC&quot;</span>))</span>
+<span id="cb182-14"><a href="controlling-the-flow-of-our-programs.html#cb182-14" tabindex="-1"></a>     <span class="co"># Exit the loop using `break`</span></span>
+<span id="cb182-15"><a href="controlling-the-flow-of-our-programs.html#cb182-15" tabindex="-1"></a>     <span class="cf">break</span></span>
+<span id="cb182-16"><a href="controlling-the-flow-of-our-programs.html#cb182-16" tabindex="-1"></a>  } </span>
+<span id="cb182-17"><a href="controlling-the-flow-of-our-programs.html#cb182-17" tabindex="-1"></a>  </span>
+<span id="cb182-18"><a href="controlling-the-flow-of-our-programs.html#cb182-18" tabindex="-1"></a>  <span class="co"># Increment the index `i` to move to the next file</span></span>
+<span id="cb182-19"><a href="controlling-the-flow-of-our-programs.html#cb182-19" tabindex="-1"></a>  i <span class="ot">&lt;-</span> i <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb182-20"><a href="controlling-the-flow-of-our-programs.html#cb182-20" tabindex="-1"></a>}</span></code></pre></div>
+<p>In this case, the loop iterates through files, reads each one, and performs quality control. If a file fails the quality check, the loop prints a failure message and exits.</p>
+</div>
+<div id="the-for-loop" class="section level3" number="6.3.3">
+<h3><span class="header-section-number">6.3.3</span> The <code>for</code> Loop</h3>
+<p><img src="images/forloop.png" /></p>
+<p>On the other hand, the for <code>loop</code> iterates through a predefined sequence of values. Consider a scenario where we want to standardize gene expression across all samples using Z-scores:</p>
+<div class="sourceCode" id="cb183"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb183-1"><a href="controlling-the-flow-of-our-programs.html#cb183-1" tabindex="-1"></a><span class="co"># Create a matrix of gene expression data</span></span>
+<span id="cb183-2"><a href="controlling-the-flow-of-our-programs.html#cb183-2" tabindex="-1"></a>expression_mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>, <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>)</span>
+<span id="cb183-3"><a href="controlling-the-flow-of-our-programs.html#cb183-3" tabindex="-1"></a></span>
+<span id="cb183-4"><a href="controlling-the-flow-of-our-programs.html#cb183-4" tabindex="-1"></a><span class="co"># Define the row names (gene names) and column names (sample names)</span></span>
+<span id="cb183-5"><a href="controlling-the-flow-of-our-programs.html#cb183-5" tabindex="-1"></a><span class="fu">rownames</span>(expression_mat) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;gene1&quot;</span>, <span class="st">&quot;gene2&quot;</span>, <span class="st">&quot;gene3&quot;</span>)</span>
+<span id="cb183-6"><a href="controlling-the-flow-of-our-programs.html#cb183-6" tabindex="-1"></a><span class="fu">colnames</span>(expression_mat) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;sample1&quot;</span>, <span class="st">&quot;sample2&quot;</span>, <span class="st">&quot;sample3&quot;</span>, <span class="st">&quot;sample4&quot;</span>)</span>
+<span id="cb183-7"><a href="controlling-the-flow-of-our-programs.html#cb183-7" tabindex="-1"></a></span>
+<span id="cb183-8"><a href="controlling-the-flow-of-our-programs.html#cb183-8" tabindex="-1"></a><span class="co"># Get the gene names</span></span>
+<span id="cb183-9"><a href="controlling-the-flow-of-our-programs.html#cb183-9" tabindex="-1"></a>genes <span class="ot">&lt;-</span> <span class="fu">rownames</span>(expression_mat)</span>
+<span id="cb183-10"><a href="controlling-the-flow-of-our-programs.html#cb183-10" tabindex="-1"></a></span>
+<span id="cb183-11"><a href="controlling-the-flow-of-our-programs.html#cb183-11" tabindex="-1"></a><span class="co"># Start a for loop that iterates through each gene name &#39;g&#39; in &#39;genes&#39;</span></span>
+<span id="cb183-12"><a href="controlling-the-flow-of-our-programs.html#cb183-12" tabindex="-1"></a><span class="cf">for</span> (g <span class="cf">in</span> genes) {</span>
+<span id="cb183-13"><a href="controlling-the-flow-of-our-programs.html#cb183-13" tabindex="-1"></a>  </span>
+<span id="cb183-14"><a href="controlling-the-flow-of-our-programs.html#cb183-14" tabindex="-1"></a>  <span class="co"># Calculate the mean expression for the current gene &#39;g&#39;</span></span>
+<span id="cb183-15"><a href="controlling-the-flow-of-our-programs.html#cb183-15" tabindex="-1"></a>  mean_expr <span class="ot">&lt;-</span> <span class="fu">mean</span>(expression_mat[g, ]) </span>
+<span id="cb183-16"><a href="controlling-the-flow-of-our-programs.html#cb183-16" tabindex="-1"></a>  </span>
+<span id="cb183-17"><a href="controlling-the-flow-of-our-programs.html#cb183-17" tabindex="-1"></a>  <span class="co"># Calculate the standard deviation of expression for the current gene &#39;g&#39;</span></span>
+<span id="cb183-18"><a href="controlling-the-flow-of-our-programs.html#cb183-18" tabindex="-1"></a>  sd_expr <span class="ot">&lt;-</span> <span class="fu">sd</span>(expression_mat[g, ])</span>
+<span id="cb183-19"><a href="controlling-the-flow-of-our-programs.html#cb183-19" tabindex="-1"></a>  </span>
+<span id="cb183-20"><a href="controlling-the-flow-of-our-programs.html#cb183-20" tabindex="-1"></a>  <span class="co"># Standardize the expression values for the current gene &#39;g&#39; using Z-scores</span></span>
+<span id="cb183-21"><a href="controlling-the-flow-of-our-programs.html#cb183-21" tabindex="-1"></a>  expression_mat[g, ] <span class="ot">&lt;-</span> (expression_mat[g, ] <span class="sc">-</span> mean_expr) <span class="sc">/</span> sd_expr</span>
+<span id="cb183-22"><a href="controlling-the-flow-of-our-programs.html#cb183-22" tabindex="-1"></a>}</span>
+<span id="cb183-23"><a href="controlling-the-flow-of-our-programs.html#cb183-23" tabindex="-1"></a></span>
+<span id="cb183-24"><a href="controlling-the-flow-of-our-programs.html#cb183-24" tabindex="-1"></a><span class="co"># Print the resulting standardized expression matrix &#39;expression_mat&#39;</span></span>
+<span id="cb183-25"><a href="controlling-the-flow-of-our-programs.html#cb183-25" tabindex="-1"></a>expression_mat</span></code></pre></div>
+<pre><code>##         sample1    sample2   sample3  sample4
+## gene1 -1.161895 -0.3872983 0.3872983 1.161895
+## gene2 -1.161895 -0.3872983 0.3872983 1.161895
+## gene3 -1.161895 -0.3872983 0.3872983 1.161895</code></pre>
+<p>In this example, the for loop efficiently iterates through each gene, calculates the mean and standard deviation of expression, and then standardizes that gene’s row. This process repeats for all genes, allowing for consistent normalization.</p>
+<p>Of course, you can use the scale function in R to do this directly without using a <code>for</code> loop. Note, <code>scale</code> works by columns. To get the same result, you need to first transpose the matrix, scale it and then transpose it back.</p>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="controlling-the-flow-of-our-programs.html#cb185-1" tabindex="-1"></a><span class="fu">t</span>(<span class="fu">scale</span>(<span class="fu">t</span>(expression_mat)))</span></code></pre></div>
+<pre><code>##         sample1    sample2   sample3  sample4
+## gene1 -1.161895 -0.3872983 0.3872983 1.161895
+## gene2 -1.161895 -0.3872983 0.3872983 1.161895
+## gene3 -1.161895 -0.3872983 0.3872983 1.161895
+## attr(,&quot;scaled:center&quot;)
+## gene1 gene2 gene3 
+##     0     0     0 
+## attr(,&quot;scaled:scale&quot;)
+## gene1 gene2 gene3 
+##     1     1     1</code></pre>
+</div>
+<div id="conclusion-7" class="section level3" number="6.3.4">
+<h3><span class="header-section-number">6.3.4</span> Conclusion</h3>
+<p>It’s crucial to understand that loops can provide fine-grained control for accessing and transforming data at an element level. However, in many cases, R offers vectorized operations that simplify code and make it more readable, as demonstrated with the Z-score calculation using the scale function.</p>
+<p>Remember, <code>while</code> loops and <code>for</code> loops are valuable tools in your data analysis toolkit, but it’s essential to choose the most suitable method for the task at hand. By mastering these loop structures, you can streamline your data analysis and automation processes, making your work more efficient and precise. Computers are good at repetitive work.
+Whenever you are manually doing the same task multiple times, think of the loops!</p>
+</div>
+</div>
+<div id="gene-expression-annotation-using-loops-and-control-structures" class="section level2" number="6.4">
+<h2><span class="header-section-number">6.4</span> Gene Expression Annotation using Loops and Control Structures</h2>
+<p>We often encounter scenarios where we need to categorize data based on specific criteria. In this example, we’ll use a combination of loops and control structures in the R programming language to add custom annotations to gene expression measurements for a group of patients. We’ll categorize their expression levels into different classes: “not-expressed,” “low,” “medium,” and “high.”</p>
+<div id="the-data" class="section level3" number="6.4.1">
+<h3><span class="header-section-number">6.4.1</span> The Data</h3>
+<p>Suppose we have gene expression measurements for 5 patients stored in a vector called expression_vec. These measurements represent the expression levels of a specific gene.</p>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="controlling-the-flow-of-our-programs.html#cb187-1" tabindex="-1"></a>expression_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">6</span>, <span class="dv">22</span>)</span></code></pre></div>
+</div>
+<div id="creating-annotations" class="section level3" number="6.4.2">
+<h3><span class="header-section-number">6.4.2</span> Creating Annotations</h3>
+<p>We want to annotate each patient’s expression status based on the range of their expression values. To do this, we’ll initiate an empty vector called <code>annotations</code> to store our annotations.</p>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="controlling-the-flow-of-our-programs.html#cb188-1" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">c</span>()</span></code></pre></div>
+<p>Now, let’s go through the process step by step.</p>
+</div>
+<div id="the-loop" class="section level3" number="6.4.3">
+<h3><span class="header-section-number">6.4.3</span> The Loop</h3>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="controlling-the-flow-of-our-programs.html#cb189-1" tabindex="-1"></a><span class="cf">for</span> (expression_value <span class="cf">in</span> expression_vec) {</span>
+<span id="cb189-2"><a href="controlling-the-flow-of-our-programs.html#cb189-2" tabindex="-1"></a>  <span class="cf">if</span> (expression_value <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb189-3"><a href="controlling-the-flow-of-our-programs.html#cb189-3" tabindex="-1"></a>    annotation <span class="ot">&lt;-</span> <span class="st">&quot;not-expressed&quot;</span> </span>
+<span id="cb189-4"><a href="controlling-the-flow-of-our-programs.html#cb189-4" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (expression_value <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;</span> expression_value <span class="sc">&lt;</span> <span class="dv">5</span>) {</span>
+<span id="cb189-5"><a href="controlling-the-flow-of-our-programs.html#cb189-5" tabindex="-1"></a>    annotation <span class="ot">&lt;-</span> <span class="st">&quot;low&quot;</span></span>
+<span id="cb189-6"><a href="controlling-the-flow-of-our-programs.html#cb189-6" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (expression_value <span class="sc">&gt;=</span> <span class="dv">5</span> <span class="sc">&amp;</span> expression_value <span class="sc">&lt;</span> <span class="dv">20</span>) {</span>
+<span id="cb189-7"><a href="controlling-the-flow-of-our-programs.html#cb189-7" tabindex="-1"></a>    annotation <span class="ot">&lt;-</span> <span class="st">&quot;medium&quot;</span></span>
+<span id="cb189-8"><a href="controlling-the-flow-of-our-programs.html#cb189-8" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb189-9"><a href="controlling-the-flow-of-our-programs.html#cb189-9" tabindex="-1"></a>    annotation <span class="ot">&lt;-</span> <span class="st">&quot;high&quot;</span></span>
+<span id="cb189-10"><a href="controlling-the-flow-of-our-programs.html#cb189-10" tabindex="-1"></a>  }</span>
+<span id="cb189-11"><a href="controlling-the-flow-of-our-programs.html#cb189-11" tabindex="-1"></a>  annotations <span class="ot">&lt;-</span> <span class="fu">c</span>(annotations, annotation)</span>
+<span id="cb189-12"><a href="controlling-the-flow-of-our-programs.html#cb189-12" tabindex="-1"></a>}</span></code></pre></div>
+<p>Here’s what’s happening in the code:</p>
+<ul>
+<li><p>We use a for loop to iterate through each expression_value in the expression_vec vector.</p></li>
+<li><p>Inside the loop, we use a series of if and else if statements to categorize each expression_value based on its range.</p></li>
+<li><p>If the value is exactly 0, we assign the annotation “not-expressed.”</p></li>
+<li><p>If the value is greater than 0 but less than 5, we assign the annotation “low.”</p></li>
+<li><p>If the value is greater than or equal to 5 but less than 20, we assign the annotation “medium.”</p></li>
+<li><p>If none of the above conditions are met, we assign the annotation “high.”</p></li>
+<li><p>Finally, we append each annotation to the annotations vector.</p></li>
+</ul>
+</div>
+<div id="output" class="section level3" number="6.4.4">
+<h3><span class="header-section-number">6.4.4</span> Output</h3>
+<p>Let’s see the results of our annotations:</p>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="controlling-the-flow-of-our-programs.html#cb190-1" tabindex="-1"></a>annotations</span></code></pre></div>
+<pre><code>## [1] &quot;not-expressed&quot; &quot;medium&quot;        &quot;medium&quot;        &quot;medium&quot;       
+## [5] &quot;high&quot;</code></pre>
+</div>
+<div id="putting-it-all-together" class="section level3" number="6.4.5">
+<h3><span class="header-section-number">6.4.5</span> Putting it all together</h3>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="controlling-the-flow-of-our-programs.html#cb192-1" tabindex="-1"></a>expression_vec<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">6</span>, <span class="dv">22</span>)</span>
+<span id="cb192-2"><a href="controlling-the-flow-of-our-programs.html#cb192-2" tabindex="-1"></a></span>
+<span id="cb192-3"><a href="controlling-the-flow-of-our-programs.html#cb192-3" tabindex="-1"></a><span class="co"># initiate an empty vector </span></span>
+<span id="cb192-4"><a href="controlling-the-flow-of-our-programs.html#cb192-4" tabindex="-1"></a>annotations <span class="ot">&lt;-</span> <span class="fu">c</span>() </span>
+<span id="cb192-5"><a href="controlling-the-flow-of-our-programs.html#cb192-5" tabindex="-1"></a></span>
+<span id="cb192-6"><a href="controlling-the-flow-of-our-programs.html#cb192-6" tabindex="-1"></a><span class="cf">for</span> (expression_value <span class="cf">in</span> expression_vec){</span>
+<span id="cb192-7"><a href="controlling-the-flow-of-our-programs.html#cb192-7" tabindex="-1"></a>  <span class="cf">if</span> ( expression_value <span class="sc">==</span><span class="dv">0</span> ){</span>
+<span id="cb192-8"><a href="controlling-the-flow-of-our-programs.html#cb192-8" tabindex="-1"></a>    annotation <span class="ot">&lt;-</span> <span class="st">&quot;not-expressed&quot;</span> </span>
+<span id="cb192-9"><a href="controlling-the-flow-of-our-programs.html#cb192-9" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (expression_value <span class="sc">&gt;</span><span class="dv">0</span> <span class="sc">&amp;</span> expression_value <span class="sc">&lt;</span> <span class="dv">5</span>) {</span>
+<span id="cb192-10"><a href="controlling-the-flow-of-our-programs.html#cb192-10" tabindex="-1"></a>      annotation<span class="ot">&lt;-</span> <span class="st">&quot;low&quot;</span></span>
+<span id="cb192-11"><a href="controlling-the-flow-of-our-programs.html#cb192-11" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (expression_value <span class="sc">&gt;=</span><span class="dv">5</span> <span class="sc">&amp;</span> expression_value <span class="sc">&lt;</span><span class="dv">20</span>) {</span>
+<span id="cb192-12"><a href="controlling-the-flow-of-our-programs.html#cb192-12" tabindex="-1"></a>      annotation<span class="ot">&lt;-</span> <span class="st">&quot;medium&quot;</span></span>
+<span id="cb192-13"><a href="controlling-the-flow-of-our-programs.html#cb192-13" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb192-14"><a href="controlling-the-flow-of-our-programs.html#cb192-14" tabindex="-1"></a>      annotation<span class="ot">&lt;-</span> <span class="st">&quot;high&quot;</span></span>
+<span id="cb192-15"><a href="controlling-the-flow-of-our-programs.html#cb192-15" tabindex="-1"></a>    }</span>
+<span id="cb192-16"><a href="controlling-the-flow-of-our-programs.html#cb192-16" tabindex="-1"></a>    annotations<span class="ot">&lt;-</span> <span class="fu">c</span>(annotations, annotation)</span>
+<span id="cb192-17"><a href="controlling-the-flow-of-our-programs.html#cb192-17" tabindex="-1"></a>  }</span>
+<span id="cb192-18"><a href="controlling-the-flow-of-our-programs.html#cb192-18" tabindex="-1"></a></span>
+<span id="cb192-19"><a href="controlling-the-flow-of-our-programs.html#cb192-19" tabindex="-1"></a>annotations</span></code></pre></div>
+<pre><code>## [1] &quot;not-expressed&quot; &quot;medium&quot;        &quot;medium&quot;        &quot;medium&quot;       
+## [5] &quot;high&quot;</code></pre>
+<p>In R, everything is vectorized. There is a much better way to achieve the same thing using the <a href="https://dplyr.tidyverse.org/reference/case_when.html"><code>case_when</code></a> function in the <code>dplyr</code> package. We will cover it in the later lecture.</p>
+</div>
+<div id="conclusion-8" class="section level3" number="6.4.6">
+<h3><span class="header-section-number">6.4.6</span> Conclusion</h3>
+<p>This approach to categorizing gene expression data is essential in various biological and medical research contexts. For example:</p>
+<ul>
+<li><p>Drug Development: When studying the impact of a drug on gene expression, researchers need to categorize gene expression levels to assess the drug’s effectiveness.</p></li>
+<li><p>Cancer Research: Identifying genes with high or low expression levels can provide insights into cancer progression and potential therapeutic targets.</p></li>
+<li><p>Disease Biomarker Discovery: Categorizing gene expression in patients with a specific disease can help identify biomarkers for early diagnosis.</p></li>
+</ul>
+<p>By combining loops and control structures as shown in this example, scientists and analysts can efficiently handle and interpret complex biological data.</p>
+</div>
+</div>
+<div id="lets-solve-a-challenge" class="section level2" number="6.5">
+<h2><span class="header-section-number">6.5</span> Let’s solve a Challenge</h2>
+<p>You’re given a vector of daily average temperatures (in Celsius) for a month. Your task is to analyze the temperature data to find out the following:</p>
+<ul>
+<li><p>The number of days with temperatures above the monthly average.</p></li>
+<li><p>Whether any day’s temperature exceeds 30°C (considering it as a threshold for a very hot day).</p></li>
+<li><p>The number of days with temperatures below 15°C (considering it as a threshold for a cold day).</p></li>
+</ul>
+<p>Given Data:</p>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb194-1"><a href="controlling-the-flow-of-our-programs.html#cb194-1" tabindex="-1"></a>temperatures <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">16</span>, <span class="dv">20</span>, <span class="dv">22</span>, <span class="dv">24</span>, <span class="dv">26</span>, <span class="dv">28</span>, <span class="dv">30</span>, <span class="dv">32</span>, <span class="dv">18</span>, <span class="dv">16</span>, <span class="dv">14</span>, <span class="dv">22</span>, <span class="dv">24</span>, <span class="dv">26</span>, <span class="dv">20</span>, <span class="dv">18</span>, <span class="dv">17</span>, <span class="dv">15</span>, <span class="dv">13</span>, <span class="dv">11</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">16</span>)</span></code></pre></div>
+<p>Tasks:</p>
+<ol style="list-style-type: decimal">
+<li><p>Calculate the monthly average temperature.</p></li>
+<li><p>Use a loop to iterate through the temperatures vector.</p></li>
+</ol>
+<ul>
+<li><p>For each temperature, check if it’s above the monthly average and count these occurrences.</p></li>
+<li><p>Check if there’s any day with a temperature exceeding 30°C.</p></li>
+<li><p>Count the number of days with temperatures below 15°C.</p></li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>Print the results:</li>
+</ol>
+<ul>
+<li><p>Total number of days above the monthly average.</p></li>
+<li><p>Whether there was a very hot day (temperature &gt; 30°C).</p></li>
+<li><p>Number of cold days (temperature &lt; 15°C).</p></li>
+</ul>
+</div>
+<div id="solution" class="section level2" number="6.6">
+<h2><span class="header-section-number">6.6</span> Solution</h2>
+<p>Before diving into the solution, I encourage all students to take a moment to challenge themselves and attempt to solve the problem independently. This coding exercise provides a valuable opportunity to practice essential programming concepts in R, such as loops, conditional statements, and basic data manipulation. Start by considering how you would calculate the monthly average temperature from a list of daily temperatures and how you might track the number of days above the average, very hot days (above 30°C), and cold days (below 15°C). Once you’ve given it a try, feel free to compare your approach with the provided solution to deepen your understanding and refine your coding skills. Happy coding!</p>
+<div id="using-a-for-loop" class="section level3" number="6.6.1">
+<h3><span class="header-section-number">6.6.1</span> using a for loop</h3>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb195-1"><a href="controlling-the-flow-of-our-programs.html#cb195-1" tabindex="-1"></a><span class="co"># Given data: Daily average temperatures for a month (in Celsius)</span></span>
+<span id="cb195-2"><a href="controlling-the-flow-of-our-programs.html#cb195-2" tabindex="-1"></a>temperatures <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">16</span>, <span class="dv">20</span>, <span class="dv">22</span>, <span class="dv">24</span>, <span class="dv">26</span>, <span class="dv">28</span>, <span class="dv">30</span>, <span class="dv">32</span>, <span class="dv">18</span>, <span class="dv">16</span>, <span class="dv">14</span>, <span class="dv">22</span>, <span class="dv">24</span>, <span class="dv">26</span>, <span class="dv">20</span>, <span class="dv">18</span>, <span class="dv">17</span>, <span class="dv">15</span>, <span class="dv">13</span>, <span class="dv">11</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">16</span>)</span>
+<span id="cb195-3"><a href="controlling-the-flow-of-our-programs.html#cb195-3" tabindex="-1"></a></span>
+<span id="cb195-4"><a href="controlling-the-flow-of-our-programs.html#cb195-4" tabindex="-1"></a><span class="co"># Manually calculate the monthly average temperature</span></span>
+<span id="cb195-5"><a href="controlling-the-flow-of-our-programs.html#cb195-5" tabindex="-1"></a>total_temperature <span class="ot">&lt;-</span> <span class="dv">0</span>  <span class="co"># Initialize a variable to hold the sum of all temperatures</span></span>
+<span id="cb195-6"><a href="controlling-the-flow-of-our-programs.html#cb195-6" tabindex="-1"></a><span class="cf">for</span> (temp <span class="cf">in</span> temperatures) {</span>
+<span id="cb195-7"><a href="controlling-the-flow-of-our-programs.html#cb195-7" tabindex="-1"></a>  total_temperature <span class="ot">&lt;-</span> total_temperature <span class="sc">+</span> temp  <span class="co"># Accumulate the total temperature</span></span>
+<span id="cb195-8"><a href="controlling-the-flow-of-our-programs.html#cb195-8" tabindex="-1"></a>}</span>
+<span id="cb195-9"><a href="controlling-the-flow-of-our-programs.html#cb195-9" tabindex="-1"></a>monthly_average <span class="ot">&lt;-</span> total_temperature <span class="sc">/</span> <span class="fu">length</span>(temperatures)  <span class="co"># Divide by the number of temperatures to get the average</span></span>
+<span id="cb195-10"><a href="controlling-the-flow-of-our-programs.html#cb195-10" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Monthly average temperature:&quot;</span>, monthly_average, <span class="st">&quot;C&quot;</span>))</span></code></pre></div>
+<pre><code>## [1] &quot;Monthly average temperature: 17.3 C&quot;</code></pre>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb197-1"><a href="controlling-the-flow-of-our-programs.html#cb197-1" tabindex="-1"></a><span class="co"># Initialize counters for the conditions</span></span>
+<span id="cb197-2"><a href="controlling-the-flow-of-our-programs.html#cb197-2" tabindex="-1"></a>days_above_average <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb197-3"><a href="controlling-the-flow-of-our-programs.html#cb197-3" tabindex="-1"></a>very_hot_days <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb197-4"><a href="controlling-the-flow-of-our-programs.html#cb197-4" tabindex="-1"></a>cold_days <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb197-5"><a href="controlling-the-flow-of-our-programs.html#cb197-5" tabindex="-1"></a></span>
+<span id="cb197-6"><a href="controlling-the-flow-of-our-programs.html#cb197-6" tabindex="-1"></a><span class="co"># Use a loop to iterate through the temperatures vector</span></span>
+<span id="cb197-7"><a href="controlling-the-flow-of-our-programs.html#cb197-7" tabindex="-1"></a><span class="cf">for</span> (temp <span class="cf">in</span> temperatures) {</span>
+<span id="cb197-8"><a href="controlling-the-flow-of-our-programs.html#cb197-8" tabindex="-1"></a>  <span class="co"># Check if the temperature is above the monthly average</span></span>
+<span id="cb197-9"><a href="controlling-the-flow-of-our-programs.html#cb197-9" tabindex="-1"></a>  <span class="cf">if</span> (temp <span class="sc">&gt;</span> monthly_average) {</span>
+<span id="cb197-10"><a href="controlling-the-flow-of-our-programs.html#cb197-10" tabindex="-1"></a>    days_above_average <span class="ot">&lt;-</span> days_above_average <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb197-11"><a href="controlling-the-flow-of-our-programs.html#cb197-11" tabindex="-1"></a>  }</span>
+<span id="cb197-12"><a href="controlling-the-flow-of-our-programs.html#cb197-12" tabindex="-1"></a>  </span>
+<span id="cb197-13"><a href="controlling-the-flow-of-our-programs.html#cb197-13" tabindex="-1"></a>  <span class="co"># Check if the temperature exceeds 30°C (very hot day)</span></span>
+<span id="cb197-14"><a href="controlling-the-flow-of-our-programs.html#cb197-14" tabindex="-1"></a>  <span class="cf">if</span> (temp <span class="sc">&gt;</span> <span class="dv">30</span>) {</span>
+<span id="cb197-15"><a href="controlling-the-flow-of-our-programs.html#cb197-15" tabindex="-1"></a>    very_hot_days <span class="ot">&lt;-</span> very_hot_days <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb197-16"><a href="controlling-the-flow-of-our-programs.html#cb197-16" tabindex="-1"></a>  }</span>
+<span id="cb197-17"><a href="controlling-the-flow-of-our-programs.html#cb197-17" tabindex="-1"></a>  </span>
+<span id="cb197-18"><a href="controlling-the-flow-of-our-programs.html#cb197-18" tabindex="-1"></a>  <span class="co"># Check if the temperature is below 15°C (cold day)</span></span>
+<span id="cb197-19"><a href="controlling-the-flow-of-our-programs.html#cb197-19" tabindex="-1"></a>  <span class="cf">if</span> (temp <span class="sc">&lt;</span> <span class="dv">15</span>) {</span>
+<span id="cb197-20"><a href="controlling-the-flow-of-our-programs.html#cb197-20" tabindex="-1"></a>    cold_days <span class="ot">&lt;-</span> cold_days <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb197-21"><a href="controlling-the-flow-of-our-programs.html#cb197-21" tabindex="-1"></a>  }</span>
+<span id="cb197-22"><a href="controlling-the-flow-of-our-programs.html#cb197-22" tabindex="-1"></a>}</span>
+<span id="cb197-23"><a href="controlling-the-flow-of-our-programs.html#cb197-23" tabindex="-1"></a></span>
+<span id="cb197-24"><a href="controlling-the-flow-of-our-programs.html#cb197-24" tabindex="-1"></a><span class="co"># Print the results</span></span>
+<span id="cb197-25"><a href="controlling-the-flow-of-our-programs.html#cb197-25" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Number of days above the monthly average:&quot;</span>, days_above_average))</span></code></pre></div>
+<pre><code>## [1] &quot;Number of days above the monthly average: 13&quot;</code></pre>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb199-1"><a href="controlling-the-flow-of-our-programs.html#cb199-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Number of very hot days (temperature &gt; 30°C):&quot;</span>, very_hot_days))</span></code></pre></div>
+<pre><code>## [1] &quot;Number of very hot days (temperature &gt; 30°C): 1&quot;</code></pre>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb201-1"><a href="controlling-the-flow-of-our-programs.html#cb201-1" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;Number of cold days (temperature &lt; 15°C):&quot;</span>, cold_days))</span></code></pre></div>
+<pre><code>## [1] &quot;Number of cold days (temperature &lt; 15°C): 12&quot;</code></pre>
+<p>In this solution, we start with a list of daily average temperatures for a month, stored in the ‘temperatures’ vector. The first part of the code calculates the monthly average temperature by adding up all the daily temperatures and then dividing the total by the number of days in the month. We use a loop to go through each temperature, adding it to the ‘total_temperature’ variable. Once we have the sum, we divide it by the number of days to find the average and print it using the ‘cat’ function.</p>
+<p>The second part of the code uses loops and conditional statements to analyze the temperatures. It tracks three things: the number of days with temperatures above the monthly average, the number of very hot days (where the temperature is above 30°C), and the number of cold days (where the temperature is below 15°C). For each temperature in the ‘temperatures’ vector, the code checks if it’s above the monthly average, above 30°C, or below 15°C, and increments the corresponding counter if the condition is met. Finally, the code prints out the results using ‘paste’, displaying the count of days for each condition.</p>
+</div>
+<div id="vectorized-solution" class="section level3" number="6.6.2">
+<h3><span class="header-section-number">6.6.2</span> vectorized solution</h3>
+<p>The solution shown here is how you usually solve the problem in python. However, as I introduced earlier, R is vectorized, many of the calculations can be simplified.</p>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb203-1"><a href="controlling-the-flow-of-our-programs.html#cb203-1" tabindex="-1"></a>temperatures <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">16</span>, <span class="dv">20</span>, <span class="dv">22</span>, <span class="dv">24</span>, <span class="dv">26</span>, <span class="dv">28</span>, <span class="dv">30</span>, <span class="dv">32</span>, <span class="dv">18</span>, <span class="dv">16</span>, <span class="dv">14</span>, <span class="dv">22</span>, <span class="dv">24</span>, <span class="dv">26</span>, <span class="dv">20</span>, <span class="dv">18</span>, <span class="dv">17</span>, <span class="dv">15</span>, <span class="dv">13</span>, <span class="dv">11</span>, <span class="dv">9</span>, <span class="dv">7</span>, <span class="dv">5</span>, <span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">12</span>, <span class="dv">14</span>, <span class="dv">16</span>)</span>
+<span id="cb203-2"><a href="controlling-the-flow-of-our-programs.html#cb203-2" tabindex="-1"></a></span>
+<span id="cb203-3"><a href="controlling-the-flow-of-our-programs.html#cb203-3" tabindex="-1"></a>monthly_average<span class="ot">&lt;-</span> <span class="fu">mean</span>(temperatures)</span>
+<span id="cb203-4"><a href="controlling-the-flow-of-our-programs.html#cb203-4" tabindex="-1"></a></span>
+<span id="cb203-5"><a href="controlling-the-flow-of-our-programs.html#cb203-5" tabindex="-1"></a>monthly_average</span></code></pre></div>
+<pre><code>## [1] 17.3</code></pre>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb205-1"><a href="controlling-the-flow-of-our-programs.html#cb205-1" tabindex="-1"></a><span class="co"># get a logical vector</span></span>
+<span id="cb205-2"><a href="controlling-the-flow-of-our-programs.html#cb205-2" tabindex="-1"></a>very_hot_days_lgl<span class="ot">&lt;-</span> temperatures <span class="sc">&gt;</span> <span class="dv">30</span></span>
+<span id="cb205-3"><a href="controlling-the-flow-of-our-programs.html#cb205-3" tabindex="-1"></a></span>
+<span id="cb205-4"><a href="controlling-the-flow-of-our-programs.html#cb205-4" tabindex="-1"></a>very_hot_days_lgl</span></code></pre></div>
+<pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+## [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+## [25] FALSE FALSE FALSE FALSE FALSE FALSE</code></pre>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb207-1"><a href="controlling-the-flow-of-our-programs.html#cb207-1" tabindex="-1"></a><span class="co"># remember in R, FALSE is 0 and TRUE is 1 under the hood. you can sum it up to </span></span>
+<span id="cb207-2"><a href="controlling-the-flow-of-our-programs.html#cb207-2" tabindex="-1"></a><span class="co"># find how many are TRUE</span></span>
+<span id="cb207-3"><a href="controlling-the-flow-of-our-programs.html#cb207-3" tabindex="-1"></a>very_hot_days<span class="ot">&lt;-</span> <span class="fu">sum</span>(very_hot_days_lgl)</span>
+<span id="cb207-4"><a href="controlling-the-flow-of-our-programs.html#cb207-4" tabindex="-1"></a>very_hot_days</span></code></pre></div>
+<pre><code>## [1] 1</code></pre>
+<p>Similarly, you can</p>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="controlling-the-flow-of-our-programs.html#cb209-1" tabindex="-1"></a>cold_days<span class="ot">&lt;-</span> <span class="fu">sum</span>(temperatures <span class="sc">&lt;</span> <span class="dv">15</span>)</span>
+<span id="cb209-2"><a href="controlling-the-flow-of-our-programs.html#cb209-2" tabindex="-1"></a>cold_days</span></code></pre></div>
+<pre><code>## [1] 12</code></pre>
+<p>You see how powerful R is when combining the logical vector and its vectorized feature!</p>
+</div>
+</div>
+<div id="section-complete" class="section level2" number="6.7">
+<h2><span class="header-section-number">6.7</span> Section complete</h2>
+<p>Congratulations on completing this section of our course! You’ve made significant progress in understanding the essentials of boolean operators, control flow with if statements, and the power of loops. These foundational skills are crucial for analyzing data, automating tasks, and making logical decisions in your code. It’s impressive how much you’ve learned and can now apply to real-world problems, from gene expression analysis to data quality control and beyond.</p>
+<p>Keep this momentum going as you move forward. The concepts you’ve mastered here will serve as building blocks for more advanced programming techniques and analytical methods. Remember, practice is key to deepening your understanding and honing your skills. Let’s move on to the next section.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction-to-r-for-biologists.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="going-more-in-depth-with-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/05-Controlling_the_flow_of_our_programs.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
