@@ -1,4 +1,14 @@
-## Data visualization with ggplot2
+--- 
+always_allow_html: true
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# Data visualization with ggplot2
 
 In this lesson, we’ll learn how to create basic data visualizations in R using ggplot2. As a biology student, developing your data visualization skills is crucial for exploring trends and communicating findings.
 

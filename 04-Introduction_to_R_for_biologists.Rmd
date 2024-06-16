@@ -1,3 +1,13 @@
+--- 
+always_allow_html: true
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE
+)
+```
+
 # Introduction to R for biologists
 
 ## Basic Data Types in R

@@ -1,3 +1,14 @@
+--- 
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE
+)
+```
+
 # Getting started with R and RStudio
 
 ## What is R and why is it used in Biology?

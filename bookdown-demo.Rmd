@@ -4209,8 +4209,10 @@ ah <- AnnotationHub()
 # Query for specific annotations, for example, Homo sapiens (human) in the GRCh37 assembly
 annotations <- AnnotationHub::query(ah, c("gtf", "Homo_sapiens", "GRCh37"))
 
+annotations
+
 # Select one of the annotations (e.g., GRCh37.gtf)
-GRCh37.gtf <- annotations[['AH10684']]
+GRCh37.gtf <- annotations[['AH8753']]
 ```
 
 Now, we have a `GenomicRanges` object called `GRCh37.gtf`, which contains genomic features from the GRCh37 assembly of the human genome.
@@ -4240,6 +4242,8 @@ library(GenomicFeatures)
 
 # Create a TxDb from the filtered genomic features
 GRCh37.txdb <- makeTxDbFromGRanges(GRCh37.gtf)
+
+GRCh37.txdb
 ```
 
 ### Extracting Exons, Introns, and Intergenic Regions
@@ -4250,10 +4254,11 @@ Now that we have our TxDb, we can extract various genomic elements for further a
 Analyzing exons by gene is essential for understanding the coding regions of genes and their splicing patterns. Let's retrieve exons grouped by genes.
 
 ```{r}
-exonsByGene <- exonsBy(GRCh37.txdb, "gene") %>% 
-  unlist()
+exonsByGene <- exonsBy(GRCh37.txdb, "gene") 
 
+# GRangesList object, a list of GRanges 
 exonsByGene
+
 ```
 
 ### Merging All Exons
@@ -4261,7 +4266,8 @@ exonsByGene
 Merging exons (exons can overlap with each other) helps simplify analysis, such as quantifying the overall exonic content of genes. To get a single range representing all exons, we can reduce them.
 
 ```{r}
-allExons <- exons(GRCh37.txdb) %>% reduce()
+allExons <- exons(GRCh37.txdb) %>% 
+  GenomicRanges::reduce()
 
 allExons
 ```
@@ -4273,7 +4279,7 @@ Identifying introns is crucial for studying gene splicing and understanding the 
 ```{r}
 introns <- intronsByTranscript(GRCh37.txdb) %>% 
   unlist() %>%
-  reduce()
+  GenomicRanges::reduce()
 
 introns
 ```
@@ -4311,7 +4317,7 @@ chrom_granges
 Merging overlapping transcripts simplifies transcript-level analyses and helps identify the full extent of genes. To represent the entire transcriptome, we can merge overlapping features.
 
 ```{r}
-collapsed_tx <- reduce(transcripts(GRCh37.txdb))
+collapsed_tx <- GenomicRanges::reduce(transcripts(GRCh37.txdb))
 
 # Set strand information to '*'
 strand(collapsed_tx) <- "*"
@@ -4339,7 +4345,90 @@ threeUTRs <- threeUTRsByTranscript(GRCh37.txdb)
 ```
 
 
-### Real-World Applications
+### Conclusion
+In this lesson, we've explored various genomic features and their manipulation using R packages such as `GenomicFeatures`, `AnnotationHub`, and `rtracklayer`. These tools are invaluable for genomics research, allowing you to analyze and interpret genomic data effectively. Whether you're working with ChIP-seq, RNA-seq, or genome annotation, understanding genomic features is essential to uncover the secrets of the genome.
+
+## Exploring CpG Islands and Shores in Genomic Data
+
+In this lesson, we will delve into the fascinating world of genomics and learn how to manipulate and analyze genomic data using the powerful tools available in the Bioconductor package. We will specifically focus on CpG islands and their shores, exploring how to extract and analyze these critical genomic features.
+
+### Introduction to CpG Islands
+
+CpG islands are regions of DNA that contain a high frequency of cytosine-guanine (CpG) dinucleotide pairs. These regions are essential for regulating gene expression and have critical roles in various biological processes, including DNA methylation and epigenetic modifications. Analyzing CpG islands can provide valuable insights into gene regulation and genome function.
+
+In this lesson, we will use Bioconductor to fetch CpG island coordinates from the UCSC Genome Browser, extract CpG shores, and perform various genomic operations.
+
+### Fetching CpG Island Coordinates
+
+CpG islands are critical genomic regions involved in gene regulation and epigenetic modifications. Accessing their coordinates is the first step in understanding their distribution across the genome and their potential functional roles.
+
+Researchers often use CpG island coordinates to investigate gene promoters, identify potential regulatory elements, and study the epigenetic regulation of specific genes in various diseases, including cancer.
+
+To begin, we will retrieve the CpG island coordinates from the UCSC Genome Browser using the `AnnotationHub` package. CpG islands are available for various species, and in this example, we are using Homo sapiens (human) data.
+
+```{r}
+# Fetching CpG island coordinates from UCSC Genome Browser
+library(AnnotationHub)
+ah <- AnnotationHub()
+
+AnnotationHub::query(ah, c("cpg", "UCSC"))
+```
+
+use the first entry
+
+```{r}
+cgi <- ah[["AH5086"]]
+cgi
+```
+
+We now have the CpG island coordinates stored in the `cgi` GenomicRanges object.
+
+### Defining CpG Shores
+CpG shores are regions located near CpG islands, and they play a crucial role in gene regulation. Defining these shores allows us to explore the regulatory landscape around CpG islands and identify regions of potential interest.
+
+By analyzing CpG shores, researchers can gain insights into how epigenetic modifications in these regions affect gene expression. This knowledge is vital for understanding diseases that involve aberrant gene regulation.
+
+CpG shores are regions located 2000 base pairs upstream and 2000 base pairs downstream of CpG islands. We can use Bioconductor to extract these shores.
+
+```{r}
+# Extract the shore defined by 2000 bp upstream of CpG islands
+shore1 <- trim(flank(cgi, width = 2000, start = TRUE))
+
+# Extract the shore defined by 2000 bp downstream of CpG islands
+shore2 <- trim(flank(cgi, width = 2000, start = FALSE))
+```
+
+`trim` will trim off the bases that exceed the chromosome ends since we extend 2000 bp
+upstream and downstream of the CpG sites. Some CpG sites can be very close to the ends of the chromosomes.
+
+### Combining and Analyzing CpG Shores
+Combining the upstream and downstream shores and analyzing their overlap with CpG islands helps identify regions with unique genomic characteristics. This step allows researchers to pinpoint areas of interest for further investigation.
+
+Researchers often use this analysis to identify differentially methylated regions (DMRs) associated with specific diseases or conditions. DMRs can serve as biomarkers or potential therapeutic targets.
+
+Now, let's perform some genomic operations on these CpG shores. We'll combine the upstream and downstream shores and identify the features that are present in shores but not in CpG islands (i.e., shores not overlapping with islands).
+
+```{r}
+# Combine the shores where they overlap
+shore1_2 <- GenomicRanges::reduce(c(shore1, shore2))
+
+# Extract the features (ranges) that are present in shores only and not in CpG islands
+cpgi_shores <- GenomicRanges::setdiff(shore1_2, cgi)
+cpgi_shores$name <- paste("shore", 1:length(cpgi_shores), sep = "_")
+
+cpgi_shores
+```
+
+Now, `cpgi_shores` contains the `GenomicRanges` object representing CpG shores, and each shore is labeled with a unique name.
+
+### Conclusion
+
+In this lesson, we've explored the powerful capabilities of the Bioconductor package for working with genomic data. We've fetched CpG island coordinates, extracted CpG shores, and performed genomic operations to identify regions of interest. These techniques are fundamental for researchers and bioinformaticians working with genomics data to unravel the mysteries of the genome.
+
+If you're interested in diving deeper into genomics analysis, consider exploring the tutorials provided by Bioconductor on their website. They offer a wealth of knowledge and resources to help you harness the full potential of genomic data analysis.
+
+## Real-World Applications: ChIP-seq
+
 Understanding genomic features is crucial for various genomics tasks, including:
 
 * ChIP-seq Analysis: You can use these genomic ranges to determine how many ChIP-seq peaks fall into promoters, exons, introns, or intergenic regions, helping you interpret the functional significance of your data.
@@ -4350,11 +4439,560 @@ Understanding genomic features is crucial for various genomics tasks, including:
 
 * Genome Annotation: These tools are essential for creating comprehensive annotations of genomes, enabling researchers to understand gene structures and functions.
 
+#### read in peak file
+
+### Identify promoters that overlap with the peaks
+
+### use the ChIPseeker package
+
+## Analyzing and Visualizing Genomic Data
+
+In this lesson, we will explore several essential tools and techniques used in genomics research, including `GEOquery` for data retrieval, gene ID conversion using `biomaRt` and `org.Hs.eg.db`, and visualization with `ComplexHeatmap`. These tools are commonly used in genomics to analyze and visualize gene expression data. We will briefly mention `DESeq2` for differential expression analysis.
+
+### DESeq2
+
+>You can explore docs here: https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
+
+`DESeq2` is a powerful Bioconductor package used for differential expression analysis. It is particularly helpful when working with RNA-seq data. This tool helps identify genes that are differentially expressed under different conditions. The tutorial on Bioconductor is very comprehensive and I will leave the students to read by themselves. We will use it in our final project.
+
+### GEOquery
+
+>You can explore docs here: https://bioconductor.org/packages/release/bioc/vignettes/GEOquery/inst/doc/GEOquery.html
+
+`GEOquery` is a valuable R package for downloading and importing gene expression data directly from public repositories such as the Gene Expression Omnibus (GEO).
+
+```{r}
+# Loading the GEOquery library
+library(GEOquery)
+
+# Downloading and importing data from GEO
+GSE197576 <- getGEO(GEO = "GSE197576", GSEMatrix = TRUE, destdir = "~/Downloads")
+
+GSE197576
+
+# Accessing expression data
+exprs(GSE197576$GSE197576_series_matrix.txt.gz)
+```
+In this example, it returns an empty `ExpressionSet` object. We used `exprs` to return
+the matrix but it has no features. You may try a different GEO accession.
+
+`GEOquery` simplifies the process of retrieving gene expression data from public repositories like GEO. Researchers use it to access valuable datasets for their studies.
+
+### Converting Gene IDs
+
+In genomics research, integrating data from various sources often involves working with different gene identifier systems. Converting gene IDs is a crucial step to harmonize and standardize data for downstream analysis. Here, we discuss two commonly used methods, biomaRt and org.Hs.eg.db, and explain why these tasks are essential in a researcher's environment.
+
+#### Using biomaRt
+
+>You can explore docs here: https://bioconductor.org/packages/release/bioc/vignettes/biomaRt/inst/doc/accessing_ensembl.html
+
+Converting gene IDs using `biomaRt` is essential for mapping Ensembl gene IDs to more recognizable gene symbols and associated information.
+
+```{r}
+library(biomaRt)
+ensembl <- useMart("ensembl", dataset = "hsapiens_gene_ensembl")
+
+gene_info <- getBM(attributes = c("ensembl_gene_id", "gene_biotype",
+                                  "chromosome_name", "hgnc_symbol"),
+                   filters = "ensembl_gene_id", 
+                   values = c("ENSG00000164307"), 
+                   mart = ensembl)
+print(gene_info)
+```
+
+#### Using org.Hs.eg.db
+
+>You can explore docs here: https://bioconductor.org/packages/release/data/annotation/html/org.Hs.eg.db.html
+
+Mapping ENTREZIDs to official gene symbols using `org.Hs.eg.db` is crucial for researchers working with gene expression data.
+
+Why Researchers Do This:
+
+* Consistency in Annotation: ENTREZIDs are a widely accepted and consistent gene identifier system. Mapping other identifiers to ENTREZIDs ensures that gene information is uniform and can be compared across different studies.
+
+* Integration with Other Databases: Many databases and tools use ENTREZIDs (e.g., the KEGG pathway database) as a standard for gene annotation. Converting identifiers to ENTREZIDs facilitates seamless integration with these resources.
+
+* Gene Symbol Mapping: Once converted to ENTREZIDs, researchers can efficiently map these to official gene symbols, providing meaningful and interpretable gene names for further analysis and reporting.
+
+```{r}
+# Loading the org.Hs.eg.db library
+library(org.Hs.eg.db)
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+
+# Accessing gene information
+hg19_genes <- genes(TxDb.Hsapiens.UCSC.hg19.knownGene)
+
+# Mapping ENTREZIDs to official gene symbols
+map <- AnnotationDbi::select(org.Hs.eg.db, keys = hg19_genes$gene_id, 
+                            columns = "SYMBOL", keytype = "ENTREZID")
+
+head(map, n = 10)
+```
+
+In genomics research, this type of mapping is essential when you have data that uses ENTREZIDs, and you want to work with more interpretable gene symbols for analysis or visualization. It allows you to associate gene identifiers with their official names, making the data more understandable and facilitating downstream analyses and interpretation.
+
+### ComplexHeatmap
+
+>You can explore docs here: https://bioconductor.org/packages/release/bioc/html/ComplexHeatmap.html
+
+Visualizing gene expression data is a crucial step in genomics research because it helps researchers gain insights into how genes are expressed under different conditions or in various samples. `ComplexHeatmap` is a versatile R package that serves as an artistic palette for creating intricate and informative heatmaps. Here's why visualizing gene expression data using `ComplexHeatmap` is essential:
+
+1. Identify Expression Patterns: Gene expression data often involve a large number of genes and samples. Heatmaps allow you to quickly identify patterns in gene expression, such as clusters of genes with similar expression profiles. This can reveal groups of genes that are co-regulated or have similar functions.
+
+2. Visualize Differential Expression: When comparing gene expression between different conditions or treatments (e.g., healthy vs. diseased tissue), heatmaps can highlight genes that are significantly upregulated or downregulated. This visualization aids in pinpointing genes of interest for further investigation.
+
+3. Sample Relationships: Heatmaps also help in understanding the relationships between samples. For example, you can identify outliers, detect batch effects, or confirm the consistency of replicates by examining how samples cluster based on their expression profiles.
+
+4. Publication-Ready Figures: ComplexHeatmap generates high-quality heatmap images that are suitable for inclusion in research papers and presentations. It provides the ability to export heatmaps in various formats (e.g., PDF, PNG) for easy sharing and publication.
+
+5. Interactive Exploration: In addition to static heatmaps, [InteractiveComplexHeatmap](https://www.bioconductor.org/packages/release/bioc/html/InteractiveComplexHeatmap.html) from the same author supports interactive exploration. You can zoom in on specific sections of the heatmap, hover over cells to view gene names or expression values, and provide interactive tools for your audience to explore the data themselves.
+
+Le's go through an example by simulating a count matrix from a gene expression experiment:
+
+```{r}
+library(ComplexHeatmap)
+
+set.seed(123)
+
+# Parameters for the negative binomial distribution
+size_parameter <- 3 # Size parameter (dispersion)
+mean_parameter <- 10  # Mean parameter
+
+# Number of genes (rows) and samples (columns)
+num_genes <- 10
+num_samples <- 20
+
+# Simulate a count table with negative binomial distribution
+expr_data <- matrix(rnbinom(num_genes * num_samples, 
+                            size = size_parameter, 
+                            mu = mean_parameter), 
+                    nrow = num_genes, 
+                    ncol = num_samples)
+```
+
+check the quantiles of the data. This is important because we need to know the
+ranges of the data so we can map the values to color.
+
+```{r}
+quantile(expr_data, c(0, 0.2, 0.5, 0.8, 1))
+```
+
+Map the color to the values
+
+```{r}
+color_map<- circlize::colorRamp2(c(0, 9, 25), c("blue", "white", "red"))
+```
+
+Any value beyond 25 will be mapped to the same intensity of redness.
+
+Make the heatmap:
+```{r}
+Heatmap(expr_data, col=color_map, name = "gene_expression")
+```
+
+By default, it will cluster both the rows and columns.
+
+Let’s see how it looks if we change the color mapping
+
+```{r}
+color_map2<- circlize::colorRamp2(c(0, 25, 31), c("blue", "white", "red"))
+Heatmap(expr_data, col=color_map2, name = "gene_expression")
+```
+Now, we see very fewer red cells, but the underlying data is the same! How you map the values to color makes a big difference on how the heatmap look. Note the legend reflects our changes in the color mapping.
+
+We will use it again in the next section.
+
 ### Conclusion
-In this lesson, we've explored various genomic features and their manipulation using R packages such as `GenomicFeatures`, `AnnotationHub`, and `rtracklayer`. These tools are invaluable for genomics research, allowing you to analyze and interpret genomic data effectively. Whether you're working with ChIP-seq, RNA-seq, or genome annotation, understanding genomic features is essential to uncover the secrets of the genome.
+This lesson has provided an overview of essential tools and techniques used in genomics research. We have explored the following key topics:
+
+* `DESeq2`: We learned about DESeq2 for differential expression analysis, which is crucial for identifying genes that are differentially expressed under different conditions, such as in disease versus healthy states.
+
+* `GEOquery`: We discussed how to retrieve gene expression data from public repositories like GEO using the GEOquery package. Accessing publicly available datasets is a valuable resource for genomics research.
+
+* Gene ID Conversion: We covered two methods, `biomaRt` and `org.Hs.eg.db`, for converting gene IDs. This step is essential for integrating data from various sources and ensuring consistent gene identification.
+
+* `ComplexHeatmap`: We explored the `ComplexHeatmap` package, a powerful tool for visualizing gene expression data through heatmaps. Visualization aids in identifying patterns and trends in large genomic datasets.
+
+These tools and techniques are indispensable for genomics researchers, enabling them to analyze, integrate, and visualize genomic data effectively. By mastering these skills, researchers can gain valuable insights into gene expression patterns, biological processes, and potential biomarkers for various conditions and diseases.
+
+## Real-World Example - TCGA Analysis
+
+In this lesson, we will explore a real-world example of analyzing cancer genomics data from [The Cancer Genome Atlas (TCGA)](https://www.cancer.gov/ccg/research/genome-sequencing/tcga) project. TCGA is one of the largest and most renowned cancer sequencing projects, providing access to a wealth of genomic data from various cancer types. We will use R and several bioinformatics packages to download raw RNA-seq counts for 33 different cancer types, convert them to TPM (transcripts per million), and visualize the data in a heatmap.
+
+### Introduction to TCGA
+
+The Cancer Genome Atlas (TCGA) project is a groundbreaking initiative that has sequenced approximately 10,000 treatment-naive tumors across 33 different cancer types. It has generated a diverse range of data types, including whole-exome sequencing, whole-genome sequencing, copy-number variation analysis (SNP arrays), bulk RNA-seq, protein expression data (Reverse-Phase Protein Array), and DNA methylation profiles. TCGA has significantly contributed to our understanding of cancer biology and has opened up new avenues for cancer research.
+
+### Why Analyze TCGA Data?
+Analyzing TCGA data can provide valuable insights into the molecular basis of cancer. Researchers can use this data to identify potential biomarkers, discover novel therapeutic targets, and gain a deeper understanding of the genetic alterations associated with specific cancer types. Moreover, TCGA data is freely accessible, making it a valuable resource for the scientific community.
+
+### Getting Started
+
+We will use the [`recount3`](https://bioconductor.org/packages/release/bioc/html/recount3.html) package to access TCGA data. `recount3` is an online resource that provides RNA-seq gene, exon, and exon-exon junction counts, along with coverage bigWig files for thousands of studies in both human and mouse. It represents the third generation of the [ReCount](https://rna.recount.bio/) project.
+
+### Step 1: Install and Load Required Packages
+
+```{r}
+# Install the recount3 package if not already installed
+# BiocManager::install("recount3")
+
+# Load necessary libraries
+library(recount3)
+library(purrr)
+library(dplyr)
+library(ggplot2)
+```
+
+* recount3: This package is crucial for accessing TCGA data. It allows us to retrieve RNA-seq gene counts and other genomic information from the TCGA project.
+
+* purrr: The purrr package is used for functional programming in R. We use it to apply functions to elements of a list, which is particularly useful for handling multiple datasets or projects.
+
+* dplyr: dplyr is a powerful package for data manipulation. It helps us filter and process data efficiently, making it easier to work with large datasets like TCGA.
+
+* ggplot2: For data visualization, we use the ggplot2 package. It allows us to create high-quality graphs and plots, which can be essential for presenting our findings.
+
+By loading these packages, we ensure that we have access to the tools needed to analyze and visualize TCGA data effectively.
+
+### Step 2: Retrieve TCGA Project Information
+Let's fetch information about available TCGA projects. TCGA encompasses a wide range of cancer types and studies. We filter the projects to focus only on those that originate from TCGA data sources.
+
+```{r}
+# Get information about available TCGA projects
+human_projects <- available_projects()
+
+# Filter projects that are from TCGA data sources
+tcga_info <- subset(
+    human_projects,
+    file_source == "tcga" & project_type == "data_sources"
+)
 
 
+head(tcga_info)
+```
 
+This step is essential to identify the relevant projects and data sources within TCGA. By narrowing our focus to TCGA data sources, we ensure that we are working with the specific datasets we need for our analysis.
+
+
+### Step 3: Create a RangedSummarizedExperiment Object
+
+Now that we have identified the TCGA data sources of interest, we proceed to create a data structure called a [`RangedSummarizedExperiment`](https://www.bioconductor.org/packages/devel/bioc/vignettes/SummarizedExperiment/inst/doc/SummarizedExperiment.html) object. This object allows us to efficiently organize and work with genomic data, including RNA-seq counts.
+
+```{r}
+# Create a list of RangedSummarizedExperiment objects
+proj_info <- purrr::map(seq(nrow(tcga_info)), ~tcga_info[.x, ])
+rse_tcga <- purrr::map(proj_info, ~create_rse(.x))
+```
+
+Here, we create a list of `RangedSummarizedExperiment` objects, one for each project within TCGA. These objects will serve as containers for the gene expression data, making it easier to manipulate and analyze the information.
+
+The first time you use `recount3`, it will ask:
+
+>/Users/tommytang/Library/Caches/org.R-project.R/R/recount3 does not exist, create directory? (yes/no): yes
+
+`rse_tcga` is a list of `RangedSummarizedExperimentobject`, let’s take a look at one of them. `RangedSummarizedExperiment` is a child of the `SummarizedExperiment`.
+
+```{r}
+rse_tcga[[1]]
+```
+
+### Step 4: Explore TCGA Data
+
+With our `RangedSummarizedExperiment` objects in place, we can now explore the TCGA data in more detail. Let's look at three aspects: gene counts, gene information, and metadata.
+
+#### Gene Counts
+We start by examining the raw RNA-seq counts, which represent how many times each gene was sequenced in each sample.
+
+```{r}
+# Access raw gene counts from one RangedSummarizedExperiment object
+raw_counts <- rse_tcga[[1]]@assays@data$raw_counts[1:5, 1:5]
+
+raw_counts
+```
+
+This line extracts a subset of raw gene counts from the first dataset in the `RangedSummarizedExperiment` object `rse_tcga`. It takes the first 5 genes and the first 5 samples, providing a small portion of the data for analysis or exploration.
+
+The `raw_counts` matrix provides a glimpse into the data, allowing us to see the sequencing counts for a subset of genes and samples.
+
+
+#### Gene Information
+Next, we retrieve information about the genes included in the dataset. This information includes details such as genomic location, gene type, and gene names.
+
+```{r}
+# Access gene information
+gene_info <- rse_tcga[[1]]@rowRanges
+
+gene_info
+
+```
+
+The `gene_info` object provides essential context about the genes being studied, enabling us to interpret the gene expression data more effectively.
+
+#### Metadata Information
+
+Lastly, we access metadata information associated with the samples. Metadata contains additional details about each sample, such as unique identifiers, external IDs, and the TCGA study to which each sample belongs.
+
+```{r}
+# Access metadata information
+metadata_info<- rse_tcga[[1]]@colData@listData %>% as.data.frame() %>% `[`(1:5, 1:5)
+
+metadata_info 
+```
+
+>NOTE: `[` is a function itself for subsetting.
+
+This line creates a dataframe (metadata_info) containing metadata information from the first dataset in the `RangedSummarizedExperiment` object `rse_tcga`. It selects the first 5 rows and first 5 columns of this metadata for examination or analysis. Metadata often includes details about the samples, helping researchers understand their characteristics and context within the dataset.
+
+This metadata is crucial for tracking and organizing the samples and understanding their context within the TCGA project.
+
+### Step 5: Data Transformation - Converting Raw Counts to TPM
+In this step, we will convert the raw RNA-seq counts into TPM (Transcripts Per Million) values. This transformation normalizes the data, making it comparable across samples and genes. TPM accounts for both the length of genes and the total number of reads in each sample.
+
+First, we define a function called `count2tpm` that takes a `RangedSummarizedExperiment` object (rse) as input and performs the TPM conversion. Here's what each part of the function does:
+
+1. We extract the raw gene count matrix from the rse object.
+
+2. We retrieve the effective gene length for each gene, which is needed for TPM calculation. In this example, we use the gene length information provided in the TCGA data.
+
+3. We calculate the Reads Per Kilobase (RPK) for each gene by dividing the raw counts by the gene length.
+
+4. We calculate the sum of RPK values for each sample (column) and divide it by 1,000,000 (1e6) to scale to a per-million basis.
+
+5. Finally, we calculate TPM values by dividing the RPK values for each gene by the per-million scale factor.
+
+```{r}
+genes_of_interest<- c("MSLN", "EGFR", "ERBB2", "CEACAM5", "NECTIN4", "EPCAM", 
+                      "MUC16", "MUC1", "CD276", "FOLH1", "DLL3", "VTCN1", 
+                      "PROM1", "PVR", "CLDN6", "MET", "FOLR1", "TNFRSF10B", 
+                      "TACSTD2", "CD24")
+
+count2tpm <- function(rse) {
+    count_matrix <- rse@assays@data$raw_counts
+    gene_length <- rse@rowRanges$bp_length
+    reads_per_rpk <- count_matrix / gene_length
+    per_mil_scale <- colSums(reads_per_rpk) / 1e6
+    tpm_matrix <- t(t(reads_per_rpk) / per_mil_scale)
+    
+    # Make sure they match the ENSG and gene order
+    gene_ind <- rse@rowRanges$gene_name %in% genes_of_interest
+    tpm_submatrix <- tpm_matrix[gene_ind,]
+    rownames(tpm_submatrix) <- rse@rowRanges[gene_ind, ]$gene_name
+    
+    return(tpm_submatrix)
+}
+```
+
+After defining the `count2tpm` function, we apply it to each of our `RangedSummarizedExperiment` objects stored in `rse_tcga`. This step converts the raw counts to TPM values and subsets the data to include only the genes of interest (specified in the genes_of_interest vector). The resulting `tpm_data` is a list of TPM matrices for each TCGA project.
+
+
+### Step 6: Combine Data and Metadata
+
+In this step, we will combine the TPM data matrices from different TCGA projects and merge the associated metadata. This process is essential for creating a comprehensive dataset for further analysis and visualization.
+
+#### Combining TPM Data Matrices
+
+We have already obtained TPM values for each TCGA project and stored them in the `tpm_data` list, where each element represents a TPM matrix for one project. Now, we will combine these matrices into a single matrix, `tpm_data2`, which will contain TPM values for all samples across all projects.
+
+```{r}
+# Convert raw count matrix per cancer type to TPM and subset to only the genes of interest
+tpm_data <- map(rse_tcga, count2tpm)
+
+# Combine the TPM data matrices into one matrix
+tpm_data2 <- do.call(cbind, tpm_data)
+```
+
+In the code above, we use the `map()` function to apply the `count2tpm` function to each `RangedSummarizedExperiment` object in rse_tcga. The `do.call()` function then combines the resulting TPM matrices horizontally (column-wise), creating the `tpm_data2` matrix.
+
+#### Combining Metadata
+Next, we need to combine the metadata associated with each TCGA project into a single metadata table. This metadata contains information about the samples, such as sample type, study, and unique identifiers.
+
+```{r}
+# Get the metadata columns for each project and convert them to data frames
+metadata <- map(rse_tcga, ~.x@colData@listData %>% as.data.frame())
+
+# Combine the metadata data frames into one data frame
+metadata2 <- do.call(rbind, metadata)
+```
+
+In this code, we again use the `map()` function to extract metadata columns from each `RangedSummarizedExperiment` object. We convert these columns into data frames and then use `bind_rows()` to vertically stack them into the `metadata2` data frame.
+`do.call` is a function from base R. `do.call(cbind)` is similar to `dplyr::bind_rows`, and `do.call(rbind`) is similar to `dplyr::bind_cols()`.
+
+#### Checking the Dimensions
+Finally, let's check the dimensions of our combined data matrix and metadata data frame to ensure that the combination was successful.
+
+```{r}
+# Check the dimensions of the combined TPM data matrix
+dim(tpm_data2)
+```
+
+```{r}
+# Check the dimensions of the combined metadata data frame
+dim(metadata2)
+```
+
+Running the `dim()` function on `tpm_data2` will give you the dimensions of the TPM data matrix, which should indicate the number of genes and samples in the combined dataset. Similarly, checking the dimensions of `metadata2` will confirm the number of metadata columns and rows, which correspond to the samples and their associated information.
+
+With this combined dataset, you can proceed with various analyses, visualizations, and explorations of gene expression patterns and relationships with clinical metadata across different TCGA projects.
+
+### Step 7: Renaming Metadata Columns
+Now, let's proceed with renaming some of the metadata columns for clarity and convenience. We will select specific columns from the metadata and create a new column called `sample_type` based on the `tcga.cgc_sample_sample_typ`e column's values. This new column will categorize samples into "cancer," "metastatic," or "normal" based on their sample type.
+
+```{r}
+metadata2 <- metadata2 %>%
+  dplyr::select(tcga.tcga_barcode, tcga.cgc_sample_sample_type, study) %>%
+  mutate(sample_type = case_when(
+    tcga.cgc_sample_sample_type == "Additional - New Primary" ~ "cancer",
+    tcga.cgc_sample_sample_type == "Additional Metastatic" ~ "metastatic",
+    tcga.cgc_sample_sample_type == "Metastatic" ~ "metastatic",
+    tcga.cgc_sample_sample_type == "Primary Blood Derived Cancer - Peripheral Blood " ~ "cancer",
+    tcga.cgc_sample_sample_type == "Primary Tumor" ~ "cancer",
+    tcga.cgc_sample_sample_type == "Recurrent Tumor" ~ "cancer",
+    tcga.cgc_sample_sample_type == "Solid Tissue Normal" ~ "normal"
+  ))
+```
+
+In the code above, we use the `select()` function to choose specific columns from the metadata that we want to retain. We then create a new `sample_type` column using `mutate()` and `case_when()` based on the values of `tcga.cgc_sample_sample_type`.
+
+### Step 8: Merging into a single DataFrame
+
+With the TPM data matrix and the updated metadata, we can combine them into a single dataframe named `final_df`. This dataframe will have TPM values for the selected genes along with associated metadata columns.
+
+```{r}
+# Combine the TPM data matrix and metadata into a single dataframe
+final_df <- cbind(t(tpm_data2), metadata2)
+```
+
+In this code, we use `cbind()` to merge the transposed TPM data matrix `(t(tpm_data2))` with the metadata `(metadata2)` to create the `final_df` dataframe.
+
+#### Displaying the Head of the Combined Dataframe
+
+Finally, let's check the first few rows of the combined dataframe to ensure that the merging process was successful:
+
+```{r}
+# Display the first few rows of the combined dataframe
+head(final_df)
+
+```
+
+With everything in a single dataframe, we are ready to do anything you want:) You will notice that this is the dataset we used in previous lectures and I just showed you how to get it from the source.
+
+With everything now in a single dataframe, you can proceed with various data analysis tasks, such as identifying patterns, conducting differential expression analysis, or generating visualizations to gain insights from this comprehensive TCGA dataset.
+
+### Step 9: Create a Gene Expression Heatmap
+To create the gene expression heatmap, we will follow these steps:
+
+```{r}
+# import ComplexHeatmap
+library(ComplexHeatmap)
+```
+
+#### Filter and Transform Data:
+First, we'll filter the data to include only cancer samples, calculate the median expression for each gene within the same cancer type, and take the logarithm of the expression values to create a `log2` transformation. This makes the data suitable for heatmap visualization.
+
+```{r}
+tcga_df <- final_df %>%
+  dplyr::filter(sample_type == "cancer") %>%
+  group_by(sample_type, study) %>%
+  summarise(across(1:20, ~log2(.x + 1))) %>%
+  summarise(across(1:20, median)) %>%
+  arrange(study) %>%
+  dplyr::filter(!is.na(sample_type))
+```
+
+#### Create a Gene Expression Matrix:
+Let's convert the summarized data into a matrix format. Rows represent cancer types, columns represent genes, and the matrix values are the median log2-transformed expression levels.
+
+```{r}
+# Create a matrix 'tcga_mat' from 'tcga_df' excluding the first two columns and convert it to a matrix format.
+tcga_mat <- tcga_df[, -c(1, 2)] %>% as.matrix()
+rownames(tcga_mat) <- tcga_df %>% pull(study)
+
+dim(tcga_mat)
+```
+
+`dim(tcga_mat)` tells us that we have 32 rows (cancer types) and 20 columns (genes) in the resulting matrix. Let's print the matrix:
+
+```{r}
+tcga_mat
+```
+
+#### Define a Cell Function for Grid Lines
+
+```{r}
+cell_fun = function(j, i, x, y, w, h, fill) {
+  grid.rect(x = x, y = y, width = w, height = h, gp = gpar(col = "black", fill = NA))
+}
+
+```
+
+We define a custom cell function (`cell_fun`) to add black grid lines to the heatmap for better visualization.
+
+#### Create the Heatmap
+
+```{r}
+Heatmap(tcga_mat, cluster_columns = TRUE, cell_fun = cell_fun, name = "log2TPM")
+```
+
+Now, we create the heatmap using the `Heatmap` function from the `ComplexHeatmap` package. We specify `cluster_columns = TRUE` to cluster the columns (genes) for better visualization. The `cell_fun` parameter is set to our custom function for adding grid lines, and we name the data as "log2TPM."
+
+The resulting heatmap will show the median gene expression levels for each gene across different cancer types.
+
+Grid lines will help in distinguishing individual cells within the heatmap so we added them.
+This visualization can provide insights into gene expression patterns in various cancer types, which may be useful for further analysis and interpretation.
+
+### Step 10: Sanity Check and Scaling of Gene Expression
+
+#### Sanity Check
+Before proceeding with scaling, we will conduct a sanity check of the gene expression heatmap to see if the results make biological sense. For example, we can observe if certain genes are highly expressed in specific cancer types, which could indicate potential biomarkers or interesting biological phenomena.
+
+```{r}
+# Sanity check
+sanity_check_genes <- c("MSLN", "FOLH1")
+
+# Extract the rows (genes) corresponding to sanity check genes
+sanity_check_data <- tcga_mat[rownames(tcga_mat) %in% sanity_check_genes, ]
+
+# Print the results
+print(sanity_check_data)
+```
+
+We see `MSLN` is high in `MESO`, `FOLH1` is high in prostate cancer (`PRAD`). We are probably on the right track!
+
+#### Scaling the data
+To visualize gene expression in a more comparative manner, we can scale the expression values for each gene across the cancer types. Scaling standardizes the data, making it easier to identify relative expression levels.
+
+```{r}
+# Scale the expression data
+scaled_tcga_mat <- scale(tcga_mat)
+
+# Create a scaled heatmap
+Heatmap(scaled_tcga_mat, 
+        cluster_columns = TRUE, 
+        cell_fun = cell_fun, 
+        name = "scaled\nlog2TPM")
+
+```
+
+Here, we use the `scale()` function to standardize the expression values across cancer types for each gene. We then create a new heatmap using the scaled data.
+
+By comparing the original and scaled heatmaps, we can gain insights into how the expression of genes varies relative to each other across different cancer types. This scaling helps us focus on the relative expression patterns rather than the absolute values.
+
+### Conclusion
+
+In this comprehensive example, we have walked through various essential steps for performing gene expression analysis using R, focusing on the analysis of The Cancer Genome Atlas (TCGA) data as an illustrative example. Gene expression analysis is a fundamental component of genomics research, enabling us to uncover insights into the molecular mechanisms underlying complex biological processes, such as cancer.
+
+
+## Section completed
+
+Congratulations on completing this section!
+
+You've learned crucial genomics data handling and analysis techniques, like using the `GenomicRanges` package, analyzing CpG islands, converting gene IDs, and creating visualizations with `ComplexHeatmap`. These skills are vital for bioinformatics, giving you the confidence to navigate genomic data complexities.
+
+Don't hesitate to interact with your peers and instructors in the Q&A section and comments. Share your experiences, ask questions, and offer support. Your engagement enriches everyone's learning journey.
+
+As you approach the final project, remember that what you've learned is more than just theory—it's practical knowledge you can apply. Use this opportunity to showcase your skills in a real-world scenario. Dive into the challenge with enthusiasm and curiosity.
+
+Good luck!
+Let's make this final project a success together!
 
 <!--chapter:end:10_Introduction_to_BioConductor.Rmd-->
 

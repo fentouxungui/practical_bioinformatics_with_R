@@ -1,3 +1,15 @@
+--- 
+always_allow_html: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+
 # Introduction {#intro}
 
 ## Meet your Instructor

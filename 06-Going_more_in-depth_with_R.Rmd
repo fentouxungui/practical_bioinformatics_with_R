@@ -1,8 +1,14 @@
+--- 
+always_allow_html: true
 ---
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+
 # Going more in-depth with R
 
 ## Handling Missing Values
