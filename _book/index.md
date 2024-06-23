@@ -1,7 +1,7 @@
 --- 
 title: "Master Real-world Bioinformatics analysis in R"
 author: "Ming Tommy Tang"
-date: "2024-06-14"
+date: "2024-06-20"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book

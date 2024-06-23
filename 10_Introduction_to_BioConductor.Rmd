@@ -456,7 +456,7 @@ Understanding genomic features is crucial for various genomics tasks, including:
 
 * Genome Annotation: These tools are essential for creating comprehensive annotations of genomes, enabling researchers to understand gene structures and functions.
 
-#### read in peak file
+### read in peak file
 
 ### Identify promoters that overlap with the peaks
 
@@ -966,7 +966,7 @@ Before proceeding with scaling, we will conduct a sanity check of the gene expre
 sanity_check_genes <- c("MSLN", "FOLH1")
 
 # Extract the rows (genes) corresponding to sanity check genes
-sanity_check_data <- tcga_mat[rownames(tcga_mat) %in% sanity_check_genes, ]
+sanity_check_data <- tcga_mat[, colnames(tcga_mat) %in% sanity_check_genes]
 
 # Print the results
 print(sanity_check_data)

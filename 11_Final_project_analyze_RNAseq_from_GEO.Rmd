@@ -1,0 +1,1125 @@
+
+--- 
+always_allow_html: true
+editor_options: 
+  chunk_output_type: console
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# Final Project: Analyzing RNAseq Data from GEO
+
+## Final Project Overview
+
+In this final project, we will work with RNAseq data obtained from the `GEO` database, specifically the dataset with ITPR3 and RELB knockout in the SW480 cell line under varying oxygen conditions. Our primary objectives are to clean and prepare the metadata, identify differentially expressed genes, explore data distribution, and visualize gene expression patterns.
+
+The steps we'll take:
+
+1. To start, we will download the RNAseq count table and the associated metadata. With the help of the `dplyr` package in R, we will clean and organize the metadata. Our focus will be on selecting and subsetting the samples that are most relevant to our analysis - specifically, two wild-type samples under normoxia and two under hypoxia. For the initial phase of the project, we will disregard knockout samples to simplify our analysis.
+
+2. Next, we will delve into exploring the RNAseq count matrix. Without considering knockout samples, we will calculate essential summary statistics to gain insights into gene expression levels' variability and distribution between the two conditions - normoxia and hypoxia.
+
+3. After understanding the dataset's characteristics, we will proceed to identify differentially expressed genes. This step is crucial for uncovering genes that exhibit significant expression changes in response to varying oxygen levels. We will utilize well-established tool, `DESeq2`, to perform differential gene expression analysis.
+
+4. Following the identification of differentially expressed genes, we will continue exploring the count matrix by calculating summary statistics specifically for these genes. This allows us to gain a deeper understanding of how their expression patterns differ between normoxia and hypoxia conditions.
+
+5. To visualize data p-value distribution more effectively, we will create histograms. These histograms will offer a visual representation of how p values are distributed.
+
+6. Additionally, we will use boxplots to compare gene expression levels between normoxia and hypoxia. Boxplots provide a concise summary of the data's central tendency, spread, and potential outliers, aiding in the identification of expression differences.
+
+7. Principal Component Analysis (PCA) will be employed to obtain insights into the overall structure of the data and any potential clustering patterns. This dimensionality reduction technique will help us visualize how samples group based on their gene expression profiles.
+
+8. Finally, we will create a heatmap using R. This heatmap will visualize the expression patterns of the identified differentially expressed genes across samples, providing a comprehensive view of how these genes respond to changes in oxygen levels in the SW480 cell line.
+
+In summary, this project will take us through the full process of RNAseq data analysis, focusing on the hypoxia vs normoxia comparison in the SW480 cell line. We'll clean the data, pinpoint differentially expressed genes, explore their distributions, and visualize gene expression patterns.
+
+Are you ready? Let's go!
+
+## How to pre-process RNAseq data
+
+This is a bonus section on how to pre-process RNAseq data. In this course, we mainly focus on how to analyze RNAseq data for downstream analysis. We will start with a count matrix (next lesson) downloaded from `GEO`.
+
+However, in real-world data analysis, sequencing data comes as a `FASTQ` file. FASTQ files are just normal text files with 4 lines for each read. Go to the link to understand the format.
+
+Watch this video:
+
+```{r echo=FALSE}
+library("vembedr")
+
+embed_url("https://www.youtube.com/watch?v=Gc-Hzvt7KVQ")
+```
+
+
+### RNAseq pre-processing steps
+
+1. The first step is to do Quality control of the [FASTQ](https://en.wikipedia.org/wiki/FASTQ_format) files using [FASTQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/).
+
+2. Trim adaptors and low-quality bases using tools such as [trimmomatic](https://github.com/timflutre/trimmomatic) or [fastp](https://github.com/OpenGene/fastp). Trimming of the reads is optional.
+
+3. Align the reads to transcriptome using [`STAR`](https://github.com/alexdobin/STAR). The single-cell RNAseq version is called [STAR-solo](https://github.com/alexdobin/STAR/blob/master/docs/STARsolo.md) from the same lab.
+
+4. Quantify the number of reads fall into each gene using [FeatureCounts](https://subread.sourceforge.net/).
+
+I have written a Snakemake pipeline to pre-process RNAseq fastq file to get a count matrix at https://github.com/crazyhottommy/pyflow-RNAseq
+
+The bash script to align the fastq files to transcriptome using `STAR`:
+
+```{bash eval=FALSE}
+STAR --runMode alignReads \
+		--runThreadN 5 \
+		--genomeDir /path/to/the/STAR/index \
+		--genomeLoad NoSharedMemory \
+		--readFilesIn mysample_R1.fastq.gz mysample_R2.fastq.gz \
+		--readFilesCommand zcat \
+		--twopassMode Basic \
+		--runRNGseed 777 \
+		--outFilterType Normal \
+		--outFilterMultimapNmax 20 \
+		--outFilterMismatchNmax 10 \
+		--outFilterMultimapScoreRange 1 \
+		--outFilterMatchNminOverLread 0.33 \
+		--outFilterScoreMinOverLread 0.33 \
+		--outReadsUnmapped None \
+		--alignIntronMin 20 \
+		--alignIntronMax 500000 \
+		--alignMatesGapMax 1000000 \
+		--alignSJoverhangMin 8 \
+		--alignSJstitchMismatchNmax 5 -1 5 5 \
+		--sjdbScore 2 \
+		--alignSJDBoverhangMin 1 \
+		--sjdbOverhang 100 \
+		--chimSegmentMin 20 \
+		--chimJunctionOverhangMin 20 \
+		--chimSegmentReadGapMax 3 \
+		--quantMode GeneCounts \
+		--outMultimapperOrder Random \
+		--outSAMstrandField intronMotif \
+		--outSAMattributes All \
+		--outSAMunmapped Within KeepPairs \
+		--outSAMtype BAM Unsorted \
+		--limitBAMsortRAM 30000000000 \
+		--outSAMmode Full \
+		--outSAMheaderHD @HD VN:1.4 \
+		--outFileNamePrefix mysample
+```
+
+
+Then quantifying using `FeatureCounts`:
+
+```{bash eval=FALSE}
+featureCounts -T 5 -p -t exon -g gene_id -a gene.gtf -o mysample_featureCount.txt mysampleAligned.out.bam
+
+```
+
+`mysample_featureCount.txt` will be a count table for one sample.
+
+Alternative Alignment-free RNAseq quantification tools such as [salmon](https://combine-lab.github.io/salmon/getting_started/) and [kallisto](https://pachterlab.github.io/kallisto/) are also very popular. I recommend you to read the tutorial of `STAR`, `FeatureCounts`, `salmon` and `kallisto` to learn how to use those command line tools.
+
+### How to use salmon to preprocess GEO fastq to counts
+
+Please refer to this [blog post](https://divingintogeneticsandgenomics.com/post/how-to-preprocess-geo-bulk-rnaseq-data-with-salmon/) and this youtube video if you want to learn more:
+
+```{r echo=FALSE}
+library("vembedr")
+
+embed_url("https://www.youtube.com/watch?v=_Q8fYokTCTs")
+```
+
+## Download and subset Count Matrix
+
+In this lesson, you will learn how to explore a count matrix in R, a common task in data analysis. We'll cover downloading the data, reading it into R, examining the data's dimensions and column names, subsetting the data, converting it into a matrix, and adding row names.
+
+### Downloading the Count Matrix
+
+To begin, we need to download the count matrix, which is a tab-separated values (TSV) file containing gene expression data. You can obtain it from the following FTP address: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE197nnn/GSE197576/suppl/GSE197576_raw_gene_counts_matrix.tsv.gz
+
+You can use the wget command in Unix to download the processed count matrix file as follows:
+
+```{bash eval=FALSE}
+wget https://ftp.ncbi.nlm.nih.gov/geo/series/GSE197nnn/GSE197576/suppl/GSE197576_raw_gene_counts_matrix.tsv.gz
+```
+
+>If you don't have access to a Unix-like command-line environment, you can download the file manually through your web browser. Simply open your web browser and go to the following URL: https://ftp.ncbi.nlm.nih.gov/geo/series/GSE197nnn/GSE197576/suppl/GSE197576_raw_gene_counts_matrix.tsv.gz
+
+### Reading the Count Matrix in R
+Now that you have the data, let's read it into R using the readr package. The first step is to load the required libraries and read the TSV file:
+
+```{r}
+library(dplyr)
+library(readr)
+
+raw_counts <- read_tsv("~/Downloads/GSE197576_raw_gene_counts_matrix.tsv.gz")
+```
+
+### Examining the Data
+It's crucial to understand the data structure. We'll start by examining the dimensions of the data and the column names:
+
+```{r}
+# Check the dimensions of the data
+dim(raw_counts)  # This will show the number of rows and columns
+
+```
+
+```{r}
+# List the column names
+colnames(raw_counts)  # This will display the names of all columns
+```
+
+The first six rows:
+
+```{r}
+head(raw_counts)
+```
+
+>Notice that the first column name is the gene name, and the other 12 columns are the sample names.
+
+### Subsetting the Data
+
+Next, let's narrow down our data to the specific samples we need for comparison. To do this, we'll create a logical vector by matching column names that contain "sgCTRL" or "gene":
+
+```{r}
+columns_to_select <- colnames(raw_counts) %>%
+  stringr::str_detect("sgCTRL|gene")
+
+columns_to_select
+```
+
+The `stringr::str_detect` function searches for patterns in the column names. The resulting columns_to_select variable is a logical vector that helps us select the relevant columns.
+
+Now, let's use this logical vector to subset the data frame:
+
+```{r}
+counts_sub <- raw_counts[, columns_to_select]
+
+head(counts_sub)
+```
+
+### Converting to a Matrix
+To perform various analyses, it's often more convenient to work with a matrix. We'll remove the first column (gene names) and convert the data frame to a matrix:
+
+```{r}
+#subset the dataframe by removing the first column using negative index
+# and then use as.matrix to convert it to a matrix
+raw_counts_mat<- counts_sub[, -1] %>% 
+              as.matrix()
+
+head(raw_counts_mat)
+```
+
+Here, we use the `%>%` (pipe) operator to perform multiple operations sequentially. The `as.matrix()` function converts the data frame to a matrix.
+
+###  Adding Row Names
+
+The matrix lacks row names, which can be crucial for identifying genes. We can add the gene names as row names:
+```{r}
+rownames(raw_counts_mat) <- raw_counts$gene
+
+head(raw_counts_mat)
+```
+
+Now, our matrix has gene names associated with each row.
+
+## Calculate the total exon length per gene
+
+We want to find the differentially expressed genes between hypoxia and normoxia. The ideal workflow is to use the `DESeq2` R package, which models the count data with the negative binomial distribution. For now, let’s use a t-test to compare and we will use DESeq2 later.
+
+However, because different samples have different sequencing depths, and different genes have different lengths, we must first normalize the counts to transcript per million (TPM).
+
+### Why Normalize Gene Counts to TPM?
+
+When working with gene expression data, it's essential to account for variations in sequencing depths (the number of reads obtained for each sample) and gene lengths (some genes are longer than others). Normalization helps ensure that our gene expression values are comparable across different samples and genes.
+
+Transcript Per Million (TPM) is a commonly used normalization method in RNA-seq analysis. It scales the gene counts to a common unit (per million) based on gene length and sequencing depth.
+
+**The general process**:
+
+1. For each gene, we divide its raw count values by its total exon length. This step essentially converts the raw counts into counts per unit exon length.
+
+2. We sum up the values for each column (sample). This calculation gives us the total counts for each sample.
+
+3. For each gene in each sample, we divide the value obtained in Step 1 by the total count for that sample calculated in Step 2. This step scales the counts relative to the sequencing depth of each sample.
+
+4. To bring the values to a common scale and make them more interpretable, we multiply the result from Step 3 by 1,000,000 (1e6). This step converts the values to TPM, where the final unit is "Transcripts Per Million."
+
+The normalization process ensures that the gene expression values are now comparable across different samples, making it easier to identify genes that are differentially expressed between conditions (e.g., hypoxia and normoxia).
+
+### Creating a function for normalization
+
+Let’s write a function. Before that, we need to know the gene length of all the genes in the data frame.
+
+We will use the Bioconductor package `TxDb.Hsapiens.UCSC.hg19.knownGene` to get the gene length, or more exactly, the total exon lengths for each gene (most of the RNAseq reads are from the exons).
+
+```{r}
+#if (!require("BiocManager", quietly = TRUE))
+#    install.packages("BiocManager")
+
+#BiocManager::install("TxDb.Hsapiens.UCSC.hg19.knownGene")
+
+library(TxDb.Hsapiens.UCSC.hg19.knownGene)
+
+TxDb.Hsapiens.UCSC.hg19.knownGene
+```
+
+It is a `TxDb` object. We can use functions such as genes and exons to get the genes or exons.
+
+```{r}
+# make it a shorter name
+txdb<- TxDb.Hsapiens.UCSC.hg19.knownGene
+
+genes(txdb)
+```
+
+It returns a `GRanges` object with the chromosome name, start, end, strand and the gene_id. Note that `gene_id` here is the ENTREZ ID.
+
+However, to be accurate, we want the exons, not the whole genes which contain introns. Let's get the exons:
+
+```{r}
+exons<- exonsBy(txdb, by = "gene")
+exons
+```
+
+This returns a GRangesList object and each element of the list is a GRanges containing all the exons for that gene.
+
+Let’s calculate the total exon lengths for each gene by the `width` function:
+
+```{r}
+# width of exons per gene
+width(exons)
+```
+
+```{r}
+# sum the exons width up per gene
+head(sum(width(exons)))
+```
+
+Note that the `width` and `su`m functions are vectorized. It will calculate across all genes.
+
+Let’s turn it into a tibble using the `enframe` function:
+
+```{r}
+exon_len<- sum(width(exons)) %>%
+      tibble::enframe(name = "ENTREZID", value = "exon_length")
+
+head(exon_len)
+```
+
+Next, let’s map the ENTREZID to the official gene symbol so we can match the rownames of the RNAseq count matrix. We will need the `org.Hs.eg.db` Bioconductor package (install it if you
+do not have it).
+
+```{r}
+library(org.Hs.eg.db)
+
+map<- AnnotationDbi::select(org.Hs.eg.db, 
+                            keys = exon_len$ENTREZID, 
+                            columns= "SYMBOL",
+                            keytype = "ENTREZID")
+
+head(map)
+```
+
+### join the exon length table
+
+Read this [article](https://dplyr.tidyverse.org/reference/mutate-joins.html) to understand different join functions in `dplyr`.
+
+```{r}
+map<- left_join(exon_len, map)
+head(map)
+```
+
+One of the key problems with genomics is that gene IDs are not always 1:1 mappable. Different versions of the genome (hg19 vs hg38 for humans) may have slightly different gene symbols.
+
+```{r}
+table(rownames(raw_counts_mat) %in% map$SYMBOL)
+```
+
+### what genes are not in the mapping table?
+
+```{r}
+base::setdiff(rownames(raw_counts_mat), map$SYMBOL) %>%
+  head(n = 20)
+```
+
+Most of the differences are from non-coding RNA (LOC genes) or microRNAs. Many of those genes have a limited number of counts, we can ignore them for the moment.
+
+```{r}
+not_in_map<- setdiff(rownames(raw_counts_mat), map$SYMBOL)
+
+raw_counts_mat[not_in_map, ] %>%
+  head(n = 15)
+```
+
+subset only the common genes for the map file and the count matrix. Make sure the order of the genes is the same for both data.
+
+```{r}
+common_genes<- intersect(rownames(raw_counts_mat), map$SYMBOL)
+
+## select only the common genes and re-order them by common_genes
+map<- map %>%
+  dplyr::slice(match(common_genes, SYMBOL))
+
+# subset the common genes and re-order them by common_genes
+raw_counts_mat<- raw_counts_mat[common_genes, ]
+
+head(map)
+```
+
+The order of the genes is the same for `map` and `raw_counts_mat`.
+
+```{r}
+head(raw_counts_mat)
+```
+
+## Normalizing Raw Counts to Transcripts per Million (TPM)
+
+TPM normalization is essential for comparing gene expression levels across different samples and genes. We will write a function in the R programming language to perform this conversion and explain the steps involved.
+
+### The `count2tpm` Function:
+
+We will create a function called count2tpm in R to perform TPM normalization. This function takes two arguments: a count matrix and a vector of exon lengths. Let's break down the code step by step.
+
+```{r}
+count2tpm <- function(count_matrix, exon_length) {
+  # Calculate reads per base pair per gene
+  reads_per_bp_gene <- count_matrix / exon_length
+  
+  # Calculate the total reads per base pair for each sample
+  reads_per_bp_sample <- colSums(reads_per_bp_gene)
+  
+  # Normalize to the library size and calculate TPM
+  tpm_matrix <- t(t(reads_per_bp_gene) / reads_per_bp_sample) * 1000000
+  return(tpm_matrix)
+}
+```
+
+1. We start by defining the `count2tpm` function, which takes two arguments: `count_matrix` (raw gene expression counts) and `exon_length` (a vector of gene exon lengths).
+
+2. We calculate the number of reads per base pair for each gene by dividing the count matrix by the exon length vector. This step helps us account for gene length differences.
+
+3. We sum the reads per base pair values for each sample (column-wise) to calculate the total reads per base pair for each sample. This is crucial for library size normalization.
+
+4. To normalize the data to library size, we divide the transposed `reads_per_bp_gene` matrix by the `reads_per_bp_sample` vector. The transposition allows us to perform element-wise division efficiently. Finally, we multiply the result by 1,000,000 to obtain TPM values.
+
+### Applying the Function
+
+Now, let's apply the `count2tpm` function to our raw count matrix and exon length vector. Here's how you can do it:
+
+```{r}
+tpm <- count2tpm(raw_counts_mat, map$exon_length)
+
+head(tpm)
+```
+
+These values represent the TPM-normalized gene expression levels for each gene in different samples.
+
+### Conclusions
+
+In this lesson, we have learned how to normalize raw gene expression counts to Transcripts per Million (TPM) using the `count2tpm` function in R. This normalization is crucial for comparing gene expression levels accurately across samples and genes, taking into account library size and gene length.
+
+## Analyzing Gene Expression Data Using t-Tests
+
+Gene expression data provides valuable insights into how genes are activated or deactivated under different conditions, such as in response to diseases or environmental changes.
+
+A t-test is a statistical test that helps us determine whether there is a significant difference between the means of two groups. In the context of gene expression analysis, we can use t-tests to identify genes that are differentially expressed between two experimental conditions. For example, we might want to know which genes are upregulated or downregulated in response to hypoxia (low oxygen levels) compared to normoxia (normal oxygen levels).
+
+### Hypothesis Testing
+
+Before we dive into the code, let's understand the key components of hypothesis testing:
+
+1. **Null Hypothesis (H0)**: This is the default assumption that there is no significant difference between the groups. In gene expression analysis, it means that the gene is not differentially expressed.
+
+2. **Alternative Hypothesis (Ha)**: This is the hypothesis we want to test. It suggests that there is a significant difference between the groups. In gene expression analysis, it implies that the gene is differentially expressed.
+
+3. **p-value**: The p-value represents the probability of observing the data, assuming that the null hypothesis is true. A small p-value (typically less than 0.05) suggests that we can reject the null hypothesis and accept the alternative hypothesis.
+
+### Analyzing Specific Genes
+
+Now, let's use t-tests to analyze the expression of specific genes and understand how they respond to hypoxia.
+
+We'll start by examining the gene `WASH7P`. We perform a t-test to compare its expression levels between normoxia and hypoxia samples.
+
+```{r}
+t.test(tpm["WASH7P", c(1,2)], tpm["WASH7P", c(3,4)])
+```
+
+In this case, the p-value is 0.3404, suggesting that there is no significant difference in the expression of the WASH7P gene between normoxia and hypoxia.
+
+Next, we examine the `VEGFA` gene, which is known to be a key regulator of angiogenesis in response to hypoxia.
+
+```{r}
+t.test(tpm["VEGFA", c(1,2)], tpm["VEGFA", c(3,4)])
+```
+
+Here, the p-value is 0.00132, indicating a significant difference in VEGFA expression between normoxia and hypoxia. This suggests that VEGFA is likely upregulated under hypoxic conditions.
+
+Now, let's analyze the `SLC2A1` (GLUT1) gene, which plays a role in glucose transport during anaerobic glycolysis.
+
+```{r}
+t.test(tpm["SLC2A1", c(1,2)], tpm["SLC2A1", c(3,4)])
+
+```
+
+The p-value is 0.01354, indicating a significant difference in `SLC2A1` expression between the two conditions. This suggests that `SLC2A1` may be upregulated under hypoxic conditions as well.
+
+### Analyzing All Genes
+To analyze all genes in our dataset, we can create a custom function called `mytest` that performs t-tests for each gene pair and extracts the p-values.
+
+```{r}
+mytest <- function(x) t.test(x[c(1,2)], x[c(3,4)], var.equal = TRUE)$p.value
+pvals <- apply(tpm, 1, mytest)
+
+head(pvals)
+```
+
+Here, we apply the `mytest` function to each row (gene) in our gene expression dataset (`tpm`) to calculate p-values.
+
+Finally, we count how many genes have p-values smaller than 0.01 to identify differentially expressed genes:
+
+```{r}
+sum(pvals < 0.01, na.rm = TRUE)
+```
+
+`pvals< 0.01` returns a logical vector of TRUE and FALSE. TRUE is 1 and FALSE is 0 under the hood in R. If you sum them up `sum(pvals< 0.01, na.rm = TRUE)` will tell you how many TRUEs are in the vector.
+
+There are `r sum(pvals < 0.01, na.rm = TRUE)` genes with p-values smaller than 0.01!
+
+### Conclusion
+
+In this lesson, we learned how to use t-tests to analyze gene expression data and identify differentially expressed genes. We examined specific genes and performed t-tests, understanding the significance of p-values and hypothesis testing. Additionally, we applied t-tests to all genes in the dataset to identify potential candidates for further investigation.
+
+## Analyzing Gene Expression Data with ggplot2
+
+In this lesson, we will explore how to analyze gene expression data using the powerful ggplot2 library. We will focus on visualizing p-value distributions, comparing differentially expressed genes, and creating boxplots to gain insights into gene expression changes under different conditions.
+
+### Import Libraries and Load Data
+
+First, let's import the necessary libraries and load your gene expression data. In this lesson, we assume you have a dataset containing gene names and p-values representing their significance.
+
+```{r}
+# Import required libraries
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+# Load your p-values data (replace 'pvals' with your actual dataset)
+pval_df <- pvals %>%
+  tibble::enframe(name = "gene", value = "pvalue")
+
+# Display the first few rows of the p-value data
+head(pval_df)
+```
+
+This code converts your gene names and corresponding p-values into a data frame, making it easier to work with in ggplot2.
+
+### Visualizing P-Value Distribution
+Next, let's create a histogram to visualize the distribution of p-values:
+
+```{r}
+# Create a histogram of p-values
+ggplot(pval_df, aes(x = pvalue)) +
+  geom_histogram(color = "white") +
+  theme_bw(base_size = 14) +
+  ggtitle("p-value distribution")
+```
+
+This code uses ggplot2 to create a histogram, providing insights into the distribution of p-values across your genes. Understanding p-value distribution can help assess the significance of your results.
+
+### Identifying Differentially Expressed Genes
+Now, we'll focus on comparing gene expression between hypoxia and normoxia conditions, specifically looking at up-regulated genes. We'll start by calculating the average expression levels for both conditions and identifying the up-regulated genes.
+
+```{r}
+# Calculate average expression for normoxia and hypoxia conditions
+avg_normoxia <- rowMeans(tpm[, c(1, 2)])
+avg_hypoxia <- rowMeans(tpm[, c(3, 4)])
+
+# Identify up-regulated genes
+up_genes <- (avg_hypoxia - avg_normoxia) > 0
+
+# Get the names of up-regulated genes
+up_gene_names <- rownames(tpm)[up_genes]
+
+head(up_gene_names)
+```
+
+Here, we calculate the average expression for normoxia and hypoxia conditions and then identify up-regulated genes by comparing the averages. `up_gene_names` contains the names of these genes.
+
+### Selecting Differentially Expressed Genes
+Not all up-regulated genes may be significantly different. Let's find the intersection of up-regulated genes with those that have a p-value less than 0.01 (significant up-regulation):
+
+```{r}
+# Select differentially expressed genes (intersection of up-regulated genes and significant p-values)
+differential_genes <- pvals[pvals < 0.01 & !is.na(pvals)] %>%
+  names()
+
+# Find the intersection
+differential_up_genes <- intersect(differential_genes, up_gene_names)
+
+length(differential_up_genes)
+```
+
+`differential_up_genes` now contains the names of genes that are both up-regulated and significantly different under hypoxia.
+
+### boxplot to visualize gene expression changes between the two conditions.
+
+#### preparing the data 
+
+Now, let's prepare our data for creating a boxplot to visualize gene expression changes between the two conditions. We will convert the gene expression data into a long format suitable for `ggplot2`:
+
+```{r}
+# Convert gene expression data to long format
+tpm[differential_genes, ] %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column(var = "gene") %>%
+  tidyr::pivot_longer(-1, names_to = "sample", values_to = "tpm")
+```
+
+This code converts the gene expression data into a long format with columns for gene names, sample names, and expression values.
+
+Add another column to denote the condition by separating the sample column to two columns: sample and condition
+
+```{r}
+tpm_df<- tpm[differential_genes, ] %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column(var="gene") %>%
+  tidyr::pivot_longer(-1, names_to = "sample", values_to = "tpm") %>%
+  tidyr::separate(sample, into = c("sample", "condition"), sep = "_sgCTRL_")
+
+head(tpm_df)
+```
+
+#### Customizing Boxplot Order
+By default, ggplot2 orders boxplots alphabetically. To change the order, convert the condition column to a factor with the desired order:
+
+```{r}
+# Define the order for boxplot
+tpm_df$condition <- factor(tpm_df$condition, levels = c("Norm", "Hyp"))
+```
+This code ensures that the boxplot orders the conditions as "Norm" followed by "Hyp."
+
+### Creating the Boxplot
+
+Now, we can create the boxplot to visualize gene expression changes between the two conditions:
+
+```{r}
+# Create the boxplot
+ggplot(tpm_df, aes(x = condition, y = log2(tpm + 1))) +
+  geom_boxplot() +
+  theme_bw(base_size = 14)
+
+```
+
+This code uses `ggplot2` to create a boxplot, showing the distribution of gene expression values between the "Norm" and "Hyp" conditions. The `log2(tpm + 1)` transformation is often used to visualize RNA-Seq data.
+
+### Visualizing Raw Expression Values
+Sometimes, it's essential to examine the raw expression values to identify outliers. Here, we use a boxplot to visualize the raw values of selected genes:
+
+```{r}
+# Select specific genes (e.g., "VEGFA" and "SLC2A1") for visualization
+ggplot(tpm_df %>%
+         filter(gene %in% c("VEGFA", "SLC2A1")), 
+       aes(x = condition, y = log2(tpm + 1))) +
+  geom_point() +
+  geom_boxplot() +
+  facet_wrap(~ gene) + 
+  theme_bw(base_size = 14)
+```
+
+This code creates scatter plots for selected genes and overlays boxplots to help visualize
+the distribution of the gene expression levels.
+
+### Conclusion
+In this lesson, we covered the entire process of analyzing gene expression data using ggplot2, from loading data to visualizing differential expression. Understanding the steps involved and customizing plots can provide valuable insights into your gene expression analysis.
+
+## Correcting for Multiple Comparisons in Statistical Analysis
+
+This is a critical step when conducting hypothesis tests on a large number of data points, such as in genomics research. We will cover the need for correction, different methods to control errors, and demonstrate how to implement one of the widely-used methods, the False Discovery Rate (FDR) correction.
+
+### Why Correct for Multiple Comparisons?
+
+Imagine you are a scientist studying the gene expression levels of thousands of genes in response to a treatment. You perform statistical tests to identify which genes are significantly differentially expressed. If you run these tests without correction, you are likely to encounter a problem known as the "multiple comparisons problem." In essence, the more tests you perform, the higher the chance of obtaining false positives (i.e., incorrectly identifying genes as significant).
+
+To address this issue, we need correction methods that control the probability of making at least one false discovery while testing multiple hypotheses. In this project, we will focus on the `False Discovery Rate (FDR)` correction method, specifically using the `Benjamini & Hochberg (BH)` procedure.
+
+### The Multiple Comparisons Example
+Let's illustrate the concept with a practical example. Suppose you have gene expression data from 23,250 genes and you want to identify those that are differentially expressed between two conditions (e.g., control and treatment). You perform a statistical test for each gene and obtain p-values.
+
+```{r}
+# Sample code to generate random p-values for demonstration purposes
+m <- 23250  # Number of genes
+n <- 100    # Number of comparisons
+randomData <- matrix(rnorm(n * m), m, n)
+nullpvalues <- apply(randomData, 1, mytest)  # Simulated p-values
+hist(nullpvalues)
+
+```
+
+If you were to plot the histogram of these p-values, you might expect them to follow a uniform distribution (a flat line) under the null hypothesis (no differential expression). However, due to the nature of p-values as random variables, you will still observe some p-values below the commonly used significance level of 0.05, even when no genes are differentially expressed.
+
+Compare this histogram with the histogram for the real data. what do you see? Even if we randomly generated the data, you still see some p values are smaller than 0.05!! We randomly generated data, there should be No genes that deferentially expressed. However, we see a flat line across different p values.
+
+p values are random variables. Mathematically, one can demonstrate that under the null hypothesis (and some assumptions are met, in this case, the test statistic T follows standard normal distribution), p-values follow a uniform (0,1) distribution, which means that P(p < p1) = p1.
+
+This means that the probability we see a p value smaller than p1 is equal to p1. That being said, with a 100 t-tests, under the null (no difference between control and treatment), we will see 1 test with a p value smaller than 0.01. And we will see 2 tests with a p value smaller than 0.02 etc.
+
+We have 23250 genes in the matrix, and we did 23250 comparisons at one time. This explains why we see `23250 * 0.05 = 1162` p-values are smaller than 0.05 in our randomly generated numbers. That’s exactly what we see in the null distribution of the p-values.
+
+>In fact, checking the p-value distribution by histogram is a very important step during data analysis. You may want to read a blog post by David Robinson: [How to interpret a p-value histogram](http://varianceexplained.org/statistics/interpreting-pvalue-histogram/).
+
+### Correcting for Multiple Comparisons: False Discovery Rate (FDR)
+How do we control the false positives for multiple comparisons? One way is to use the Bonferroni correction to correct the familywise error rate (FWER): define a particular comparison as statistically significant only when the P value is less than alpha(often 0.05) divided by the number (m) of comparisons (p < alpha/m).
+
+Say we computed 100 t-tests, and got 100 p values, we only consider the genes with a p value smaller than 0.05/100 as significant. This approach is very conservative and is used in Genome-wide association studies (GWAS). Since we often compare millions of genetic variations between (tens of thousands) cases and controls, this threshold will be very small!
+
+Alternatively, we can use False Discovery Rate (FDR) to report the gene list. FDR = #false positives/# called significant. This approach does not use the term statistically significant but instead use the term discovery. Let’s control FDR for a gene list with FDR = 0.05. It means that of all the discoveries, 5% of them is expected to be false positives.
+
+Benjamini & Hochberg (BH method) in 1995 proposed a way to control FDR: Let k be the largest i such that `p(i) <= (i/m) * alpha`, (m is the number of comparisons) then reject H(i) for i =1, 2, …k
+
+This process controls the FDR at level alpha. The method sets a different threshold p value for each comparison. Say we computed 100 t-tests, and got 100 p values, and we want to control the FDR =0.05. We then rank the p values from small to big. if `p(1) <= 1/100 * 0.05`, we then reject null hypothesis and accept the alternative. if `p(2) < = 2/100 * 0.05`, we then reject the null and accept the alternative.
+
+```{r}
+#remove the NAs
+pvals<- pvals[!is.na(pvals)]
+
+## order the pvals computed above and plot it.
+alpha<- 0.05
+
+#m is the number of comparisons 
+m<- length(pvals)
+
+# let's arrange the p-value from small to big and get only the first 5000  
+top_5000_pvalue<- pval_df %>%
+  dplyr::arrange(pvalue) %>%
+  mutate(rank = row_number()) %>%
+  dplyr::slice(1:5000)
+
+head(top_5000_pvalue)  
+```
+
+let's plot
+
+```{r}
+ggplot(top_5000_pvalue, aes(x= rank, y = pvalue))+
+  geom_point() + 
+  geom_abline(slope = alpha/m, intercept = 0, color = "red", linetype = 2) 
+```
+
+p values that are below the red dotted line are controlled at FDR of 0.05.
+
+We will use p.adjust function and the method “fdr” or “BH” to correct the p value, what the p.adjust function does is to recalculate the p-values.
+
+With the FDR definition, p value is only significant if `p(i)<= (i/m) * alpha` We can rewrite it to `p(i) * m/i <= alpha`. The p.adjust function returns `p(i) * m/i` the adjusted p-value. We can then only accept the returned the p values if `p.adjust(pvals) <= alpha`.
+
+```{r}
+top_5000_pvalue %>%
+  mutate(padj = pvalue * m/rank) %>%
+  head()
+```
+
+How many of those p-values are below the dotted red line?
+
+```{r}
+top_5000_pvalue %>%
+  mutate(padj = pvalue * m/rank) %>%
+  filter(padj <= alpha) %>%
+  filter(rank == which.max(rank))
+```
+
+There are total 3173 p-values that are significant after FDR correction.
+
+We can verify it using the p.adjust function in R:
+
+```{r}
+adjusted_pvalues<- p.adjust(pvals, method="fdr")
+
+sum(adjusted_pvalues < 0.05)
+```
+
+This is the same as what we calculated manually!
+
+We can plot a vertical line on the p-value ranking plot:
+
+```{r}
+ggplot(top_5000_pvalue, aes(x= rank, y = pvalue))+
+  geom_point() + 
+  geom_abline(slope = alpha/m, intercept = 0, color = "red", linetype = 2) +
+  geom_vline(xintercept = 3173, linetype = 2, color = "red")
+```
+
+### Conclusion
+Correcting for multiple comparisons is essential when conducting statistical tests on a large number of hypotheses. The False Discovery Rate (FDR) correction, such as the Benjamini & Hochberg method, allows us to control the rate of false discoveries while identifying significant results. This approach is valuable in various scientific disciplines to ensure the reliability of statistical findings.
+
+## Analyzing Differential Gene Expression with DESeq2
+
+In this step, we will explore the DESeq2 workflow, a widely used bioinformatics package in R for identifying differentially expressed genes (DEGs) from RNA sequencing (RNA-seq) data. `DESeq2` allows us to compare gene expression levels between different conditions or treatments and find genes that are significantly upregulated or downregulated.
+
+>`DESeq2` is an R package within the Bioconductor project that performs differential expression analysis on RNA-seq data. It uses a negative binomial distribution to model read counts and estimates the variance-mean dependence in the data to identify DEGs accurately. `DESeq2` is particularly useful when dealing with count data from RNA-seq experiments. You can read docs [here](https://bioconductor.org/packages/release/bioc/html/DESeq2.html).
+
+This Youtube video uses the same dataset and you may want to watch it if you prefer video.
+
+```{r echo=FALSE}
+library("vembedr")
+
+embed_url("https://www.youtube.com/watch?v=2flSNluqa7o")
+```
+
+### Create a Sample Sheet
+Before using DESeq2, it's essential to prepare a sample sheet that describes the experimental conditions of your samples. The sample sheet associates each sample with its respective experimental condition or treatment. This step is crucial for DESeq2 to understand the experimental design, as it enables the comparison of gene expression between conditions.
+
+In our project, we will use a sample sheet with two conditions: "normoxia" and "hypoxia."
+
+```{r}
+library(DESeq2)
+coldata <- data.frame(condition = c("normoxia", "normoxia", "hypoxia", "hypoxia"))
+rownames(coldata) <- colnames(raw_counts_mat)
+
+coldata
+```
+
+
+### Create a DESeq2 Object
+
+Next, we create a `DESeq2` object using the count data and the sample sheet. This object will store the count data and associated sample information and will be used for differential expression analysis by `DESeq2`.
+
+The design formula specifies the experimental design, taking the condition as the main factor.
+
+```{r}
+dds <- DESeqDataSetFromMatrix(countData = raw_counts_mat,
+                              colData = coldata,
+                              design = ~ condition)
+dds <- DESeq(dds)
+
+```
+
+### Get Differential Results
+
+To identify differentially expressed genes, we extract results from the DESeq2 analysis, specifying the contrast between two conditions (e.g., "hypoxia" vs. "normoxia").
+
+```{r}
+res <- results(dds, contrast = c("condition", "hypoxia", "normoxia"))
+
+res
+```
+
+
+### Explore the DESeq2 results and create visualizations.
+
+A volcano plot is a commonly used visualization in RNA-seq analysis. It helps identify genes that are both statistically significant and biologically relevant.
+
+>A volcano plot is a powerful visualization to simultaneously assess the significance and magnitude of gene expression changes. It helps identify genes that are both statistically significant and biologically relevant.
+
+It's a scatter plot with the log2 fold change on the x-axis and the negative logarithm (base 10) of the p-value on the y-axis.
+
+```{r}
+library(ggplot2)
+
+ggplot(data = as.data.frame(res)) +
+  geom_point(aes(x = log2FoldChange, y = -log10(pvalue))) +
+  theme_bw(base_size = 14)
+```
+
+In this plot, each point represents a gene. The x-axis shows how much a gene's expression changes (log2 fold change), while the y-axis indicates the significance of the change (-log10 p-value). Genes with a significant change will be far to the left or right on the plot, and those with very low p-values will be at the top.
+
+### Examining the Top Differentially Expressed Genes
+
+Before creating visualizations, it's essential to understand which genes are the most differentially expressed. Examining the top genes by significance and fold change can provide insights into the dataset's characteristics.
+
+```{r}
+top_differentially_expressed_genes <- res %>%
+  as.data.frame() %>%
+  arrange(padj, desc(log2FoldChange)) %>%
+  head(n = 30)
+
+top_differentially_expressed_genes
+```
+
+The code above arranges genes in descending order of adjusted p-value (padj) and then by log2 fold change. It retrieves the top 30 genes with the most significant differences in expression between the conditions. You may also notice that the top several genes are with p-value of 0, that's why you see the dots capped in the volcano plot.
+
+You can use this list to focus further analysis or exploration on the genes with the most substantial changes.
+
+### Labeling Genes in the Volcano Plot
+
+To identify and label genes of specific interest on the volcano plot, we filter genes based on criteria such as fold change and p-value.
+
+To label genes of interest on the volcano plot, we first define criteria to identify them. In this example, we filter genes with an absolute log2 fold change greater than or equal to 2.5 and a p-value less than or equal to 0.001. We also exclude genes with names containing "LOC."
+
+```{r}
+genes_to_label <- res %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column(var = "gene") %>%
+  filter(!stringr::str_detect(gene, "LOC"),
+         abs(log2FoldChange) >= 2.5,
+         padj <= 0.001)
+
+head(genes_to_label)
+```
+
+Now, we label these selected genes on the volcano plot using the [`ggrepel`](https://ggrepel.slowkow.com/) package to prevent label overlap.
+
+```{r}
+library(ggrepel)
+
+ggplot(data = as.data.frame(res), aes(x = log2FoldChange, y = -log10(pvalue))) +
+  geom_point() +
+  ggrepel::geom_label_repel(data = genes_to_label, aes(label = gene)) +
+  theme_bw(base_size = 14)
+```
+
+### Coloring Points in the Volcano Plot
+To further enhance the plot, we can color the points based on significance. Coloring points in the volcano plot based on significance provides additional information. It helps distinguish genes that are statistically significant from those that are not.
+
+In this example, we color genes as "sig" (significant) or "not sig" (not significant) based on the criteria used for labeling.
+
+```{r}
+res2 <- res %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column(var = "gene") %>%
+  mutate(sig = case_when(
+    !stringr::str_detect(gene, "LOC") &
+      abs(log2FoldChange) >= 2.5 &
+      padj <= 0.001 ~ "sig",
+    TRUE ~ "not sig"
+  ))
+
+head(res2)
+```
+
+Now, we update the volcano plot with colored points, horizontal and vertical lines, and labeled genes.
+
+```{r}
+ggplot(res2, aes(x = log2FoldChange, y = -log10(pvalue))) +
+  geom_point(aes(color = sig)) +
+  ggrepel::geom_label_repel(data = genes_to_label, aes(label = gene))+
+  theme_bw(base_size = 14)
+
+```
+
+Now, let's fix the color of the points and let's use red for the significant ones
+
+```{r}
+ggplot(res2, aes(x = log2FoldChange, y = -log10(pvalue))) +
+  geom_point(aes(color = sig)) +
+  scale_color_manual(values = c("blue", "red")) +
+  ggrepel::geom_label_repel(data = genes_to_label, aes(label = gene))+
+  theme_bw(base_size = 14)
+
+```
+
+Finally, let's add horizontal and vertical lines.
+
+1. Vertical Lines: Vertical lines are often added at specific fold change values, such as -2.5 and 2.5 in the provided code. These lines represent the threshold for fold change, indicating the point beyond which genes are considered significantly upregulated (right of the rightmost line) or significantly downregulated (left of the leftmost line).
+
+2. Horizontal Line: The horizontal line, we choose at -log10(pvalue) = 100 or another chosen significance level that fits your own data, emphasizing the threshold for statistical significance. Genes falling above this line are considered highly significant based on their p-values.
+
+```{r}
+ggplot(res2, aes(x = log2FoldChange, y = -log10(pvalue))) +
+  geom_point(aes(color = sig)) +
+  scale_color_manual(values = c("blue", "red")) +
+  ggrepel::geom_label_repel(data = genes_to_label, aes(label = gene))+
+  geom_hline(yintercept = 100, linetype = 2, color = "red") +
+  geom_vline(xintercept = c(-2.5, 2.5), linetype = 2, color = "red")+
+  theme_bw(base_size = 14)
+```
+
+This final plot provides a clear visualization of DEGs, with significant genes highlighted in red and labeled for easy identification.
+
+### Conclusion
+In this lesson, we've explored the DESeq2 workflow for differential gene expression analysis in RNA-seq data. We've learned how to create a sample sheet, perform differential analysis, and visualize the results using volcano plots. Additionally, we've discussed criteria for labeling and coloring genes on the plot, making it a powerful tool for identifying biologically relevant DEGs in real-world datasets.
+
+## Principal Component Analysis (PCA) using DESeq2
+
+In this lesson, we will explore Principal Component Analysis (PCA), a dimensionality reduction technique commonly used in genomics to analyze high-dimensional gene expression data. We will use R and the DESeq2 package to perform PCA analysis and understand the steps involved.
+
+### What is Principal Component Analysis (PCA)?
+Principal Component Analysis, or PCA, is a mathematical technique used to reduce the dimensionality of high-dimensional data while retaining the most important information. In genomics, PCA is often used to visualize and explore variations in gene expression data across different samples or conditions.
+
+### Why use PCA?
+
+1. Dimension Reduction: Genomic data often contain thousands of genes, making it challenging to visualize or analyze. PCA helps reduce this complexity by summarizing the data into a few principal components.
+
+2. Visualization: PCA allows us to visualize the similarities and differences between samples or conditions in a lower-dimensional space, making it easier to detect patterns or clusters.
+
+3. Identification of Outliers: PCA can help identify outlier samples that deviate significantly from the majority of samples. PCA usually is my first step in exploratory data analysis to spot the wiredness of the data.
+
+### Using DESeq2 for PCA Analysis
+DESeq2 includes a function called `plotPCA` for performing PCA analysis. However, in some cases, you may want to perform PCA manually for more customization. Let's walk through the steps.
+
+DESeq2 has a `plotPCA` function to use:
+
+```{r}
+#vsd is the normalized data
+vsd <- vst(dds, blind=FALSE)
+
+plotPCA(vsd, intgroup=c("condition"))
+```
+
+* `dds` is assumed to be a DESeqDataSet object containing raw gene expression data.
+
+* `vst` stands for Variance Stabilizing Transformation, which is used to normalize the gene expression data. This transformation stabilizes the variance across samples, making the data suitable for PCA analysis.
+
+* The `blind=FALSE` argument indicates that the design of the experiment is not blinded.
+
+* Each point on the PCA plot represents a sample (e.g., a biological sample from an experiment).
+
+* The position of each point on the plot is determined by its scores along the principal components (PC1 and PC2).
+
+* The intgroup argument allows you to color the points based on a specific grouping variable (in this case, "condition"), which helps visualize how different conditions relate to each other in terms of gene expression patterns.
+
+The resulting PCA plot provides insights into the underlying structure of the data. It clearly shows that the samples are separated in PC1 by the condition of hypoxia vs normoxia. PCA can be valuable for quality control, identifying experimental effects, or exploring the relationships between conditions in genomics research.
+
+### Plotting PCA by ourselves
+
+Before performing Principal Component Analysis (PCA), it's essential to prepare our gene expression data properly. In genomics, data often require normalization to account for variations introduced during the experimental process. We are using DESeq2's Variance Stabilizing Transformation (VST) to normalize the data.
+
+When conducting RNA-Seq experiments, variations can arise due to differences in sequencing depths, library sizes, and other technical factors. The VST helps to stabilize the variance across samples and makes the data more suitable for downstream analysis. By applying VST to our DESeqDataSet object named dds, you ensure that the data is in a suitable format for PCA, where the goal is to capture biological variations rather than technical noise.
+
+#### Calculate Principal Components
+
+>Principal components are mathematical constructs that represent the major sources of variation in your data. Calculating principal components is a critical step in PCA.
+
+In this step, we'll use the `prcomp` function to compute the principal components from the normalized gene expression data. The function takes the transpose of the normalized counts as input because PCA is typically performed on columns (samples) rather than rows (genes).
+
+By calculating these principal components, we are summarizing the data in a way that retains the most significant sources of variation across all genes and samples. This is essential because genes that vary together might provide insights into shared biological processes or conditions.
+
+```{r}
+# Get the normalized counts
+normalized_counts <- assay(vsd) %>% as.matrix()
+
+# Calculate the principal components
+pca_prcomp <- prcomp(t(normalized_counts), center = TRUE, scale. = FALSE)
+
+names(pca_prcomp)
+```
+
+In PCA, each principal component is a linear combination of the original variables (in this case, genes). The coefficients of this linear combination are called loadings. Loadings represent the contribution of each original variable (gene) to the principal component. Let's retrieve them:
+
+```{r}
+# the $x contains the PC loadings we want
+pca_prcomp$x
+```
+
+### Create a DataFrame for Visualization
+To visualize the results of PCA, we need to organize the principal component scores (PC1 and PC2) along with sample labels in a DataFrame.
+
+This organization allows us to create a PCA plot where each point represents a sample, and we can color-code the points based on the sample labels. Also, this visualization helps us understand how samples relate to each other in a lower-dimensional space, where the primary sources of variation are captured by PC1 and PC2.
+
+```{r}
+# Create a DataFrame for visualization
+PC1_and_PC2 <- data.frame(PC1 = pca_prcomp$x[, 1], PC2 = pca_prcomp$x[, 2], type = rownames(pca_prcomp$x))
+```
+
+### Plot the PCA
+The final step is to create a PCA plot using the `ggplot2` package. This plot visually represents the relationships between samples in a reduced-dimensional space.
+
+Visualization is a crucial aspect of PCA. By plotting PC1 against PC2, we visualize how samples cluster or spread apart based on their gene expression profiles. The ggplot2 package provides a powerful and flexible way to create such plots. Each point in the plot corresponds to a sample, and the color of the points indicates the sample's label or condition. This visual representation allows us to identify patterns, clusters, or outliers in our data, aiding in the interpretation of the biological significance of the variation observed.
+
+```{r}
+# Load ggplot2 library
+library(ggplot2)
+
+# Create a PCA plot
+ggplot(PC1_and_PC2, aes(x = PC1, y = PC2, col = type)) + 
+  geom_point() + 
+  geom_text(aes(label = type), hjust = 0, vjust = 0) +
+  coord_fixed()
+```
+
+### Comparison with DESeq2's plotPCA
+
+You may notice that the PCA plot we created manually is not identical to the one generated by DESeq2's plotPCA function. This difference arises because DESeq2's function uses a default set of genes (the top 500 most variable genes) for the analysis.
+
+The choice of genes can significantly impact the results of PCA. DESeq2's default behavior is to focus on the genes with the highest variation across samples, as these are often the most informative for distinguishing between conditions. However, in some cases, you may want to use all genes or a specific subset based on your research question. Customizing the gene selection can provide different perspectives on the data and help you address specific hypotheses or explore different aspects of gene expression variation.
+
+### Conclusion
+
+In this lesson, we've delved into the steps of performing Principal Component Analysis (PCA) in genomics using the DESeq2 package. PCA is a valuable technique for exploring complex gene expression data and understanding each step in the process is essential for meaningful analysis and interpretation. By following these steps and considering the context and choices made during the analysis, you can gain deeper insights into your genomic data and draw biologically relevant conclusions.
+
+## Creating a Perfect Heatmap
+Heatmaps are particularly useful in genomics and other scientific fields where large datasets need to be analyzed. We'll cover the importance of selecting significant genes, scaling data, and annotating heatmaps to enhance their interpretability.
+
+Watch this youtube video to better your understanding.
+
+### Selecting Significant Genes
+Our journey begins by identifying the genes that exhibit significant changes in expression. We define significant genes as those with an adjusted p-value (padj) less than or equal to 0.01 and an absolute log2 fold change (log2FoldChange) greater than or equal to 2. These criteria help us focus on genes that are most likely to be biologically relevant.
+
+```{r}
+library(ComplexHeatmap)
+
+significant_genes <- res %>%
+  as.data.frame() %>%
+  filter(padj <= 0.01, abs(log2FoldChange) >= 2) %>%
+  rownames()
+
+head(significant_genes, 10)
+```
+
+The `significant_genes` variable now contains the names of genes meeting these criteria.
+
+### Creating the Heatmap
+Next, we will create a heatmap using the selected significant genes. To ensure the heatmap is informative, we scale the data using the scale function. Scaling transforms the values so that they have a mean of 0 and a standard deviation of 1, making it easier to visualize relative differences.
+
+```{r}
+significant_mat <- normalized_counts[significant_genes, ]
+
+Heatmap(
+  t(scale(t(significant_mat))),
+  show_row_names = FALSE,
+  name = "scaled\nexpression"
+)
+```
+
+By scaling the data, we obtain a heatmap with a legend ranging from -2 to 2, representing z-scores after scaling. This scaling helps us see the patterns in gene expression more clearly.
+
+### Why Scaling is Important?
+Scaling is essential because it helps in comparing genes with different expression ranges. Without scaling, genes with larger absolute expression values may dominate the visualization, making it challenging to discern subtle patterns. Scaling levels the playing field, allowing us to focus on the relative changes in gene expression.
+
+### Adding Annotations
+Annotations provide valuable context to our heatmap. In this example, we have annotations for different experimental conditions (e.g., "normoxia" and "hypoxia"). These annotations help us understand the conditions under which the gene expression data was collected.
+
+```{r}
+coldata
+
+col_anno <- HeatmapAnnotation(
+  df = coldata,
+  col = list(condition = c("hypoxia" = "red", "normoxia" = "blue"))
+)
+
+Heatmap(
+  t(scale(t(significant_mat))),
+  top_annotation = col_anno,
+  show_row_names = FALSE,
+  name = "scaled normalized\nexpression"
+)
+
+```
+
+
+Now, our heatmap includes color annotations at the top, with "hypoxia" conditions shown in red and "normoxia" conditions in blue.
+
+Note, we used a named vector to denote the color for each condition:
+
+```{r}
+c("hypoxia" = "red", "normoxia" = "blue")
+```
+
+### The Impact of Scaling
+To highlight the difference that scaling makes, we can compare our scaled heatmap with one that doesn't use scaling. The legend of the unscaled heatmap displays the normalized expression values directly.
+
+```{r}
+Heatmap(
+  significant_mat,
+  top_annotation = col_anno,
+  show_row_names = FALSE,
+  name = "normalized\nexpression"
+)
+```
+
+The key takeaway here is that without scaling, we may not be able to discern patterns as easily, especially when dealing with genes that have vastly different expression levels.
+
+### Conclusion
+In this lesson, we've explored the process of creating a perfect heatmap by selecting significant genes, scaling the data, and adding annotations. It is "perfect" because we pre-selected those genes and we are expected to see the pattern shown in the heatmap.
+
+Scaling is crucial for visualizing relative changes, and annotations provide context to help us interpret the heatmap effectively. Heatmaps are powerful tools for identifying trends and patterns within complex datasets, making them invaluable in fields like genomics and beyond. I highly recommend you to read the tutorial https://jokergoo.github.io/ComplexHeatmap-reference/book/. It is very comprehensive and we only covered a small number of features.
+

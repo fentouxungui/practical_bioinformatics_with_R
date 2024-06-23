@@ -456,7 +456,7 @@ GRCh37.txdb
 ## # Genome: GRCh37
 ## # Nb of transcripts: 171683
 ## # Db created by: GenomicFeatures package from Bioconductor
-## # Creation time: 2024-06-14 23:15:06 -0400 (Fri, 14 Jun 2024)
+## # Creation time: 2024-06-20 16:14:15 -0400 (Thu, 20 Jun 2024)
 ## # GenomicFeatures version at creation time: 1.46.5
 ## # RSQLite version at creation time: 2.3.1
 ## # DBSCHEMAVERSION: 1.2
@@ -1796,15 +1796,46 @@ Before proceeding with scaling, we will conduct a sanity check of the gene expre
 sanity_check_genes <- c("MSLN", "FOLH1")
 
 # Extract the rows (genes) corresponding to sanity check genes
-sanity_check_data <- tcga_mat[rownames(tcga_mat) %in% sanity_check_genes, ]
+sanity_check_data <- tcga_mat[, colnames(tcga_mat) %in% sanity_check_genes]
 
 # Print the results
 print(sanity_check_data)
 ```
 
 ```
-##      TACSTD2 VTCN1 MUC1 NECTIN4 FOLH1 FOLR1 CD276 MSLN CLDN6 ERBB2 MUC16 DLL3
-##      CEACAM5 PVR EPCAM PROM1 CD24 EGFR MET TNFRSF10B
+##          FOLH1       MSLN
+## ACC  1.6264037 0.04481252
+## BLCA 0.8918716 0.68716010
+## BRCA 1.4233695 0.44071809
+## CESC 0.7041431 5.62058497
+## CHOL 1.5456811 0.60189628
+## COAD 0.8062397 4.45458393
+## DLBC 0.2645891 0.35785162
+## ESCA 1.1132842 2.47373379
+## GBM  2.3137440 0.92682384
+## HNSC 1.1091992 1.96099164
+## KICH 0.9940703 0.05250724
+## KIRC 3.8988559 0.62610191
+## KIRP 0.4862326 3.31497246
+## LGG  2.5460983 0.72084397
+## LIHC 2.4297942 0.03555045
+## LUAD 1.1373591 6.40328757
+## LUSC 1.9452955 2.66588838
+## MESO 0.8397168 9.10430072
+## OV   1.3177417 8.95238588
+## PAAD 1.1797304 7.51409138
+## PCPG 1.4682181 0.04768524
+## PRAD 7.9254012 0.69895768
+## READ 0.7618605 4.71118780
+## SARC 1.5561093 0.18614478
+## SKCM 0.6182104 0.10666438
+## STAD 0.8882602 5.24125577
+## TGCT 0.7553944 0.51413379
+## THCA 1.3056050 0.33791649
+## THYM 0.2974423 0.22949846
+## UCEC 2.9885794 5.00045864
+## UCS  2.1128680 3.32976790
+## UVM  0.4841875 0.04446844
 ```
 
 We see `MSLN` is high in `MESO`, `FOLH1` is high in prostate cancer (`PRAD`). We are probably on the right track!

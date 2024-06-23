@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 12 Final Project: Analyzing RNAseq Data from GEO | Master Real-world Bioinformatics analysis in R</title>
+  <meta name="description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 12 Final Project: Analyzing RNAseq Data from GEO | Master Real-world Bioinformatics analysis in R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 12 Final Project: Analyzing RNAseq Data from GEO | Master Real-world Bioinformatics analysis in R" />
+  
+  <meta name="twitter:description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  
+
+<meta name="author" content="Ming Tommy Tang" />
+
+
+<meta name="date" content="2024-06-20" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="introduction-to-bioconductor.html"/>
+
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#meet-your-instructor"><i class="fa fa-check"></i><b>2.1</b> Meet your Instructor</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#leveraging-our-online-community"><i class="fa fa-check"></i><b>2.2</b> Leveraging our online community</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#install-r-and-r-studio"><i class="fa fa-check"></i><b>2.3</b> Install R and R studio</a></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#the-role-of-programming-in-biology"><i class="fa fa-check"></i><b>2.4</b> The role of programming in Biology</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="intro.html"><a href="intro.html#what-are-programming-languages"><i class="fa fa-check"></i><b>2.4.1</b> What are programming languages?</a></li>
+<li class="chapter" data-level="2.4.2" data-path="intro.html"><a href="intro.html#why-programming-is-important-in-biology"><i class="fa fa-check"></i><b>2.4.2</b> Why programming is important in biology?</a></li>
+<li class="chapter" data-level="2.4.3" data-path="intro.html"><a href="intro.html#what-are-the-most-used-programming-languages-within-biology"><i class="fa fa-check"></i><b>2.4.3</b> What are the most used programming languages within biology?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html"><i class="fa fa-check"></i><b>3</b> Introduction to programming</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#what-is-an-algorithm"><i class="fa fa-check"></i><b>3.1</b> What is an algorithm?</a></li>
+<li class="chapter" data-level="3.2" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#why-are-algorithms-important-in-programming"><i class="fa fa-check"></i><b>3.2</b> Why are Algorithms Important in Programming?</a></li>
+<li class="chapter" data-level="3.3" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#a-real-world-example"><i class="fa fa-check"></i><b>3.3</b> A Real World Example:</a></li>
+<li class="chapter" data-level="3.4" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#variables-data-types-and-expressions"><i class="fa fa-check"></i><b>3.4</b> Variables, Data Types, and Expressions</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#variables"><i class="fa fa-check"></i><b>3.4.1</b> Variables</a></li>
+<li class="chapter" data-level="3.4.2" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#data-types"><i class="fa fa-check"></i><b>3.4.2</b> Data Types</a></li>
+<li class="chapter" data-level="3.4.3" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#expressions"><i class="fa fa-check"></i><b>3.4.3</b> Expressions</a></li>
+<li class="chapter" data-level="3.4.4" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#example-finding-the-average-number-of-bases-appearances-in-a-set-of-dna-strings"><i class="fa fa-check"></i><b>3.4.4</b> Example: Finding the average number of bases appearances in a set of DNA strings</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="getting-started-with-r-and-rstudio.html"><a href="getting-started-with-r-and-rstudio.html"><i class="fa fa-check"></i><b>4</b> Getting started with R and RStudio</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="getting-started-with-r-and-rstudio.html"><a href="getting-started-with-r-and-rstudio.html#what-is-r-and-why-is-it-used-in-biology"><i class="fa fa-check"></i><b>4.1</b> What is R and why is it used in Biology?</a></li>
+<li class="chapter" data-level="4.2" data-path="getting-started-with-r-and-rstudio.html"><a href="getting-started-with-r-and-rstudio.html#what-is-r"><i class="fa fa-check"></i><b>4.2</b> What is R?</a></li>
+<li class="chapter" data-level="4.3" data-path="getting-started-with-r-and-rstudio.html"><a href="getting-started-with-r-and-rstudio.html#why-is-r-used-in-biology"><i class="fa fa-check"></i><b>4.3</b> Why is R Used in Biology?</a></li>
+<li class="chapter" data-level="4.4" data-path="getting-started-with-r-and-rstudio.html"><a href="getting-started-with-r-and-rstudio.html#introduction-to-r-studio"><i class="fa fa-check"></i><b>4.4</b> Introduction to R-Studio</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html"><i class="fa fa-check"></i><b>5</b> Introduction to R for biologists</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#basic-data-types-in-r"><i class="fa fa-check"></i><b>5.1</b> Basic Data Types in R</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#before-starting"><i class="fa fa-check"></i><b>5.1.1</b> Before Starting</a></li>
+<li class="chapter" data-level="5.1.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#numeric"><i class="fa fa-check"></i><b>5.1.2</b> 1. Numeric</a></li>
+<li class="chapter" data-level="5.1.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#character-string"><i class="fa fa-check"></i><b>5.1.3</b> 2. Character (String)</a></li>
+<li class="chapter" data-level="5.1.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#integer"><i class="fa fa-check"></i><b>5.1.4</b> 3. Integer</a></li>
+<li class="chapter" data-level="5.1.5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#logical-boolean"><i class="fa fa-check"></i><b>5.1.5</b> 4. Logical (Boolean)</a></li>
+<li class="chapter" data-level="5.1.6" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#factor"><i class="fa fa-check"></i><b>5.1.6</b> 5. Factor</a></li>
+<li class="chapter" data-level="5.1.7" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#date-and-time"><i class="fa fa-check"></i><b>5.1.7</b> 6. Date and Time</a></li>
+<li class="chapter" data-level="5.1.8" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#complex"><i class="fa fa-check"></i><b>5.1.8</b> 7. Complex</a></li>
+<li class="chapter" data-level="5.1.9" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#missing-values-na"><i class="fa fa-check"></i><b>5.1.9</b> 8. Missing Values (NA)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#the-key-concept-of-r-vectors"><i class="fa fa-check"></i><b>5.2</b> The key concept of R: Vectors</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#creating-numeric-and-character-vectors"><i class="fa fa-check"></i><b>5.2.1</b> Creating Numeric and Character Vectors</a></li>
+<li class="chapter" data-level="5.2.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#saving-vectors-to-variables"><i class="fa fa-check"></i><b>5.2.2</b> Saving Vectors to Variables</a></li>
+<li class="chapter" data-level="5.2.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#vectorized-calculations"><i class="fa fa-check"></i><b>5.2.3</b> Vectorized Calculations</a></li>
+<li class="chapter" data-level="5.2.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#performing-vectorized-calculations"><i class="fa fa-check"></i><b>5.2.4</b> Performing Vectorized Calculations</a></li>
+<li class="chapter" data-level="5.2.5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#operations-with-character-vectors"><i class="fa fa-check"></i><b>5.2.5</b> Operations with character vectors</a></li>
+<li class="chapter" data-level="5.2.6" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#logical-vectors"><i class="fa fa-check"></i><b>5.2.6</b> Logical Vectors</a></li>
+<li class="chapter" data-level="5.2.7" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#conclusion"><i class="fa fa-check"></i><b>5.2.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#subsetting-and-indexing"><i class="fa fa-check"></i><b>5.3</b> Subsetting and Indexing</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#indexing-in-r"><i class="fa fa-check"></i><b>5.3.1</b> Indexing in R</a></li>
+<li class="chapter" data-level="5.3.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#slicing-in-r"><i class="fa fa-check"></i><b>5.3.2</b> Slicing in R</a></li>
+<li class="chapter" data-level="5.3.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#negative-indexing"><i class="fa fa-check"></i><b>5.3.3</b> Negative Indexing</a></li>
+<li class="chapter" data-level="5.3.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#conclusion-1"><i class="fa fa-check"></i><b>5.3.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#understanding-and-manipulating-matrices"><i class="fa fa-check"></i><b>5.4</b> Understanding and Manipulating Matrices</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#creating-a-matrix"><i class="fa fa-check"></i><b>5.4.1</b> Creating a Matrix</a></li>
+<li class="chapter" data-level="5.4.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#adding-row-and-column-names"><i class="fa fa-check"></i><b>5.4.2</b> Adding Row and Column Names</a></li>
+<li class="chapter" data-level="5.4.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#subsetting-a-matrix"><i class="fa fa-check"></i><b>5.4.3</b> Subsetting a Matrix</a></li>
+<li class="chapter" data-level="5.4.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#calculations-with-matrices"><i class="fa fa-check"></i><b>5.4.4</b> Calculations with Matrices</a></li>
+<li class="chapter" data-level="5.4.5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#normalization"><i class="fa fa-check"></i><b>5.4.5</b> Normalization</a></li>
+<li class="chapter" data-level="5.4.6" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#conclusion-2"><i class="fa fa-check"></i><b>5.4.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#essential-functions-in-r"><i class="fa fa-check"></i><b>5.5</b> Essential Functions in R</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#length-function"><i class="fa fa-check"></i><b>5.5.1</b> <code>length</code> Function</a></li>
+<li class="chapter" data-level="5.5.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#unique-function"><i class="fa fa-check"></i><b>5.5.2</b> <code>unique</code> Function</a></li>
+<li class="chapter" data-level="5.5.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#sort-function"><i class="fa fa-check"></i><b>5.5.3</b> <code>sort</code> Function</a></li>
+<li class="chapter" data-level="5.5.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#cor-function"><i class="fa fa-check"></i><b>5.5.4</b> <code>cor</code> Function</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#functions-organizing-your-code-for-reusability"><i class="fa fa-check"></i><b>5.6</b> Functions: Organizing Your Code for Reusability</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#what-is-a-function"><i class="fa fa-check"></i><b>5.6.1</b> What is a Function?</a></li>
+<li class="chapter" data-level="5.6.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#creating-a-basic-function-calculating-the-mean"><i class="fa fa-check"></i><b>5.6.2</b> Creating a Basic Function: Calculating the Mean</a></li>
+<li class="chapter" data-level="5.6.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#using-the-custom-function"><i class="fa fa-check"></i><b>5.6.3</b> Using the Custom Function</a></li>
+<li class="chapter" data-level="5.6.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#returning-a-value-from-the-function"><i class="fa fa-check"></i><b>5.6.4</b> Returning a Value from the Function</a></li>
+<li class="chapter" data-level="5.6.5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#optional-omitting-the-return-statement"><i class="fa fa-check"></i><b>5.6.5</b> Optional: Omitting the return Statement</a></li>
+<li class="chapter" data-level="5.6.6" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#using-more-than-one-argument"><i class="fa fa-check"></i><b>5.6.6</b> Using more than one argument</a></li>
+<li class="chapter" data-level="5.6.7" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#understanding-missing-values-nas-in-r"><i class="fa fa-check"></i><b>5.6.7</b> Understanding Missing Values (NAs) in R</a></li>
+<li class="chapter" data-level="5.6.8" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#initial-attempt-a-function-without-handling-nas"><i class="fa fa-check"></i><b>5.6.8</b> Initial Attempt: A Function Without Handling NAs</a></li>
+<li class="chapter" data-level="5.6.9" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#adding-the-remove_na-argument"><i class="fa fa-check"></i><b>5.6.9</b> Adding the <code>remove_na</code> Argument</a></li>
+<li class="chapter" data-level="5.6.10" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#practical-application"><i class="fa fa-check"></i><b>5.6.10</b> Practical Application</a></li>
+<li class="chapter" data-level="5.6.11" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#getting-help-with-functions"><i class="fa fa-check"></i><b>5.6.11</b> Getting help with functions</a></li>
+<li class="chapter" data-level="5.6.12" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#a-real-world-example-1"><i class="fa fa-check"></i><b>5.6.12</b> A Real World Example</a></li>
+<li class="chapter" data-level="5.6.13" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#conclusion-3"><i class="fa fa-check"></i><b>5.6.13</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#common-mistakes-to-avoid"><i class="fa fa-check"></i><b>5.7</b> Common Mistakes to avoid</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#mixing-data-types"><i class="fa fa-check"></i><b>5.7.1</b> Mixing Data Types</a></li>
+<li class="chapter" data-level="5.7.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#forgetting-function-parentheses"><i class="fa fa-check"></i><b>5.7.2</b> Forgetting Function Parentheses</a></li>
+<li class="chapter" data-level="5.7.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#overwriting-built-in-functions"><i class="fa fa-check"></i><b>5.7.3</b> Overwriting Built-in Functions</a></li>
+<li class="chapter" data-level="5.7.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#misunderstanding-variable-scoping"><i class="fa fa-check"></i><b>5.7.4</b> Misunderstanding Variable Scoping</a></li>
+<li class="chapter" data-level="5.7.5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#best-practices-for-variable-scoping-include"><i class="fa fa-check"></i><b>5.7.5</b> Best practices for variable scoping include</a></li>
+<li class="chapter" data-level="5.7.6" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#conclusion-4"><i class="fa fa-check"></i><b>5.7.6</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html"><i class="fa fa-check"></i><b>6</b> Controlling the flow of our programs</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#boolean-operators"><i class="fa fa-check"></i><b>6.1</b> Boolean Operators</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#comparison-operators"><i class="fa fa-check"></i><b>6.1.1</b> Comparison Operators</a></li>
+<li class="chapter" data-level="6.1.2" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#logical-operators"><i class="fa fa-check"></i><b>6.1.2</b> Logical Operators</a></li>
+<li class="chapter" data-level="6.1.3" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#conclusion-5"><i class="fa fa-check"></i><b>6.1.3</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#conditional-statements-if-else"><i class="fa fa-check"></i><b>6.2</b> Conditional statements (<code>if</code>, <code>else</code>)</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#the-if-statement"><i class="fa fa-check"></i><b>6.2.1</b> The <code>if</code> Statement</a></li>
+<li class="chapter" data-level="6.2.2" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#else-statement"><i class="fa fa-check"></i><b>6.2.2</b> <code>else</code> statement</a></li>
+<li class="chapter" data-level="6.2.3" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#else-if"><i class="fa fa-check"></i><b>6.2.3</b> <code>else if</code></a></li>
+<li class="chapter" data-level="6.2.4" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#exercise"><i class="fa fa-check"></i><b>6.2.4</b> Exercise</a></li>
+<li class="chapter" data-level="6.2.5" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#conclusion-6"><i class="fa fa-check"></i><b>6.2.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#loops"><i class="fa fa-check"></i><b>6.3</b> Loops</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#the-while-loop"><i class="fa fa-check"></i><b>6.3.1</b> The <code>while</code> Loop</a></li>
+<li class="chapter" data-level="6.3.2" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#while-loops-in-real-life"><i class="fa fa-check"></i><b>6.3.2</b> While Loops in Real Life</a></li>
+<li class="chapter" data-level="6.3.3" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#the-for-loop"><i class="fa fa-check"></i><b>6.3.3</b> The <code>for</code> Loop</a></li>
+<li class="chapter" data-level="6.3.4" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#conclusion-7"><i class="fa fa-check"></i><b>6.3.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#gene-expression-annotation-using-loops-and-control-structures"><i class="fa fa-check"></i><b>6.4</b> Gene Expression Annotation using Loops and Control Structures</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#the-data"><i class="fa fa-check"></i><b>6.4.1</b> The Data</a></li>
+<li class="chapter" data-level="6.4.2" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#creating-annotations"><i class="fa fa-check"></i><b>6.4.2</b> Creating Annotations</a></li>
+<li class="chapter" data-level="6.4.3" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#the-loop"><i class="fa fa-check"></i><b>6.4.3</b> The Loop</a></li>
+<li class="chapter" data-level="6.4.4" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#output"><i class="fa fa-check"></i><b>6.4.4</b> Output</a></li>
+<li class="chapter" data-level="6.4.5" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#putting-it-all-together"><i class="fa fa-check"></i><b>6.4.5</b> Putting it all together</a></li>
+<li class="chapter" data-level="6.4.6" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#conclusion-8"><i class="fa fa-check"></i><b>6.4.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#lets-solve-a-challenge"><i class="fa fa-check"></i><b>6.5</b> Let’s solve a Challenge</a></li>
+<li class="chapter" data-level="6.6" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#solution"><i class="fa fa-check"></i><b>6.6</b> Solution</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#using-a-for-loop"><i class="fa fa-check"></i><b>6.6.1</b> using a for loop</a></li>
+<li class="chapter" data-level="6.6.2" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#vectorized-solution"><i class="fa fa-check"></i><b>6.6.2</b> vectorized solution</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#section-complete"><i class="fa fa-check"></i><b>6.7</b> Section complete</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html"><i class="fa fa-check"></i><b>7</b> Going more in-depth with R</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#handling-missing-values"><i class="fa fa-check"></i><b>7.1</b> Handling Missing Values</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#understanding-na-in-r"><i class="fa fa-check"></i><b>7.1.1</b> Understanding NA in R</a></li>
+<li class="chapter" data-level="7.1.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#identifying-missing-values"><i class="fa fa-check"></i><b>7.1.2</b> Identifying Missing Values</a></li>
+<li class="chapter" data-level="7.1.3" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#remove-missing-values"><i class="fa fa-check"></i><b>7.1.3</b> remove missing values</a></li>
+<li class="chapter" data-level="7.1.4" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#real-life-note"><i class="fa fa-check"></i><b>7.1.4</b> real-life note</a></li>
+<li class="chapter" data-level="7.1.5" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#conclusion-9"><i class="fa fa-check"></i><b>7.1.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#introduction-to-statistical-tests-and-p-values"><i class="fa fa-check"></i><b>7.2</b> Introduction to Statistical Tests and P-Values</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#practical-application-of-statistical-test-with-r"><i class="fa fa-check"></i><b>7.2.1</b> Practical Application of statistical test with R</a></li>
+<li class="chapter" data-level="7.2.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#conclusion-10"><i class="fa fa-check"></i><b>7.2.2</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#understanding-r-packages"><i class="fa fa-check"></i><b>7.3</b> Understanding R Packages</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#what-is-an-r-package"><i class="fa fa-check"></i><b>7.3.1</b> What is an R Package?</a></li>
+<li class="chapter" data-level="7.3.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#why-use-r-packages"><i class="fa fa-check"></i><b>7.3.2</b> Why Use R Packages?</a></li>
+<li class="chapter" data-level="7.3.3" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#how-to-use-a-package"><i class="fa fa-check"></i><b>7.3.3</b> How to use a package?</a></li>
+<li class="chapter" data-level="7.3.4" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#embracing-errors"><i class="fa fa-check"></i><b>7.3.4</b> Embracing Errors</a></li>
+<li class="chapter" data-level="7.3.5" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#how-to-look-for-package-docs-within-r-studio"><i class="fa fa-check"></i><b>7.3.5</b> How to look for package docs within R studio?</a></li>
+<li class="chapter" data-level="7.3.6" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#exploring-package-vignettes"><i class="fa fa-check"></i><b>7.3.6</b> Exploring Package Vignettes</a></li>
+<li class="chapter" data-level="7.3.7" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#practical-tip"><i class="fa fa-check"></i><b>7.3.7</b> Practical Tip</a></li>
+<li class="chapter" data-level="7.3.8" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#conclusion-11"><i class="fa fa-check"></i><b>7.3.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#exploring-functions-in-different-packages-avoiding-collisions-and-accessing-them"><i class="fa fa-check"></i><b>7.4</b> Exploring Functions in Different Packages: Avoiding Collisions and Accessing Them</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#using-double-colon"><i class="fa fa-check"></i><b>7.4.1</b> Using Double Colon (<code>::</code>)</a></li>
+<li class="chapter" data-level="7.4.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#conclusion-12"><i class="fa fa-check"></i><b>7.4.2</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#writing-custom-scripts"><i class="fa fa-check"></i><b>7.5</b> Writing Custom Scripts</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#your-working-directory"><i class="fa fa-check"></i><b>7.5.1</b> Your Working Directory</a></li>
+<li class="chapter" data-level="7.5.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#writing-functions-in-scripts"><i class="fa fa-check"></i><b>7.5.2</b> Writing Functions in Scripts</a></li>
+<li class="chapter" data-level="7.5.3" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#importing-functions-from-scripts"><i class="fa fa-check"></i><b>7.5.3</b> Importing Functions from Scripts</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#data-io"><i class="fa fa-check"></i><b>7.6</b> Data I/O</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#built-in-functions"><i class="fa fa-check"></i><b>7.6.1</b> Built-In Functions</a></li>
+<li class="chapter" data-level="7.6.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#real-world-applications"><i class="fa fa-check"></i><b>7.6.2</b> Real-World Applications</a></li>
+<li class="chapter" data-level="7.6.3" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#conclusion-13"><i class="fa fa-check"></i><b>7.6.3</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#best-practices-in-modular-programming-and-project-management"><i class="fa fa-check"></i><b>7.7</b> Best Practices in Modular Programming and Project Management</a>
+<ul>
+<li class="chapter" data-level="7.7.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#introduction-to-modular-programming"><i class="fa fa-check"></i><b>7.7.1</b> Introduction to Modular Programming</a></li>
+<li class="chapter" data-level="7.7.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#breaking-down-your-project"><i class="fa fa-check"></i><b>7.7.2</b> Breaking Down Your Project</a></li>
+<li class="chapter" data-level="7.7.3" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#conclusion-14"><i class="fa fa-check"></i><b>7.7.3</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#section-complete-1"><i class="fa fa-check"></i><b>7.8</b> Section complete</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html"><i class="fa fa-check"></i><b>8</b> Fundamental Data Structures in R</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#named-vectors"><i class="fa fa-check"></i><b>8.1</b> Named Vectors</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#what-is-a-named-vector"><i class="fa fa-check"></i><b>8.1.1</b> What is a Named Vector?</a></li>
+<li class="chapter" data-level="8.1.2" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#using-names-to-subset-a-vector"><i class="fa fa-check"></i><b>8.1.2</b> Using Names to Subset a Vector</a></li>
+<li class="chapter" data-level="8.1.3" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#named-vectors-as-dictionary-like-structures"><i class="fa fa-check"></i><b>8.1.3</b> Named Vectors as Dictionary-Like Structures</a></li>
+<li class="chapter" data-level="8.1.4" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#real-life-example"><i class="fa fa-check"></i><b>8.1.4</b> Real-life example</a></li>
+<li class="chapter" data-level="8.1.5" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#reordering-and-subsetting-with-names"><i class="fa fa-check"></i><b>8.1.5</b> Reordering and Subsetting with Names</a></li>
+<li class="chapter" data-level="8.1.6" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#conclusion-15"><i class="fa fa-check"></i><b>8.1.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#lists"><i class="fa fa-check"></i><b>8.2</b> Lists</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#introduction-to-lists"><i class="fa fa-check"></i><b>8.2.1</b> Introduction to Lists</a></li>
+<li class="chapter" data-level="8.2.2" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#creating-a-list"><i class="fa fa-check"></i><b>8.2.2</b> Creating a List</a></li>
+<li class="chapter" data-level="8.2.3" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#accessing-list-elements"><i class="fa fa-check"></i><b>8.2.3</b> Accessing List Elements</a></li>
+<li class="chapter" data-level="8.2.4" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#conclusions"><i class="fa fa-check"></i><b>8.2.4</b> Conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#dataframes"><i class="fa fa-check"></i><b>8.3</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#what-is-a-data-frame"><i class="fa fa-check"></i><b>8.3.1</b> What is a Data Frame?</a></li>
+<li class="chapter" data-level="8.3.2" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#creating-a-data-frame"><i class="fa fa-check"></i><b>8.3.2</b> Creating a Data Frame</a></li>
+<li class="chapter" data-level="8.3.3" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#accessing-columns"><i class="fa fa-check"></i><b>8.3.3</b> Accessing Columns</a></li>
+<li class="chapter" data-level="8.3.4" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#subsetting-a-data-frame"><i class="fa fa-check"></i><b>8.3.4</b> Subsetting a Data Frame</a></li>
+<li class="chapter" data-level="8.3.5" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#conclusion-16"><i class="fa fa-check"></i><b>8.3.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#how-to-represent-categorical-data-in-r-understanding-factors"><i class="fa fa-check"></i><b>8.4</b> How to Represent Categorical Data in R? Understanding Factors</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#creating-factors"><i class="fa fa-check"></i><b>8.4.1</b> Creating Factors</a></li>
+<li class="chapter" data-level="8.4.2" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#changing-levels"><i class="fa fa-check"></i><b>8.4.2</b> Changing levels</a></li>
+<li class="chapter" data-level="8.4.3" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#converting-factors"><i class="fa fa-check"></i><b>8.4.3</b> Converting Factors</a></li>
+<li class="chapter" data-level="8.4.4" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#customizing-factor-levels"><i class="fa fa-check"></i><b>8.4.4</b> Customizing Factor Levels</a></li>
+<li class="chapter" data-level="8.4.5" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#creating-factors-from-character-vectors"><i class="fa fa-check"></i><b>8.4.5</b> Creating Factors from Character Vectors</a></li>
+<li class="chapter" data-level="8.4.6" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#subsetting-factors"><i class="fa fa-check"></i><b>8.4.6</b> Subsetting Factors</a></li>
+<li class="chapter" data-level="8.4.7" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#removing-unused-levels"><i class="fa fa-check"></i><b>8.4.7</b> Removing Unused Levels</a></li>
+<li class="chapter" data-level="8.4.8" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#conclusion-17"><i class="fa fa-check"></i><b>8.4.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#section-complete-2"><i class="fa fa-check"></i><b>8.5</b> Section Complete</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html"><i class="fa fa-check"></i><b>9</b> Introduction to the tidyverse ecosystem</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#what-is-the-tidyverse"><i class="fa fa-check"></i><b>9.1</b> What is the Tidyverse?</a></li>
+<li class="chapter" data-level="9.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#key-tidyverse-packages"><i class="fa fa-check"></i><b>9.2</b> Key Tidyverse Packages</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#dplyr"><i class="fa fa-check"></i><b>9.2.1</b> dplyr</a></li>
+<li class="chapter" data-level="9.2.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#a-note-on-the-pipe"><i class="fa fa-check"></i><b>9.2.2</b> A note on the pipe</a></li>
+<li class="chapter" data-level="9.2.3" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#ggplot2"><i class="fa fa-check"></i><b>9.2.3</b> ggplot2</a></li>
+<li class="chapter" data-level="9.2.4" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#tidyr"><i class="fa fa-check"></i><b>9.2.4</b> tidyr</a></li>
+<li class="chapter" data-level="9.2.5" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#readr"><i class="fa fa-check"></i><b>9.2.5</b> readr</a></li>
+<li class="chapter" data-level="9.2.6" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#tibble"><i class="fa fa-check"></i><b>9.2.6</b> tibble</a></li>
+<li class="chapter" data-level="9.2.7" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#stringr"><i class="fa fa-check"></i><b>9.2.7</b> stringr</a></li>
+<li class="chapter" data-level="9.2.8" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#forcats"><i class="fa fa-check"></i><b>9.2.8</b> forcats</a></li>
+<li class="chapter" data-level="9.2.9" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#real-world-applications-1"><i class="fa fa-check"></i><b>9.2.9</b> Real-World Applications</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#tibble-and-readr---modern-data-structures-in-r"><i class="fa fa-check"></i><b>9.3</b> Tibble and Readr - Modern Data Structures in R</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#tibbles-a-better-way-to-store-data"><i class="fa fa-check"></i><b>9.3.1</b> Tibbles: A Better Way to Store Data</a></li>
+<li class="chapter" data-level="9.3.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#rownames-and-tibbles"><i class="fa fa-check"></i><b>9.3.2</b> Rownames and Tibbles</a></li>
+<li class="chapter" data-level="9.3.3" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#reading-data-with-readr"><i class="fa fa-check"></i><b>9.3.3</b> Reading Data with readr</a></li>
+<li class="chapter" data-level="9.3.4" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#using-tibbles-with-imported-data"><i class="fa fa-check"></i><b>9.3.4</b> Using Tibbles with Imported Data</a></li>
+<li class="chapter" data-level="9.3.5" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#note-on-reading-excel-files"><i class="fa fa-check"></i><b>9.3.5</b> Note on reading Excel files</a></li>
+<li class="chapter" data-level="9.3.6" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-18"><i class="fa fa-check"></i><b>9.3.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#the-tidy-data-format"><i class="fa fa-check"></i><b>9.4</b> The tidy data format</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#the-importance-of-tidy-data"><i class="fa fa-check"></i><b>9.4.1</b> The Importance of Tidy Data</a></li>
+<li class="chapter" data-level="9.4.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#long-format-vs.-wide-format"><i class="fa fa-check"></i><b>9.4.2</b> Long Format vs. Wide Format</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#introducing-dplyr-your-data-wrangling-toolkit"><i class="fa fa-check"></i><b>9.5</b> Introducing dplyr: Your Data Wrangling Toolkit</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#selecting-specific-columns"><i class="fa fa-check"></i><b>9.5.1</b> Selecting Specific Columns</a></li>
+<li class="chapter" data-level="9.5.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#adding-new-columns"><i class="fa fa-check"></i><b>9.5.2</b> Adding New Columns</a></li>
+<li class="chapter" data-level="9.5.3" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#reordering-columns"><i class="fa fa-check"></i><b>9.5.3</b> Reordering Columns</a></li>
+<li class="chapter" data-level="9.5.4" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#filtering-data"><i class="fa fa-check"></i><b>9.5.4</b> Filtering Data</a></li>
+<li class="chapter" data-level="9.5.5" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#summarizing-data"><i class="fa fa-check"></i><b>9.5.5</b> Summarizing Data</a></li>
+<li class="chapter" data-level="9.5.6" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#sorting-data"><i class="fa fa-check"></i><b>9.5.6</b> Sorting Data</a></li>
+<li class="chapter" data-level="9.5.7" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-19"><i class="fa fa-check"></i><b>9.5.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#stringr-your-essential-toolkit-to-manipulate-strings"><i class="fa fa-check"></i><b>9.6</b> stringr: your essential toolkit to manipulate strings</a></li>
+<li class="chapter" data-level="9.7" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#purrr-ditch-your-for-loops"><i class="fa fa-check"></i><b>9.7</b> purrr: ditch your for loops</a>
+<ul>
+<li class="chapter" data-level="9.7.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#nesting-data-with-nest"><i class="fa fa-check"></i><b>9.7.1</b> Nesting Data with nest()</a></li>
+<li class="chapter" data-level="9.7.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#map-and-its-variants"><i class="fa fa-check"></i><b>9.7.2</b> <code>map()</code> and Its Variants</a></li>
+<li class="chapter" data-level="9.7.3" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#note-on-anonymous-functions"><i class="fa fa-check"></i><b>9.7.3</b> Note on Anonymous functions</a></li>
+<li class="chapter" data-level="9.7.4" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-20"><i class="fa fa-check"></i><b>9.7.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.8" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#tidying-metadata-from-geo."><i class="fa fa-check"></i><b>9.8</b> Tidying metadata from GEO.</a>
+<ul>
+<li class="chapter" data-level="9.8.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#prerequisites"><i class="fa fa-check"></i><b>9.8.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="9.8.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#getting-started"><i class="fa fa-check"></i><b>9.8.2</b> Getting Started</a></li>
+<li class="chapter" data-level="9.8.3" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#tidying-the-metadata"><i class="fa fa-check"></i><b>9.8.3</b> Tidying the Metadata</a></li>
+<li class="chapter" data-level="9.8.4" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#converting-to-a-tidy-data-frame"><i class="fa fa-check"></i><b>9.8.4</b> Converting to a Tidy Data Frame</a></li>
+<li class="chapter" data-level="9.8.5" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#bonus-reading-multiple-tsv-files"><i class="fa fa-check"></i><b>9.8.5</b> Bonus: Reading Multiple TSV Files</a></li>
+</ul></li>
+<li class="chapter" data-level="9.9" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#section-complete-3"><i class="fa fa-check"></i><b>9.9</b> Section Complete</a>
+<ul>
+<li class="chapter" data-level="9.9.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-21"><i class="fa fa-check"></i><b>9.9.1</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html"><i class="fa fa-check"></i><b>10</b> Data visualization with ggplot2</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#creating-scatter-plots"><i class="fa fa-check"></i><b>10.1</b> Creating Scatter Plots</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#prerequisites-1"><i class="fa fa-check"></i><b>10.1.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="10.1.2" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#loading-and-exploring-the-data"><i class="fa fa-check"></i><b>10.1.2</b> Loading and Exploring the Data</a></li>
+<li class="chapter" data-level="10.1.3" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#filtering-the-data"><i class="fa fa-check"></i><b>10.1.3</b> Filtering the Data</a></li>
+<li class="chapter" data-level="10.1.4" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#creating-a-scatter-plot"><i class="fa fa-check"></i><b>10.1.4</b> Creating a Scatter Plot</a></li>
+<li class="chapter" data-level="10.1.5" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#calculating-correlation"><i class="fa fa-check"></i><b>10.1.5</b> Calculating Correlation</a></li>
+<li class="chapter" data-level="10.1.6" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#hypothesis-testing"><i class="fa fa-check"></i><b>10.1.6</b> Hypothesis Testing</a></li>
+<li class="chapter" data-level="10.1.7" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#adding-a-regression-line"><i class="fa fa-check"></i><b>10.1.7</b> Adding a Regression Line</a></li>
+<li class="chapter" data-level="10.1.8" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#conclusion-22"><i class="fa fa-check"></i><b>10.1.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#understanding-distributions-with-histograms"><i class="fa fa-check"></i><b>10.2</b> Understanding Distributions with Histograms</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#creating-a-basic-histogram"><i class="fa fa-check"></i><b>10.2.1</b> Creating a Basic Histogram</a></li>
+<li class="chapter" data-level="10.2.2" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#customizing-histogram-bins"><i class="fa fa-check"></i><b>10.2.2</b> Customizing Histogram Bins</a></li>
+<li class="chapter" data-level="10.2.3" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#conclusion-23"><i class="fa fa-check"></i><b>10.2.3</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#visualizing-data-distribution-with-boxplots-and-violin-plots"><i class="fa fa-check"></i><b>10.3</b> Visualizing Data Distribution with Boxplots and Violin Plots</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#creating-a-basic-boxplot"><i class="fa fa-check"></i><b>10.3.1</b> Creating a Basic Boxplot</a></li>
+<li class="chapter" data-level="10.3.2" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#rotating-x-axis-labels"><i class="fa fa-check"></i><b>10.3.2</b> Rotating X-axis Labels</a></li>
+<li class="chapter" data-level="10.3.3" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#adding-color-to-boxplots"><i class="fa fa-check"></i><b>10.3.3</b> Adding Color to Boxplots</a></li>
+<li class="chapter" data-level="10.3.4" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#customizing-color-palettes"><i class="fa fa-check"></i><b>10.3.4</b> Customizing Color Palettes</a></li>
+<li class="chapter" data-level="10.3.5" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#applying-custom-color-palette"><i class="fa fa-check"></i><b>10.3.5</b> Applying Custom Color Palette</a></li>
+<li class="chapter" data-level="10.3.6" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#reordering-boxplots"><i class="fa fa-check"></i><b>10.3.6</b> Reordering Boxplots</a></li>
+<li class="chapter" data-level="10.3.7" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#using-violin-plots"><i class="fa fa-check"></i><b>10.3.7</b> Using Violin Plots</a></li>
+<li class="chapter" data-level="10.3.8" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#conclusion-24"><i class="fa fa-check"></i><b>10.3.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#creating-bar-plots-to-visualize-median-epcam-levels-by-cancer-type"><i class="fa fa-check"></i><b>10.4</b> Creating Bar Plots to Visualize Median EPCAM Levels by Cancer Type</a>
+<ul>
+<li class="chapter" data-level="10.4.1" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#calculating-median-epcam-levels-by-cancer-type"><i class="fa fa-check"></i><b>10.4.1</b> Calculating Median EPCAM Levels by Cancer Type</a></li>
+<li class="chapter" data-level="10.4.2" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#creating-a-basic-bar-plot"><i class="fa fa-check"></i><b>10.4.2</b> Creating a Basic Bar Plot</a></li>
+<li class="chapter" data-level="10.4.3" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#reordering-the-bars"><i class="fa fa-check"></i><b>10.4.3</b> Reordering the Bars</a></li>
+<li class="chapter" data-level="10.4.4" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#reversing-the-order"><i class="fa fa-check"></i><b>10.4.4</b> Reversing the Order</a></li>
+<li class="chapter" data-level="10.4.5" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#note-on-factor-levels"><i class="fa fa-check"></i><b>10.4.5</b> Note on factor levels</a></li>
+<li class="chapter" data-level="10.4.6" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#conclusion-25"><i class="fa fa-check"></i><b>10.4.6</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html"><i class="fa fa-check"></i><b>11</b> Introduction to BioConductor</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#introduction-to-biocmanager"><i class="fa fa-check"></i><b>11.1</b> Introduction to BiocManager</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#why-use-biocmanager"><i class="fa fa-check"></i><b>11.1.1</b> Why Use BiocManager?</a></li>
+<li class="chapter" data-level="11.1.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#installing-biocmanager"><i class="fa fa-check"></i><b>11.1.2</b> Installing BiocManager</a></li>
+<li class="chapter" data-level="11.1.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#installing-bioconductor-packages"><i class="fa fa-check"></i><b>11.1.3</b> Installing Bioconductor Packages</a></li>
+<li class="chapter" data-level="11.1.4" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#updating-bioconductor-packages"><i class="fa fa-check"></i><b>11.1.4</b> Updating Bioconductor Packages</a></li>
+<li class="chapter" data-level="11.1.5" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#checking-for-valid-bioconductor-versions"><i class="fa fa-check"></i><b>11.1.5</b> Checking for Valid Bioconductor Versions</a></li>
+<li class="chapter" data-level="11.1.6" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#conclusion-26"><i class="fa fa-check"></i><b>11.1.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#working-with-genomic-coordinates-and-regions-in-r"><i class="fa fa-check"></i><b>11.2</b> Working with Genomic Coordinates and Regions in R</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#introduction-to-genomicranges"><i class="fa fa-check"></i><b>11.2.1</b> Introduction to GenomicRanges</a></li>
+<li class="chapter" data-level="11.2.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#basic-operations-with-genomicranges"><i class="fa fa-check"></i><b>11.2.2</b> Basic Operations with GenomicRanges</a></li>
+<li class="chapter" data-level="11.2.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#calculating-width-of-each-genomic-interval"><i class="fa fa-check"></i><b>11.2.3</b> Calculating width of Each Genomic Interval</a></li>
+<li class="chapter" data-level="11.2.4" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#start-and-end-positions"><i class="fa fa-check"></i><b>11.2.4</b> Start and End Positions</a></li>
+<li class="chapter" data-level="11.2.5" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#strand-information"><i class="fa fa-check"></i><b>11.2.5</b> Strand Information</a></li>
+<li class="chapter" data-level="11.2.6" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#shifting-the-genomic-range"><i class="fa fa-check"></i><b>11.2.6</b> Shifting the Genomic Range</a></li>
+<li class="chapter" data-level="11.2.7" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#subsetting"><i class="fa fa-check"></i><b>11.2.7</b> Subsetting</a></li>
+<li class="chapter" data-level="11.2.8" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#flanking-regions"><i class="fa fa-check"></i><b>11.2.8</b> Flanking Regions</a></li>
+<li class="chapter" data-level="11.2.9" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#resizing"><i class="fa fa-check"></i><b>11.2.9</b> Resizing</a></li>
+<li class="chapter" data-level="11.2.10" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#based-and-1-based-coordinate-system"><i class="fa fa-check"></i><b>11.2.10</b> 0 based and 1 based coordinate system</a></li>
+<li class="chapter" data-level="11.2.11" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#other-packages"><i class="fa fa-check"></i><b>11.2.11</b> Other packages</a></li>
+<li class="chapter" data-level="11.2.12" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#accessing-genome-annotations"><i class="fa fa-check"></i><b>11.2.12</b> Accessing Genome Annotations</a></li>
+<li class="chapter" data-level="11.2.13" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#understanding-genomic-biotypes"><i class="fa fa-check"></i><b>11.2.13</b> Understanding Genomic Biotypes</a></li>
+<li class="chapter" data-level="11.2.14" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#creating-a-transcript-database-txdb"><i class="fa fa-check"></i><b>11.2.14</b> Creating a Transcript Database (TxDb)</a></li>
+<li class="chapter" data-level="11.2.15" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#extracting-exons-introns-and-intergenic-regions"><i class="fa fa-check"></i><b>11.2.15</b> Extracting Exons, Introns, and Intergenic Regions</a></li>
+<li class="chapter" data-level="11.2.16" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#merging-all-exons"><i class="fa fa-check"></i><b>11.2.16</b> Merging All Exons</a></li>
+<li class="chapter" data-level="11.2.17" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#introns"><i class="fa fa-check"></i><b>11.2.17</b> Introns</a></li>
+<li class="chapter" data-level="11.2.18" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#getting-all-genes"><i class="fa fa-check"></i><b>11.2.18</b> Getting All Genes</a></li>
+<li class="chapter" data-level="11.2.19" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#promoters"><i class="fa fa-check"></i><b>11.2.19</b> Promoters</a></li>
+<li class="chapter" data-level="11.2.20" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#full-genome"><i class="fa fa-check"></i><b>11.2.20</b> Full Genome</a></li>
+<li class="chapter" data-level="11.2.21" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#full-transcriptome"><i class="fa fa-check"></i><b>11.2.21</b> Full Transcriptome</a></li>
+<li class="chapter" data-level="11.2.22" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#intergenic-regions"><i class="fa fa-check"></i><b>11.2.22</b> Intergenic Regions</a></li>
+<li class="chapter" data-level="11.2.23" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#exploring-untranslated-regions-utrs"><i class="fa fa-check"></i><b>11.2.23</b> Exploring Untranslated Regions (UTRs)</a></li>
+<li class="chapter" data-level="11.2.24" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#conclusion-27"><i class="fa fa-check"></i><b>11.2.24</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#exploring-cpg-islands-and-shores-in-genomic-data"><i class="fa fa-check"></i><b>11.3</b> Exploring CpG Islands and Shores in Genomic Data</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#introduction-to-cpg-islands"><i class="fa fa-check"></i><b>11.3.1</b> Introduction to CpG Islands</a></li>
+<li class="chapter" data-level="11.3.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#fetching-cpg-island-coordinates"><i class="fa fa-check"></i><b>11.3.2</b> Fetching CpG Island Coordinates</a></li>
+<li class="chapter" data-level="11.3.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#defining-cpg-shores"><i class="fa fa-check"></i><b>11.3.3</b> Defining CpG Shores</a></li>
+<li class="chapter" data-level="11.3.4" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#combining-and-analyzing-cpg-shores"><i class="fa fa-check"></i><b>11.3.4</b> Combining and Analyzing CpG Shores</a></li>
+<li class="chapter" data-level="11.3.5" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#conclusion-28"><i class="fa fa-check"></i><b>11.3.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#real-world-applications-chip-seq"><i class="fa fa-check"></i><b>11.4</b> Real-World Applications: ChIP-seq</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#identify-promoters-that-overlap-with-the-peaks"><i class="fa fa-check"></i><b>11.4.1</b> Identify promoters that overlap with the peaks</a></li>
+<li class="chapter" data-level="11.4.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#use-the-chipseeker-package"><i class="fa fa-check"></i><b>11.4.2</b> use the ChIPseeker package</a></li>
+</ul></li>
+<li class="chapter" data-level="11.5" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#analyzing-and-visualizing-genomic-data"><i class="fa fa-check"></i><b>11.5</b> Analyzing and Visualizing Genomic Data</a>
+<ul>
+<li class="chapter" data-level="11.5.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#deseq2"><i class="fa fa-check"></i><b>11.5.1</b> DESeq2</a></li>
+<li class="chapter" data-level="11.5.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#geoquery"><i class="fa fa-check"></i><b>11.5.2</b> GEOquery</a></li>
+<li class="chapter" data-level="11.5.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#converting-gene-ids"><i class="fa fa-check"></i><b>11.5.3</b> Converting Gene IDs</a></li>
+<li class="chapter" data-level="11.5.4" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#complexheatmap"><i class="fa fa-check"></i><b>11.5.4</b> ComplexHeatmap</a></li>
+<li class="chapter" data-level="11.5.5" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#conclusion-29"><i class="fa fa-check"></i><b>11.5.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="11.6" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#real-world-example---tcga-analysis"><i class="fa fa-check"></i><b>11.6</b> Real-World Example - TCGA Analysis</a>
+<ul>
+<li class="chapter" data-level="11.6.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#introduction-to-tcga"><i class="fa fa-check"></i><b>11.6.1</b> Introduction to TCGA</a></li>
+<li class="chapter" data-level="11.6.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#why-analyze-tcga-data"><i class="fa fa-check"></i><b>11.6.2</b> Why Analyze TCGA Data?</a></li>
+<li class="chapter" data-level="11.6.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#getting-started-1"><i class="fa fa-check"></i><b>11.6.3</b> Getting Started</a></li>
+<li class="chapter" data-level="11.6.4" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-1-install-and-load-required-packages"><i class="fa fa-check"></i><b>11.6.4</b> Step 1: Install and Load Required Packages</a></li>
+<li class="chapter" data-level="11.6.5" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-2-retrieve-tcga-project-information"><i class="fa fa-check"></i><b>11.6.5</b> Step 2: Retrieve TCGA Project Information</a></li>
+<li class="chapter" data-level="11.6.6" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-3-create-a-rangedsummarizedexperiment-object"><i class="fa fa-check"></i><b>11.6.6</b> Step 3: Create a RangedSummarizedExperiment Object</a></li>
+<li class="chapter" data-level="11.6.7" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-4-explore-tcga-data"><i class="fa fa-check"></i><b>11.6.7</b> Step 4: Explore TCGA Data</a></li>
+<li class="chapter" data-level="11.6.8" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-5-data-transformation---converting-raw-counts-to-tpm"><i class="fa fa-check"></i><b>11.6.8</b> Step 5: Data Transformation - Converting Raw Counts to TPM</a></li>
+<li class="chapter" data-level="11.6.9" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-6-combine-data-and-metadata"><i class="fa fa-check"></i><b>11.6.9</b> Step 6: Combine Data and Metadata</a></li>
+<li class="chapter" data-level="11.6.10" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-7-renaming-metadata-columns"><i class="fa fa-check"></i><b>11.6.10</b> Step 7: Renaming Metadata Columns</a></li>
+<li class="chapter" data-level="11.6.11" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-8-merging-into-a-single-dataframe"><i class="fa fa-check"></i><b>11.6.11</b> Step 8: Merging into a single DataFrame</a></li>
+<li class="chapter" data-level="11.6.12" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-9-create-a-gene-expression-heatmap"><i class="fa fa-check"></i><b>11.6.12</b> Step 9: Create a Gene Expression Heatmap</a></li>
+<li class="chapter" data-level="11.6.13" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-10-sanity-check-and-scaling-of-gene-expression"><i class="fa fa-check"></i><b>11.6.13</b> Step 10: Sanity Check and Scaling of Gene Expression</a></li>
+<li class="chapter" data-level="11.6.14" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#conclusion-30"><i class="fa fa-check"></i><b>11.6.14</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="11.7" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#section-completed"><i class="fa fa-check"></i><b>11.7</b> Section completed</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html"><i class="fa fa-check"></i><b>12</b> Final Project: Analyzing RNAseq Data from GEO</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#final-project-overview"><i class="fa fa-check"></i><b>12.1</b> Final Project Overview</a></li>
+<li class="chapter" data-level="12.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#how-to-pre-process-rnaseq-data"><i class="fa fa-check"></i><b>12.2</b> How to pre-process RNAseq data</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#rnaseq-pre-processing-steps"><i class="fa fa-check"></i><b>12.2.1</b> RNAseq pre-processing steps</a></li>
+<li class="chapter" data-level="12.2.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#how-to-use-salmon-to-preprocess-geo-fastq-to-counts"><i class="fa fa-check"></i><b>12.2.2</b> How to use salmon to preprocess GEO fastq to counts</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#download-and-subset-count-matrix"><i class="fa fa-check"></i><b>12.3</b> Download and subset Count Matrix</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#downloading-the-count-matrix"><i class="fa fa-check"></i><b>12.3.1</b> Downloading the Count Matrix</a></li>
+<li class="chapter" data-level="12.3.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#reading-the-count-matrix-in-r"><i class="fa fa-check"></i><b>12.3.2</b> Reading the Count Matrix in R</a></li>
+<li class="chapter" data-level="12.3.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#examining-the-data"><i class="fa fa-check"></i><b>12.3.3</b> Examining the Data</a></li>
+<li class="chapter" data-level="12.3.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#subsetting-the-data"><i class="fa fa-check"></i><b>12.3.4</b> Subsetting the Data</a></li>
+<li class="chapter" data-level="12.3.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#converting-to-a-matrix"><i class="fa fa-check"></i><b>12.3.5</b> Converting to a Matrix</a></li>
+<li class="chapter" data-level="12.3.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#adding-row-names"><i class="fa fa-check"></i><b>12.3.6</b> Adding Row Names</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#calculate-the-total-exon-length-per-gene"><i class="fa fa-check"></i><b>12.4</b> Calculate the total exon length per gene</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#why-normalize-gene-counts-to-tpm"><i class="fa fa-check"></i><b>12.4.1</b> Why Normalize Gene Counts to TPM?</a></li>
+<li class="chapter" data-level="12.4.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#creating-a-function-for-normalization"><i class="fa fa-check"></i><b>12.4.2</b> Creating a function for normalization</a></li>
+<li class="chapter" data-level="12.4.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#join-the-exon-length-table"><i class="fa fa-check"></i><b>12.4.3</b> join the exon length table</a></li>
+<li class="chapter" data-level="12.4.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#what-genes-are-not-in-the-mapping-table"><i class="fa fa-check"></i><b>12.4.4</b> what genes are not in the mapping table?</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#normalizing-raw-counts-to-transcripts-per-million-tpm"><i class="fa fa-check"></i><b>12.5</b> Normalizing Raw Counts to Transcripts per Million (TPM)</a>
+<ul>
+<li class="chapter" data-level="12.5.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#the-count2tpm-function"><i class="fa fa-check"></i><b>12.5.1</b> The <code>count2tpm</code> Function:</a></li>
+<li class="chapter" data-level="12.5.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#applying-the-function"><i class="fa fa-check"></i><b>12.5.2</b> Applying the Function</a></li>
+<li class="chapter" data-level="12.5.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusions-1"><i class="fa fa-check"></i><b>12.5.3</b> Conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="12.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-gene-expression-data-using-t-tests"><i class="fa fa-check"></i><b>12.6</b> Analyzing Gene Expression Data Using t-Tests</a>
+<ul>
+<li class="chapter" data-level="12.6.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#hypothesis-testing-1"><i class="fa fa-check"></i><b>12.6.1</b> Hypothesis Testing</a></li>
+<li class="chapter" data-level="12.6.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-specific-genes"><i class="fa fa-check"></i><b>12.6.2</b> Analyzing Specific Genes</a></li>
+<li class="chapter" data-level="12.6.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-all-genes"><i class="fa fa-check"></i><b>12.6.3</b> Analyzing All Genes</a></li>
+<li class="chapter" data-level="12.6.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-31"><i class="fa fa-check"></i><b>12.6.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.7" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-gene-expression-data-with-ggplot2"><i class="fa fa-check"></i><b>12.7</b> Analyzing Gene Expression Data with ggplot2</a>
+<ul>
+<li class="chapter" data-level="12.7.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#import-libraries-and-load-data"><i class="fa fa-check"></i><b>12.7.1</b> Import Libraries and Load Data</a></li>
+<li class="chapter" data-level="12.7.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#visualizing-p-value-distribution"><i class="fa fa-check"></i><b>12.7.2</b> Visualizing P-Value Distribution</a></li>
+<li class="chapter" data-level="12.7.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#identifying-differentially-expressed-genes"><i class="fa fa-check"></i><b>12.7.3</b> Identifying Differentially Expressed Genes</a></li>
+<li class="chapter" data-level="12.7.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#selecting-differentially-expressed-genes"><i class="fa fa-check"></i><b>12.7.4</b> Selecting Differentially Expressed Genes</a></li>
+<li class="chapter" data-level="12.7.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#boxplot-to-visualize-gene-expression-changes-between-the-two-conditions."><i class="fa fa-check"></i><b>12.7.5</b> boxplot to visualize gene expression changes between the two conditions.</a></li>
+<li class="chapter" data-level="12.7.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#creating-the-boxplot"><i class="fa fa-check"></i><b>12.7.6</b> Creating the Boxplot</a></li>
+<li class="chapter" data-level="12.7.7" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#visualizing-raw-expression-values"><i class="fa fa-check"></i><b>12.7.7</b> Visualizing Raw Expression Values</a></li>
+<li class="chapter" data-level="12.7.8" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-32"><i class="fa fa-check"></i><b>12.7.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.8" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#correcting-for-multiple-comparisons-in-statistical-analysis"><i class="fa fa-check"></i><b>12.8</b> Correcting for Multiple Comparisons in Statistical Analysis</a>
+<ul>
+<li class="chapter" data-level="12.8.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#why-correct-for-multiple-comparisons"><i class="fa fa-check"></i><b>12.8.1</b> Why Correct for Multiple Comparisons?</a></li>
+<li class="chapter" data-level="12.8.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#the-multiple-comparisons-example"><i class="fa fa-check"></i><b>12.8.2</b> The Multiple Comparisons Example</a></li>
+<li class="chapter" data-level="12.8.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#correcting-for-multiple-comparisons-false-discovery-rate-fdr"><i class="fa fa-check"></i><b>12.8.3</b> Correcting for Multiple Comparisons: False Discovery Rate (FDR)</a></li>
+<li class="chapter" data-level="12.8.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-33"><i class="fa fa-check"></i><b>12.8.4</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Master Real-world Bioinformatics analysis in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="final-project-analyzing-rnaseq-data-from-geo" class="section level1" number="12">
+<h1><span class="header-section-number">Chapter 12</span> Final Project: Analyzing RNAseq Data from GEO</h1>
+<div id="final-project-overview" class="section level2" number="12.1">
+<h2><span class="header-section-number">12.1</span> Final Project Overview</h2>
+<p>In this final project, we will work with RNAseq data obtained from the <code>GEO</code> database, specifically the dataset with ITPR3 and RELB knockout in the SW480 cell line under varying oxygen conditions. Our primary objectives are to clean and prepare the metadata, identify differentially expressed genes, explore data distribution, and visualize gene expression patterns.</p>
+<p>The steps we’ll take:</p>
+<ol style="list-style-type: decimal">
+<li><p>To start, we will download the RNAseq count table and the associated metadata. With the help of the <code>dplyr</code> package in R, we will clean and organize the metadata. Our focus will be on selecting and subsetting the samples that are most relevant to our analysis - specifically, two wild-type samples under normoxia and two under hypoxia. For the initial phase of the project, we will disregard knockout samples to simplify our analysis.</p></li>
+<li><p>Next, we will delve into exploring the RNAseq count matrix. Without considering knockout samples, we will calculate essential summary statistics to gain insights into gene expression levels’ variability and distribution between the two conditions - normoxia and hypoxia.</p></li>
+<li><p>After understanding the dataset’s characteristics, we will proceed to identify differentially expressed genes. This step is crucial for uncovering genes that exhibit significant expression changes in response to varying oxygen levels. We will utilize well-established tool, <code>DESeq2</code>, to perform differential gene expression analysis.</p></li>
+<li><p>Following the identification of differentially expressed genes, we will continue exploring the count matrix by calculating summary statistics specifically for these genes. This allows us to gain a deeper understanding of how their expression patterns differ between normoxia and hypoxia conditions.</p></li>
+<li><p>To visualize data p-value distribution more effectively, we will create histograms. These histograms will offer a visual representation of how p values are distributed.</p></li>
+<li><p>Additionally, we will use boxplots to compare gene expression levels between normoxia and hypoxia. Boxplots provide a concise summary of the data’s central tendency, spread, and potential outliers, aiding in the identification of expression differences.</p></li>
+<li><p>Principal Component Analysis (PCA) will be employed to obtain insights into the overall structure of the data and any potential clustering patterns. This dimensionality reduction technique will help us visualize how samples group based on their gene expression profiles.</p></li>
+<li><p>Finally, we will create a heatmap using R. This heatmap will visualize the expression patterns of the identified differentially expressed genes across samples, providing a comprehensive view of how these genes respond to changes in oxygen levels in the SW480 cell line.</p></li>
+</ol>
+<p>In summary, this project will take us through the full process of RNAseq data analysis, focusing on the hypoxia vs normoxia comparison in the SW480 cell line. We’ll clean the data, pinpoint differentially expressed genes, explore their distributions, and visualize gene expression patterns.</p>
+<p>Are you ready? Let’s go!</p>
+</div>
+<div id="how-to-pre-process-rnaseq-data" class="section level2" number="12.2">
+<h2><span class="header-section-number">12.2</span> How to pre-process RNAseq data</h2>
+<p>This is a bonus section on how to pre-process RNAseq data. In this course, we mainly focus on how to analyze RNAseq data for downstream analysis. We will start with a count matrix (next lesson) downloaded from <code>GEO</code>.</p>
+<p>However, in real-world data analysis, sequencing data comes as a <code>FASTQ</code> file. FASTQ files are just normal text files with 4 lines for each read. Go to the link to understand the format.</p>
+<p>Watch this video:</p>
+<div class="vembedr">
+<div>
+<iframe src="https://www.youtube.com/embed/Gc-Hzvt7KVQ" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
+</div>
+</div>
+<div id="rnaseq-pre-processing-steps" class="section level3" number="12.2.1">
+<h3><span class="header-section-number">12.2.1</span> RNAseq pre-processing steps</h3>
+<ol style="list-style-type: decimal">
+<li><p>The first step is to do Quality control of the <a href="https://en.wikipedia.org/wiki/FASTQ_format">FASTQ</a> files using <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FASTQC</a>.</p></li>
+<li><p>Trim adaptors and low-quality bases using tools such as <a href="https://github.com/timflutre/trimmomatic">trimmomatic</a> or <a href="https://github.com/OpenGene/fastp">fastp</a>. Trimming of the reads is optional.</p></li>
+<li><p>Align the reads to transcriptome using <a href="https://github.com/alexdobin/STAR"><code>STAR</code></a>. The single-cell RNAseq version is called <a href="https://github.com/alexdobin/STAR/blob/master/docs/STARsolo.md">STAR-solo</a> from the same lab.</p></li>
+<li><p>Quantify the number of reads fall into each gene using <a href="https://subread.sourceforge.net/">FeatureCounts</a>.</p></li>
+</ol>
+<p>I have written a Snakemake pipeline to pre-process RNAseq fastq file to get a count matrix at <a href="https://github.com/crazyhottommy/pyflow-RNAseq" class="uri">https://github.com/crazyhottommy/pyflow-RNAseq</a></p>
+<p>The bash script to align the fastq files to transcriptome using <code>STAR</code>:</p>
+<div class="sourceCode" id="cb556"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb556-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-1" tabindex="-1"></a><span class="ex">STAR</span> <span class="at">--runMode</span> alignReads <span class="dt">\</span></span>
+<span id="cb556-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-2" tabindex="-1"></a>        <span class="at">--runThreadN</span> 5 <span class="dt">\</span></span>
+<span id="cb556-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-3" tabindex="-1"></a>        <span class="at">--genomeDir</span> /path/to/the/STAR/index <span class="dt">\</span></span>
+<span id="cb556-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-4" tabindex="-1"></a>        <span class="at">--genomeLoad</span> NoSharedMemory <span class="dt">\</span></span>
+<span id="cb556-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-5" tabindex="-1"></a>        <span class="at">--readFilesIn</span> mysample_R1.fastq.gz mysample_R2.fastq.gz <span class="dt">\</span></span>
+<span id="cb556-6"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-6" tabindex="-1"></a>        <span class="at">--readFilesCommand</span> zcat <span class="dt">\</span></span>
+<span id="cb556-7"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-7" tabindex="-1"></a>        <span class="at">--twopassMode</span> Basic <span class="dt">\</span></span>
+<span id="cb556-8"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-8" tabindex="-1"></a>        <span class="at">--runRNGseed</span> 777 <span class="dt">\</span></span>
+<span id="cb556-9"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-9" tabindex="-1"></a>        <span class="at">--outFilterType</span> Normal <span class="dt">\</span></span>
+<span id="cb556-10"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-10" tabindex="-1"></a>        <span class="at">--outFilterMultimapNmax</span> 20 <span class="dt">\</span></span>
+<span id="cb556-11"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-11" tabindex="-1"></a>        <span class="at">--outFilterMismatchNmax</span> 10 <span class="dt">\</span></span>
+<span id="cb556-12"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-12" tabindex="-1"></a>        <span class="at">--outFilterMultimapScoreRange</span> 1 <span class="dt">\</span></span>
+<span id="cb556-13"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-13" tabindex="-1"></a>        <span class="at">--outFilterMatchNminOverLread</span> 0.33 <span class="dt">\</span></span>
+<span id="cb556-14"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-14" tabindex="-1"></a>        <span class="at">--outFilterScoreMinOverLread</span> 0.33 <span class="dt">\</span></span>
+<span id="cb556-15"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-15" tabindex="-1"></a>        <span class="at">--outReadsUnmapped</span> None <span class="dt">\</span></span>
+<span id="cb556-16"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-16" tabindex="-1"></a>        <span class="at">--alignIntronMin</span> 20 <span class="dt">\</span></span>
+<span id="cb556-17"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-17" tabindex="-1"></a>        <span class="at">--alignIntronMax</span> 500000 <span class="dt">\</span></span>
+<span id="cb556-18"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-18" tabindex="-1"></a>        <span class="at">--alignMatesGapMax</span> 1000000 <span class="dt">\</span></span>
+<span id="cb556-19"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-19" tabindex="-1"></a>        <span class="at">--alignSJoverhangMin</span> 8 <span class="dt">\</span></span>
+<span id="cb556-20"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-20" tabindex="-1"></a>        <span class="at">--alignSJstitchMismatchNmax</span> 5 <span class="at">-1</span> 5 5 <span class="dt">\</span></span>
+<span id="cb556-21"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-21" tabindex="-1"></a>        <span class="at">--sjdbScore</span> 2 <span class="dt">\</span></span>
+<span id="cb556-22"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-22" tabindex="-1"></a>        <span class="at">--alignSJDBoverhangMin</span> 1 <span class="dt">\</span></span>
+<span id="cb556-23"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-23" tabindex="-1"></a>        <span class="at">--sjdbOverhang</span> 100 <span class="dt">\</span></span>
+<span id="cb556-24"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-24" tabindex="-1"></a>        <span class="at">--chimSegmentMin</span> 20 <span class="dt">\</span></span>
+<span id="cb556-25"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-25" tabindex="-1"></a>        <span class="at">--chimJunctionOverhangMin</span> 20 <span class="dt">\</span></span>
+<span id="cb556-26"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-26" tabindex="-1"></a>        <span class="at">--chimSegmentReadGapMax</span> 3 <span class="dt">\</span></span>
+<span id="cb556-27"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-27" tabindex="-1"></a>        <span class="at">--quantMode</span> GeneCounts <span class="dt">\</span></span>
+<span id="cb556-28"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-28" tabindex="-1"></a>        <span class="at">--outMultimapperOrder</span> Random <span class="dt">\</span></span>
+<span id="cb556-29"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-29" tabindex="-1"></a>        <span class="at">--outSAMstrandField</span> intronMotif <span class="dt">\</span></span>
+<span id="cb556-30"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-30" tabindex="-1"></a>        <span class="at">--outSAMattributes</span> All <span class="dt">\</span></span>
+<span id="cb556-31"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-31" tabindex="-1"></a>        <span class="at">--outSAMunmapped</span> Within KeepPairs <span class="dt">\</span></span>
+<span id="cb556-32"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-32" tabindex="-1"></a>        <span class="at">--outSAMtype</span> BAM Unsorted <span class="dt">\</span></span>
+<span id="cb556-33"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-33" tabindex="-1"></a>        <span class="at">--limitBAMsortRAM</span> 30000000000 <span class="dt">\</span></span>
+<span id="cb556-34"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-34" tabindex="-1"></a>        <span class="at">--outSAMmode</span> Full <span class="dt">\</span></span>
+<span id="cb556-35"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-35" tabindex="-1"></a>        <span class="at">--outSAMheaderHD</span> @HD VN:1.4 <span class="dt">\</span></span>
+<span id="cb556-36"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb556-36" tabindex="-1"></a>        <span class="at">--outFileNamePrefix</span> mysample</span></code></pre></div>
+<p>Then quantifying using <code>FeatureCounts</code>:</p>
+<div class="sourceCode" id="cb557"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb557-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb557-1" tabindex="-1"></a><span class="ex">featureCounts</span> <span class="at">-T</span> 5 <span class="at">-p</span> <span class="at">-t</span> exon <span class="at">-g</span> gene_id <span class="at">-a</span> gene.gtf <span class="at">-o</span> mysample_featureCount.txt mysampleAligned.out.bam</span></code></pre></div>
+<p><code>mysample_featureCount.txt</code> will be a count table for one sample.</p>
+<p>Alternative Alignment-free RNAseq quantification tools such as <a href="https://combine-lab.github.io/salmon/getting_started/">salmon</a> and <a href="https://pachterlab.github.io/kallisto/">kallisto</a> are also very popular. I recommend you to read the tutorial of <code>STAR</code>, <code>FeatureCounts</code>, <code>salmon</code> and <code>kallisto</code> to learn how to use those command line tools.</p>
+</div>
+<div id="how-to-use-salmon-to-preprocess-geo-fastq-to-counts" class="section level3" number="12.2.2">
+<h3><span class="header-section-number">12.2.2</span> How to use salmon to preprocess GEO fastq to counts</h3>
+<p>Please refer to this <a href="https://divingintogeneticsandgenomics.com/post/how-to-preprocess-geo-bulk-rnaseq-data-with-salmon/">blog post</a> and this youtube video if you want to learn more:</p>
+<div class="vembedr">
+<div>
+<iframe src="https://www.youtube.com/embed/_Q8fYokTCTs" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
+</div>
+</div>
+</div>
+</div>
+<div id="download-and-subset-count-matrix" class="section level2" number="12.3">
+<h2><span class="header-section-number">12.3</span> Download and subset Count Matrix</h2>
+<p>In this lesson, you will learn how to explore a count matrix in R, a common task in data analysis. We’ll cover downloading the data, reading it into R, examining the data’s dimensions and column names, subsetting the data, converting it into a matrix, and adding row names.</p>
+<div id="downloading-the-count-matrix" class="section level3" number="12.3.1">
+<h3><span class="header-section-number">12.3.1</span> Downloading the Count Matrix</h3>
+<p>To begin, we need to download the count matrix, which is a tab-separated values (TSV) file containing gene expression data. You can obtain it from the following FTP address: <a href="https://ftp.ncbi.nlm.nih.gov/geo/series/GSE197nnn/GSE197576/suppl/GSE197576_raw_gene_counts_matrix.tsv.gz" class="uri">https://ftp.ncbi.nlm.nih.gov/geo/series/GSE197nnn/GSE197576/suppl/GSE197576_raw_gene_counts_matrix.tsv.gz</a></p>
+<p>You can use the wget command in Unix to download the processed count matrix file as follows:</p>
+<div class="sourceCode" id="cb558"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb558-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb558-1" tabindex="-1"></a><span class="fu">wget</span> https://ftp.ncbi.nlm.nih.gov/geo/series/GSE197nnn/GSE197576/suppl/GSE197576_raw_gene_counts_matrix.tsv.gz</span></code></pre></div>
+<blockquote>
+<p>If you don’t have access to a Unix-like command-line environment, you can download the file manually through your web browser. Simply open your web browser and go to the following URL: <a href="https://ftp.ncbi.nlm.nih.gov/geo/series/GSE197nnn/GSE197576/suppl/GSE197576_raw_gene_counts_matrix.tsv.gz" class="uri">https://ftp.ncbi.nlm.nih.gov/geo/series/GSE197nnn/GSE197576/suppl/GSE197576_raw_gene_counts_matrix.tsv.gz</a></p>
+</blockquote>
+</div>
+<div id="reading-the-count-matrix-in-r" class="section level3" number="12.3.2">
+<h3><span class="header-section-number">12.3.2</span> Reading the Count Matrix in R</h3>
+<p>Now that you have the data, let’s read it into R using the readr package. The first step is to load the required libraries and read the TSV file:</p>
+<div class="sourceCode" id="cb559"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb559-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb559-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb559-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb559-2" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb559-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb559-3" tabindex="-1"></a></span>
+<span id="cb559-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb559-4" tabindex="-1"></a>raw_counts <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;~/Downloads/GSE197576_raw_gene_counts_matrix.tsv.gz&quot;</span>)</span></code></pre></div>
+</div>
+<div id="examining-the-data" class="section level3" number="12.3.3">
+<h3><span class="header-section-number">12.3.3</span> Examining the Data</h3>
+<p>It’s crucial to understand the data structure. We’ll start by examining the dimensions of the data and the column names:</p>
+<div class="sourceCode" id="cb560"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb560-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb560-1" tabindex="-1"></a><span class="co"># Check the dimensions of the data</span></span>
+<span id="cb560-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb560-2" tabindex="-1"></a><span class="fu">dim</span>(raw_counts)  <span class="co"># This will show the number of rows and columns</span></span></code></pre></div>
+<pre><code>## [1] 43809    13</code></pre>
+<div class="sourceCode" id="cb562"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb562-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb562-1" tabindex="-1"></a><span class="co"># List the column names</span></span>
+<span id="cb562-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb562-2" tabindex="-1"></a><span class="fu">colnames</span>(raw_counts)  <span class="co"># This will display the names of all columns</span></span></code></pre></div>
+<pre><code>##  [1] &quot;gene&quot;                 &quot;01_SW_sgCTRL_Norm&quot;    &quot;02_SW_sgCTRL_Norm&quot;   
+##  [4] &quot;03_SW_sgITPR3_1_Norm&quot; &quot;04_SW_sgITPR3_1_Norm&quot; &quot;07_SW_sgRELB_3_Norm&quot; 
+##  [7] &quot;08_SW_sgRELB_3_Norm&quot;  &quot;11_SW_sgCTRL_Hyp&quot;     &quot;12_SW_sgCTRL_Hyp&quot;    
+## [10] &quot;13_SW_sgITPR3_1_Hyp&quot;  &quot;14_SW_sgITPR3_1_Hyp&quot;  &quot;17_SW_sgRELB_3_Hyp&quot;  
+## [13] &quot;18_SW_sgRELB_3_Hyp&quot;</code></pre>
+<p>The first six rows:</p>
+<div class="sourceCode" id="cb564"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb564-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb564-1" tabindex="-1"></a><span class="fu">head</span>(raw_counts)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 13
+##   gene        `01_SW_sgCTRL_Norm` `02_SW_sgCTRL_Norm` `03_SW_sgITPR3_1_Norm`
+##   &lt;chr&gt;                     &lt;dbl&gt;               &lt;dbl&gt;                  &lt;dbl&gt;
+## 1 DDX11L1                       0                   0                      0
+## 2 WASH7P                       18                  11                     28
+## 3 MIR6859-1                     5                   1                      6
+## 4 MIR1302-2HG                   0                   0                      0
+## 5 MIR1302-2                     0                   0                      0
+## 6 FAM138A                       0                   0                      0
+## # ℹ 9 more variables: `04_SW_sgITPR3_1_Norm` &lt;dbl&gt;,
+## #   `07_SW_sgRELB_3_Norm` &lt;dbl&gt;, `08_SW_sgRELB_3_Norm` &lt;dbl&gt;,
+## #   `11_SW_sgCTRL_Hyp` &lt;dbl&gt;, `12_SW_sgCTRL_Hyp` &lt;dbl&gt;,
+## #   `13_SW_sgITPR3_1_Hyp` &lt;dbl&gt;, `14_SW_sgITPR3_1_Hyp` &lt;dbl&gt;,
+## #   `17_SW_sgRELB_3_Hyp` &lt;dbl&gt;, `18_SW_sgRELB_3_Hyp` &lt;dbl&gt;</code></pre>
+<blockquote>
+<p>Notice that the first column name is the gene name, and the other 12 columns are the sample names.</p>
+</blockquote>
+</div>
+<div id="subsetting-the-data" class="section level3" number="12.3.4">
+<h3><span class="header-section-number">12.3.4</span> Subsetting the Data</h3>
+<p>Next, let’s narrow down our data to the specific samples we need for comparison. To do this, we’ll create a logical vector by matching column names that contain “sgCTRL” or “gene”:</p>
+<div class="sourceCode" id="cb566"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb566-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb566-1" tabindex="-1"></a>columns_to_select <span class="ot">&lt;-</span> <span class="fu">colnames</span>(raw_counts) <span class="sc">%&gt;%</span></span>
+<span id="cb566-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb566-2" tabindex="-1"></a>  stringr<span class="sc">::</span><span class="fu">str_detect</span>(<span class="st">&quot;sgCTRL|gene&quot;</span>)</span>
+<span id="cb566-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb566-3" tabindex="-1"></a></span>
+<span id="cb566-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb566-4" tabindex="-1"></a>columns_to_select</span></code></pre></div>
+<pre><code>##  [1]  TRUE  TRUE  TRUE FALSE FALSE FALSE FALSE  TRUE  TRUE FALSE FALSE FALSE
+## [13] FALSE</code></pre>
+<p>The <code>stringr::str_detect</code> function searches for patterns in the column names. The resulting columns_to_select variable is a logical vector that helps us select the relevant columns.</p>
+<p>Now, let’s use this logical vector to subset the data frame:</p>
+<div class="sourceCode" id="cb568"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb568-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb568-1" tabindex="-1"></a>counts_sub <span class="ot">&lt;-</span> raw_counts[, columns_to_select]</span>
+<span id="cb568-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb568-2" tabindex="-1"></a></span>
+<span id="cb568-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb568-3" tabindex="-1"></a><span class="fu">head</span>(counts_sub)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 5
+##   gene        `01_SW_sgCTRL_Norm` `02_SW_sgCTRL_Norm` `11_SW_sgCTRL_Hyp`
+##   &lt;chr&gt;                     &lt;dbl&gt;               &lt;dbl&gt;              &lt;dbl&gt;
+## 1 DDX11L1                       0                   0                  0
+## 2 WASH7P                       18                  11                 23
+## 3 MIR6859-1                     5                   1                  8
+## 4 MIR1302-2HG                   0                   0                  1
+## 5 MIR1302-2                     0                   0                  0
+## 6 FAM138A                       0                   0                  0
+## # ℹ 1 more variable: `12_SW_sgCTRL_Hyp` &lt;dbl&gt;</code></pre>
+</div>
+<div id="converting-to-a-matrix" class="section level3" number="12.3.5">
+<h3><span class="header-section-number">12.3.5</span> Converting to a Matrix</h3>
+<p>To perform various analyses, it’s often more convenient to work with a matrix. We’ll remove the first column (gene names) and convert the data frame to a matrix:</p>
+<div class="sourceCode" id="cb570"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb570-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb570-1" tabindex="-1"></a><span class="co">#subset the dataframe by removing the first column using negative index</span></span>
+<span id="cb570-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb570-2" tabindex="-1"></a><span class="co"># and then use as.matrix to convert it to a matrix</span></span>
+<span id="cb570-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb570-3" tabindex="-1"></a>raw_counts_mat<span class="ot">&lt;-</span> counts_sub[, <span class="sc">-</span><span class="dv">1</span>] <span class="sc">%&gt;%</span> </span>
+<span id="cb570-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb570-4" tabindex="-1"></a>              <span class="fu">as.matrix</span>()</span>
+<span id="cb570-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb570-5" tabindex="-1"></a></span>
+<span id="cb570-6"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb570-6" tabindex="-1"></a><span class="fu">head</span>(raw_counts_mat)</span></code></pre></div>
+<pre><code>##      01_SW_sgCTRL_Norm 02_SW_sgCTRL_Norm 11_SW_sgCTRL_Hyp 12_SW_sgCTRL_Hyp
+## [1,]                 0                 0                0                0
+## [2,]                18                11               23               45
+## [3,]                 5                 1                8               12
+## [4,]                 0                 0                1                0
+## [5,]                 0                 0                0                0
+## [6,]                 0                 0                0                0</code></pre>
+<p>Here, we use the <code>%&gt;%</code> (pipe) operator to perform multiple operations sequentially. The <code>as.matrix()</code> function converts the data frame to a matrix.</p>
+</div>
+<div id="adding-row-names" class="section level3" number="12.3.6">
+<h3><span class="header-section-number">12.3.6</span> Adding Row Names</h3>
+<p>The matrix lacks row names, which can be crucial for identifying genes. We can add the gene names as row names:</p>
+<div class="sourceCode" id="cb572"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb572-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb572-1" tabindex="-1"></a><span class="fu">rownames</span>(raw_counts_mat) <span class="ot">&lt;-</span> raw_counts<span class="sc">$</span>gene</span>
+<span id="cb572-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb572-2" tabindex="-1"></a></span>
+<span id="cb572-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb572-3" tabindex="-1"></a><span class="fu">head</span>(raw_counts_mat)</span></code></pre></div>
+<pre><code>##             01_SW_sgCTRL_Norm 02_SW_sgCTRL_Norm 11_SW_sgCTRL_Hyp
+## DDX11L1                     0                 0                0
+## WASH7P                     18                11               23
+## MIR6859-1                   5                 1                8
+## MIR1302-2HG                 0                 0                1
+## MIR1302-2                   0                 0                0
+## FAM138A                     0                 0                0
+##             12_SW_sgCTRL_Hyp
+## DDX11L1                    0
+## WASH7P                    45
+## MIR6859-1                 12
+## MIR1302-2HG                0
+## MIR1302-2                  0
+## FAM138A                    0</code></pre>
+<p>Now, our matrix has gene names associated with each row.</p>
+</div>
+</div>
+<div id="calculate-the-total-exon-length-per-gene" class="section level2" number="12.4">
+<h2><span class="header-section-number">12.4</span> Calculate the total exon length per gene</h2>
+<p>We want to find the differentially expressed genes between hypoxia and normoxia. The ideal workflow is to use the <code>DESeq2</code> R package, which models the count data with the negative binomial distribution. For now, let’s use a t-test to compare and we will use DESeq2 later.</p>
+<p>However, because different samples have different sequencing depths, and different genes have different lengths, we must first normalize the counts to transcript per million (TPM).</p>
+<div id="why-normalize-gene-counts-to-tpm" class="section level3" number="12.4.1">
+<h3><span class="header-section-number">12.4.1</span> Why Normalize Gene Counts to TPM?</h3>
+<p>When working with gene expression data, it’s essential to account for variations in sequencing depths (the number of reads obtained for each sample) and gene lengths (some genes are longer than others). Normalization helps ensure that our gene expression values are comparable across different samples and genes.</p>
+<p>Transcript Per Million (TPM) is a commonly used normalization method in RNA-seq analysis. It scales the gene counts to a common unit (per million) based on gene length and sequencing depth.</p>
+<p><strong>The general process</strong>:</p>
+<ol style="list-style-type: decimal">
+<li><p>For each gene, we divide its raw count values by its total exon length. This step essentially converts the raw counts into counts per unit exon length.</p></li>
+<li><p>We sum up the values for each column (sample). This calculation gives us the total counts for each sample.</p></li>
+<li><p>For each gene in each sample, we divide the value obtained in Step 1 by the total count for that sample calculated in Step 2. This step scales the counts relative to the sequencing depth of each sample.</p></li>
+<li><p>To bring the values to a common scale and make them more interpretable, we multiply the result from Step 3 by 1,000,000 (1e6). This step converts the values to TPM, where the final unit is “Transcripts Per Million.”</p></li>
+</ol>
+<p>The normalization process ensures that the gene expression values are now comparable across different samples, making it easier to identify genes that are differentially expressed between conditions (e.g., hypoxia and normoxia).</p>
+</div>
+<div id="creating-a-function-for-normalization" class="section level3" number="12.4.2">
+<h3><span class="header-section-number">12.4.2</span> Creating a function for normalization</h3>
+<p>Let’s write a function. Before that, we need to know the gene length of all the genes in the data frame.</p>
+<p>We will use the Bioconductor package <code>TxDb.Hsapiens.UCSC.hg19.knownGene</code> to get the gene length, or more exactly, the total exon lengths for each gene (most of the RNAseq reads are from the exons).</p>
+<div class="sourceCode" id="cb574"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb574-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb574-1" tabindex="-1"></a><span class="co">#if (!require(&quot;BiocManager&quot;, quietly = TRUE))</span></span>
+<span id="cb574-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb574-2" tabindex="-1"></a><span class="co">#    install.packages(&quot;BiocManager&quot;)</span></span>
+<span id="cb574-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb574-3" tabindex="-1"></a></span>
+<span id="cb574-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb574-4" tabindex="-1"></a><span class="co">#BiocManager::install(&quot;TxDb.Hsapiens.UCSC.hg19.knownGene&quot;)</span></span>
+<span id="cb574-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb574-5" tabindex="-1"></a></span>
+<span id="cb574-6"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb574-6" tabindex="-1"></a><span class="fu">library</span>(TxDb.Hsapiens.UCSC.hg19.knownGene)</span>
+<span id="cb574-7"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb574-7" tabindex="-1"></a></span>
+<span id="cb574-8"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb574-8" tabindex="-1"></a>TxDb.Hsapiens.UCSC.hg19.knownGene</span></code></pre></div>
+<pre><code>## TxDb object:
+## # Db type: TxDb
+## # Supporting package: GenomicFeatures
+## # Data source: UCSC
+## # Genome: hg19
+## # Organism: Homo sapiens
+## # Taxonomy ID: 9606
+## # UCSC Table: knownGene
+## # Resource URL: http://genome.ucsc.edu/
+## # Type of Gene ID: Entrez Gene ID
+## # Full dataset: yes
+## # miRBase build ID: GRCh37
+## # transcript_nrow: 82960
+## # exon_nrow: 289969
+## # cds_nrow: 237533
+## # Db created by: GenomicFeatures package from Bioconductor
+## # Creation time: 2015-10-07 18:11:28 +0000 (Wed, 07 Oct 2015)
+## # GenomicFeatures version at creation time: 1.21.30
+## # RSQLite version at creation time: 1.0.0
+## # DBSCHEMAVERSION: 1.1</code></pre>
+<p>It is a <code>TxDb</code> object. We can use functions such as genes and exons to get the genes or exons.</p>
+<div class="sourceCode" id="cb576"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb576-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb576-1" tabindex="-1"></a><span class="co"># make it a shorter name</span></span>
+<span id="cb576-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb576-2" tabindex="-1"></a>txdb<span class="ot">&lt;-</span> TxDb.Hsapiens.UCSC.hg19.knownGene</span>
+<span id="cb576-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb576-3" tabindex="-1"></a></span>
+<span id="cb576-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb576-4" tabindex="-1"></a><span class="fu">genes</span>(txdb)</span></code></pre></div>
+<pre><code>## GRanges object with 23056 ranges and 1 metadata column:
+##         seqnames              ranges strand |     gene_id
+##            &lt;Rle&gt;           &lt;IRanges&gt;  &lt;Rle&gt; | &lt;character&gt;
+##       1    chr19   58858172-58874214      - |           1
+##      10     chr8   18248755-18258723      + |          10
+##     100    chr20   43248163-43280376      - |         100
+##    1000    chr18   25530930-25757445      - |        1000
+##   10000     chr1 243651535-244006886      - |       10000
+##     ...      ...                 ...    ... .         ...
+##    9991     chr9 114979995-115095944      - |        9991
+##    9992    chr21   35736323-35743440      + |        9992
+##    9993    chr22   19023795-19109967      - |        9993
+##    9994     chr6   90539619-90584155      + |        9994
+##    9997    chr22   50961997-50964905      - |        9997
+##   -------
+##   seqinfo: 93 sequences (1 circular) from hg19 genome</code></pre>
+<p>It returns a <code>GRanges</code> object with the chromosome name, start, end, strand and the gene_id. Note that <code>gene_id</code> here is the ENTREZ ID.</p>
+<p>However, to be accurate, we want the exons, not the whole genes which contain introns. Let’s get the exons:</p>
+<div class="sourceCode" id="cb578"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb578-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb578-1" tabindex="-1"></a>exons<span class="ot">&lt;-</span> <span class="fu">exonsBy</span>(txdb, <span class="at">by =</span> <span class="st">&quot;gene&quot;</span>)</span>
+<span id="cb578-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb578-2" tabindex="-1"></a>exons</span></code></pre></div>
+<pre><code>## GRangesList object of length 23459:
+## $`1`
+## GRanges object with 15 ranges and 2 metadata columns:
+##        seqnames            ranges strand |   exon_id   exon_name
+##           &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt; &lt;character&gt;
+##    [1]    chr19 58858172-58858395      - |    250809        &lt;NA&gt;
+##    [2]    chr19 58858719-58859006      - |    250810        &lt;NA&gt;
+##    [3]    chr19 58859832-58860494      - |    250811        &lt;NA&gt;
+##    [4]    chr19 58860934-58862017      - |    250812        &lt;NA&gt;
+##    [5]    chr19 58861736-58862017      - |    250813        &lt;NA&gt;
+##    ...      ...               ...    ... .       ...         ...
+##   [11]    chr19 58868951-58869015      - |    250821        &lt;NA&gt;
+##   [12]    chr19 58869318-58869652      - |    250822        &lt;NA&gt;
+##   [13]    chr19 58869855-58869951      - |    250823        &lt;NA&gt;
+##   [14]    chr19 58870563-58870689      - |    250824        &lt;NA&gt;
+##   [15]    chr19 58874043-58874214      - |    250825        &lt;NA&gt;
+##   -------
+##   seqinfo: 93 sequences (1 circular) from hg19 genome
+## 
+## $`10`
+## GRanges object with 2 ranges and 2 metadata columns:
+##       seqnames            ranges strand |   exon_id   exon_name
+##          &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; | &lt;integer&gt; &lt;character&gt;
+##   [1]     chr8 18248755-18248855      + |    113603        &lt;NA&gt;
+##   [2]     chr8 18257508-18258723      + |    113604        &lt;NA&gt;
+##   -------
+##   seqinfo: 93 sequences (1 circular) from hg19 genome
+## 
+## ...
+## &lt;23457 more elements&gt;</code></pre>
+<p>This returns a GRangesList object and each element of the list is a GRanges containing all the exons for that gene.</p>
+<p>Let’s calculate the total exon lengths for each gene by the <code>width</code> function:</p>
+<div class="sourceCode" id="cb580"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb580-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb580-1" tabindex="-1"></a><span class="co"># width of exons per gene</span></span>
+<span id="cb580-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb580-2" tabindex="-1"></a><span class="fu">width</span>(exons)</span></code></pre></div>
+<pre><code>## IntegerList of length 23459
+## [[&quot;1&quot;]] 224 288 663 1084 282 297 273 270 36 96 65 335 97 127 172
+## [[&quot;10&quot;]] 101 1216
+## [[&quot;100&quot;]] 326 103 130 65 102 72 128 116 144 123 62 161
+## [[&quot;1000&quot;]] 1394 165 140 234 234 143 254 186 138 173 145 156 147 227 106 112 519
+## [[&quot;10000&quot;]] 218 68 5616 50 103 88 215 129 123 69 66 132 145 112 126 158 41
+## [[&quot;100008586&quot;]] 92 121 126 127
+## [[&quot;100009676&quot;]] 2784
+## [[&quot;10001&quot;]] 704 28 116 478 801 109 130 83 92 160 52
+## [[&quot;10002&quot;]] 308 127 104 222 176 201 46 106 918 705
+## [[&quot;10003&quot;]] 191 112 187 102 126 187 94 1193 99 ... 64 68 92 91 265 82 93 1054
+## ...
+## &lt;23449 more elements&gt;</code></pre>
+<div class="sourceCode" id="cb582"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb582-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb582-1" tabindex="-1"></a><span class="co"># sum the exons width up per gene</span></span>
+<span id="cb582-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb582-2" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">sum</span>(<span class="fu">width</span>(exons)))</span></code></pre></div>
+<pre><code>##         1        10       100      1000     10000 100008586 
+##      4309      1317      1532      4473      7459       466</code></pre>
+<p>Note that the <code>width</code> and <code>su</code>m functions are vectorized. It will calculate across all genes.</p>
+<p>Let’s turn it into a tibble using the <code>enframe</code> function:</p>
+<div class="sourceCode" id="cb584"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb584-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb584-1" tabindex="-1"></a>exon_len<span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">width</span>(exons)) <span class="sc">%&gt;%</span></span>
+<span id="cb584-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb584-2" tabindex="-1"></a>      tibble<span class="sc">::</span><span class="fu">enframe</span>(<span class="at">name =</span> <span class="st">&quot;ENTREZID&quot;</span>, <span class="at">value =</span> <span class="st">&quot;exon_length&quot;</span>)</span>
+<span id="cb584-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb584-3" tabindex="-1"></a></span>
+<span id="cb584-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb584-4" tabindex="-1"></a><span class="fu">head</span>(exon_len)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 2
+##   ENTREZID  exon_length
+##   &lt;chr&gt;           &lt;int&gt;
+## 1 1                4309
+## 2 10               1317
+## 3 100              1532
+## 4 1000             4473
+## 5 10000            7459
+## 6 100008586         466</code></pre>
+<p>Next, let’s map the ENTREZID to the official gene symbol so we can match the rownames of the RNAseq count matrix. We will need the <code>org.Hs.eg.db</code> Bioconductor package (install it if you
+do not have it).</p>
+<div class="sourceCode" id="cb586"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb586-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb586-1" tabindex="-1"></a><span class="fu">library</span>(org.Hs.eg.db)</span>
+<span id="cb586-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb586-2" tabindex="-1"></a></span>
+<span id="cb586-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb586-3" tabindex="-1"></a>map<span class="ot">&lt;-</span> AnnotationDbi<span class="sc">::</span><span class="fu">select</span>(org.Hs.eg.db, </span>
+<span id="cb586-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb586-4" tabindex="-1"></a>                            <span class="at">keys =</span> exon_len<span class="sc">$</span>ENTREZID, </span>
+<span id="cb586-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb586-5" tabindex="-1"></a>                            <span class="at">columns=</span> <span class="st">&quot;SYMBOL&quot;</span>,</span>
+<span id="cb586-6"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb586-6" tabindex="-1"></a>                            <span class="at">keytype =</span> <span class="st">&quot;ENTREZID&quot;</span>)</span>
+<span id="cb586-7"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb586-7" tabindex="-1"></a></span>
+<span id="cb586-8"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb586-8" tabindex="-1"></a><span class="fu">head</span>(map)</span></code></pre></div>
+<pre><code>##    ENTREZID  SYMBOL
+## 1         1    A1BG
+## 2        10    NAT2
+## 3       100     ADA
+## 4      1000    CDH2
+## 5     10000    AKT3
+## 6 100008586 GAGE12F</code></pre>
+</div>
+<div id="join-the-exon-length-table" class="section level3" number="12.4.3">
+<h3><span class="header-section-number">12.4.3</span> join the exon length table</h3>
+<p>Read this <a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">article</a> to understand different join functions in <code>dplyr</code>.</p>
+<div class="sourceCode" id="cb588"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb588-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb588-1" tabindex="-1"></a>map<span class="ot">&lt;-</span> <span class="fu">left_join</span>(exon_len, map)</span>
+<span id="cb588-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb588-2" tabindex="-1"></a><span class="fu">head</span>(map)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   ENTREZID  exon_length SYMBOL 
+##   &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;  
+## 1 1                4309 A1BG   
+## 2 10               1317 NAT2   
+## 3 100              1532 ADA    
+## 4 1000             4473 CDH2   
+## 5 10000            7459 AKT3   
+## 6 100008586         466 GAGE12F</code></pre>
+<p>One of the key problems with genomics is that gene IDs are not always 1:1 mappable. Different versions of the genome (hg19 vs hg38 for humans) may have slightly different gene symbols.</p>
+<div class="sourceCode" id="cb590"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb590-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb590-1" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">rownames</span>(raw_counts_mat) <span class="sc">%in%</span> map<span class="sc">$</span>SYMBOL)</span></code></pre></div>
+<pre><code>## 
+## FALSE  TRUE 
+## 20559 23250</code></pre>
+</div>
+<div id="what-genes-are-not-in-the-mapping-table" class="section level3" number="12.4.4">
+<h3><span class="header-section-number">12.4.4</span> what genes are not in the mapping table?</h3>
+<div class="sourceCode" id="cb592"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb592-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb592-1" tabindex="-1"></a>base<span class="sc">::</span><span class="fu">setdiff</span>(<span class="fu">rownames</span>(raw_counts_mat), map<span class="sc">$</span>SYMBOL) <span class="sc">%&gt;%</span></span>
+<span id="cb592-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb592-2" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">20</span>)</span></code></pre></div>
+<pre><code>##  [1] &quot;MIR6859-1&quot;    &quot;MIR1302-2HG&quot;  &quot;MIR1302-2&quot;    &quot;FAM138A&quot;      &quot;LOC100996442&quot;
+##  [6] &quot;DDX11L17&quot;     &quot;WASH9P&quot;       &quot;MIR6859-2&quot;    &quot;LOC107985721&quot; &quot;LOC112268260&quot;
+## [11] &quot;LOC100132287&quot; &quot;LOC105378947&quot; &quot;LOC101928626&quot; &quot;MIR12136&quot;     &quot;LINC01409&quot;   
+## [16] &quot;FAM87B&quot;       &quot;LOC107984850&quot; &quot;LOC284600&quot;    &quot;LOC107985728&quot; &quot;LOC100288175&quot;</code></pre>
+<p>Most of the differences are from non-coding RNA (LOC genes) or microRNAs. Many of those genes have a limited number of counts, we can ignore them for the moment.</p>
+<div class="sourceCode" id="cb594"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb594-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb594-1" tabindex="-1"></a>not_in_map<span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="fu">rownames</span>(raw_counts_mat), map<span class="sc">$</span>SYMBOL)</span>
+<span id="cb594-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb594-2" tabindex="-1"></a></span>
+<span id="cb594-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb594-3" tabindex="-1"></a>raw_counts_mat[not_in_map, ] <span class="sc">%&gt;%</span></span>
+<span id="cb594-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb594-4" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n =</span> <span class="dv">15</span>)</span></code></pre></div>
+<pre><code>##              01_SW_sgCTRL_Norm 02_SW_sgCTRL_Norm 11_SW_sgCTRL_Hyp
+## MIR6859-1                    5                 1                8
+## MIR1302-2HG                  0                 0                1
+## MIR1302-2                    0                 0                0
+## FAM138A                      0                 0                0
+## LOC100996442                 9                 3               17
+## DDX11L17                     0                 0                0
+## WASH9P                      52                32               68
+## MIR6859-2                    0                 0                0
+## LOC107985721                 0                 0                0
+## LOC112268260                 0                 0                0
+## LOC100132287                 0                 0                0
+## LOC105378947                 0                 0                0
+## LOC101928626                 0                 0                0
+## MIR12136                     3                 1                0
+## LINC01409                    7                 8               19
+##              12_SW_sgCTRL_Hyp
+## MIR6859-1                  12
+## MIR1302-2HG                 0
+## MIR1302-2                   0
+## FAM138A                     0
+## LOC100996442               15
+## DDX11L17                    0
+## WASH9P                     76
+## MIR6859-2                   0
+## LOC107985721                0
+## LOC112268260                0
+## LOC100132287                0
+## LOC105378947                0
+## LOC101928626                0
+## MIR12136                    0
+## LINC01409                  24</code></pre>
+<p>subset only the common genes for the map file and the count matrix. Make sure the order of the genes is the same for both data.</p>
+<div class="sourceCode" id="cb596"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb596-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb596-1" tabindex="-1"></a>common_genes<span class="ot">&lt;-</span> <span class="fu">intersect</span>(<span class="fu">rownames</span>(raw_counts_mat), map<span class="sc">$</span>SYMBOL)</span>
+<span id="cb596-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb596-2" tabindex="-1"></a></span>
+<span id="cb596-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb596-3" tabindex="-1"></a><span class="do">## select only the common genes and re-order them by common_genes</span></span>
+<span id="cb596-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb596-4" tabindex="-1"></a>map<span class="ot">&lt;-</span> map <span class="sc">%&gt;%</span></span>
+<span id="cb596-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb596-5" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="fu">match</span>(common_genes, SYMBOL))</span>
+<span id="cb596-6"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb596-6" tabindex="-1"></a></span>
+<span id="cb596-7"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb596-7" tabindex="-1"></a><span class="co"># subset the common genes and re-order them by common_genes</span></span>
+<span id="cb596-8"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb596-8" tabindex="-1"></a>raw_counts_mat<span class="ot">&lt;-</span> raw_counts_mat[common_genes, ]</span>
+<span id="cb596-9"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb596-9" tabindex="-1"></a></span>
+<span id="cb596-10"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb596-10" tabindex="-1"></a><span class="fu">head</span>(map)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   ENTREZID  exon_length SYMBOL   
+##   &lt;chr&gt;           &lt;int&gt; &lt;chr&gt;    
+## 1 100287102        2838 DDX11L1  
+## 2 653635           8050 WASH7P   
+## 3 79501             918 OR4F5    
+## 4 729737           5474 LOC729737
+## 5 729759           1878 OR4F29   
+## 6 81399             939 OR4F16</code></pre>
+<p>The order of the genes is the same for <code>map</code> and <code>raw_counts_mat</code>.</p>
+<div class="sourceCode" id="cb598"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb598-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb598-1" tabindex="-1"></a><span class="fu">head</span>(raw_counts_mat)</span></code></pre></div>
+<pre><code>##           01_SW_sgCTRL_Norm 02_SW_sgCTRL_Norm 11_SW_sgCTRL_Hyp 12_SW_sgCTRL_Hyp
+## DDX11L1                   0                 0                0                0
+## WASH7P                   18                11               23               45
+## OR4F5                     0                 0                0                0
+## LOC729737                 3                 3               16               16
+## OR4F29                    0                 0                0                0
+## OR4F16                    1                 0                0                3</code></pre>
+</div>
+</div>
+<div id="normalizing-raw-counts-to-transcripts-per-million-tpm" class="section level2" number="12.5">
+<h2><span class="header-section-number">12.5</span> Normalizing Raw Counts to Transcripts per Million (TPM)</h2>
+<p>TPM normalization is essential for comparing gene expression levels across different samples and genes. We will write a function in the R programming language to perform this conversion and explain the steps involved.</p>
+<div id="the-count2tpm-function" class="section level3" number="12.5.1">
+<h3><span class="header-section-number">12.5.1</span> The <code>count2tpm</code> Function:</h3>
+<p>We will create a function called count2tpm in R to perform TPM normalization. This function takes two arguments: a count matrix and a vector of exon lengths. Let’s break down the code step by step.</p>
+<div class="sourceCode" id="cb600"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb600-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb600-1" tabindex="-1"></a>count2tpm <span class="ot">&lt;-</span> <span class="cf">function</span>(count_matrix, exon_length) {</span>
+<span id="cb600-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb600-2" tabindex="-1"></a>  <span class="co"># Calculate reads per base pair per gene</span></span>
+<span id="cb600-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb600-3" tabindex="-1"></a>  reads_per_bp_gene <span class="ot">&lt;-</span> count_matrix <span class="sc">/</span> exon_length</span>
+<span id="cb600-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb600-4" tabindex="-1"></a>  </span>
+<span id="cb600-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb600-5" tabindex="-1"></a>  <span class="co"># Calculate the total reads per base pair for each sample</span></span>
+<span id="cb600-6"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb600-6" tabindex="-1"></a>  reads_per_bp_sample <span class="ot">&lt;-</span> <span class="fu">colSums</span>(reads_per_bp_gene)</span>
+<span id="cb600-7"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb600-7" tabindex="-1"></a>  </span>
+<span id="cb600-8"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb600-8" tabindex="-1"></a>  <span class="co"># Normalize to the library size and calculate TPM</span></span>
+<span id="cb600-9"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb600-9" tabindex="-1"></a>  tpm_matrix <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">t</span>(reads_per_bp_gene) <span class="sc">/</span> reads_per_bp_sample) <span class="sc">*</span> <span class="dv">1000000</span></span>
+<span id="cb600-10"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb600-10" tabindex="-1"></a>  <span class="fu">return</span>(tpm_matrix)</span>
+<span id="cb600-11"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb600-11" tabindex="-1"></a>}</span></code></pre></div>
+<ol style="list-style-type: decimal">
+<li><p>We start by defining the <code>count2tpm</code> function, which takes two arguments: <code>count_matrix</code> (raw gene expression counts) and <code>exon_length</code> (a vector of gene exon lengths).</p></li>
+<li><p>We calculate the number of reads per base pair for each gene by dividing the count matrix by the exon length vector. This step helps us account for gene length differences.</p></li>
+<li><p>We sum the reads per base pair values for each sample (column-wise) to calculate the total reads per base pair for each sample. This is crucial for library size normalization.</p></li>
+<li><p>To normalize the data to library size, we divide the transposed <code>reads_per_bp_gene</code> matrix by the <code>reads_per_bp_sample</code> vector. The transposition allows us to perform element-wise division efficiently. Finally, we multiply the result by 1,000,000 to obtain TPM values.</p></li>
+</ol>
+</div>
+<div id="applying-the-function" class="section level3" number="12.5.2">
+<h3><span class="header-section-number">12.5.2</span> Applying the Function</h3>
+<p>Now, let’s apply the <code>count2tpm</code> function to our raw count matrix and exon length vector. Here’s how you can do it:</p>
+<div class="sourceCode" id="cb601"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb601-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb601-1" tabindex="-1"></a>tpm <span class="ot">&lt;-</span> <span class="fu">count2tpm</span>(raw_counts_mat, map<span class="sc">$</span>exon_length)</span>
+<span id="cb601-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb601-2" tabindex="-1"></a></span>
+<span id="cb601-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb601-3" tabindex="-1"></a><span class="fu">head</span>(tpm)</span></code></pre></div>
+<pre><code>##           01_SW_sgCTRL_Norm 02_SW_sgCTRL_Norm 11_SW_sgCTRL_Hyp 12_SW_sgCTRL_Hyp
+## DDX11L1          0.00000000        0.00000000        0.0000000        0.0000000
+## WASH7P           0.31352121        0.24557646        0.4016983        0.7781915
+## OR4F5            0.00000000        0.00000000        0.0000000        0.0000000
+## LOC729737        0.07684343        0.09849323        0.4109445        0.4068975
+## OR4F29           0.00000000        0.00000000        0.0000000        0.0000000
+## OR4F16           0.14932231        0.00000000        0.0000000        0.4447598</code></pre>
+<p>These values represent the TPM-normalized gene expression levels for each gene in different samples.</p>
+</div>
+<div id="conclusions-1" class="section level3" number="12.5.3">
+<h3><span class="header-section-number">12.5.3</span> Conclusions</h3>
+<p>In this lesson, we have learned how to normalize raw gene expression counts to Transcripts per Million (TPM) using the <code>count2tpm</code> function in R. This normalization is crucial for comparing gene expression levels accurately across samples and genes, taking into account library size and gene length.</p>
+</div>
+</div>
+<div id="analyzing-gene-expression-data-using-t-tests" class="section level2" number="12.6">
+<h2><span class="header-section-number">12.6</span> Analyzing Gene Expression Data Using t-Tests</h2>
+<p>Gene expression data provides valuable insights into how genes are activated or deactivated under different conditions, such as in response to diseases or environmental changes.</p>
+<p>A t-test is a statistical test that helps us determine whether there is a significant difference between the means of two groups. In the context of gene expression analysis, we can use t-tests to identify genes that are differentially expressed between two experimental conditions. For example, we might want to know which genes are upregulated or downregulated in response to hypoxia (low oxygen levels) compared to normoxia (normal oxygen levels).</p>
+<div id="hypothesis-testing-1" class="section level3" number="12.6.1">
+<h3><span class="header-section-number">12.6.1</span> Hypothesis Testing</h3>
+<p>Before we dive into the code, let’s understand the key components of hypothesis testing:</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Null Hypothesis (H0)</strong>: This is the default assumption that there is no significant difference between the groups. In gene expression analysis, it means that the gene is not differentially expressed.</p></li>
+<li><p><strong>Alternative Hypothesis (Ha)</strong>: This is the hypothesis we want to test. It suggests that there is a significant difference between the groups. In gene expression analysis, it implies that the gene is differentially expressed.</p></li>
+<li><p><strong>p-value</strong>: The p-value represents the probability of observing the data, assuming that the null hypothesis is true. A small p-value (typically less than 0.05) suggests that we can reject the null hypothesis and accept the alternative hypothesis.</p></li>
+</ol>
+</div>
+<div id="analyzing-specific-genes" class="section level3" number="12.6.2">
+<h3><span class="header-section-number">12.6.2</span> Analyzing Specific Genes</h3>
+<p>Now, let’s use t-tests to analyze the expression of specific genes and understand how they respond to hypoxia.</p>
+<p>We’ll start by examining the gene <code>WASH7P</code>. We perform a t-test to compare its expression levels between normoxia and hypoxia samples.</p>
+<div class="sourceCode" id="cb603"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb603-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb603-1" tabindex="-1"></a><span class="fu">t.test</span>(tpm[<span class="st">&quot;WASH7P&quot;</span>, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)], tpm[<span class="st">&quot;WASH7P&quot;</span>, <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>)])</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  tpm[&quot;WASH7P&quot;, c(1, 2)] and tpm[&quot;WASH7P&quot;, c(3, 4)]
+## t = -1.6227, df = 1.0651, p-value = 0.3404
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -2.416652  1.795860
+## sample estimates:
+## mean of x mean of y 
+## 0.2795488 0.5899449</code></pre>
+<p>In this case, the p-value is 0.3404, suggesting that there is no significant difference in the expression of the WASH7P gene between normoxia and hypoxia.</p>
+<p>Next, we examine the <code>VEGFA</code> gene, which is known to be a key regulator of angiogenesis in response to hypoxia.</p>
+<div class="sourceCode" id="cb605"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb605-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb605-1" tabindex="-1"></a><span class="fu">t.test</span>(tpm[<span class="st">&quot;VEGFA&quot;</span>, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)], tpm[<span class="st">&quot;VEGFA&quot;</span>, <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>)])</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  tpm[&quot;VEGFA&quot;, c(1, 2)] and tpm[&quot;VEGFA&quot;, c(3, 4)]
+## t = -31.953, df = 1.8939, p-value = 0.00132
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -56.58778 -42.50235
+## sample estimates:
+## mean of x mean of y 
+##  13.58050  63.12557</code></pre>
+<p>Here, the p-value is 0.00132, indicating a significant difference in VEGFA expression between normoxia and hypoxia. This suggests that VEGFA is likely upregulated under hypoxic conditions.</p>
+<p>Now, let’s analyze the <code>SLC2A1</code> (GLUT1) gene, which plays a role in glucose transport during anaerobic glycolysis.</p>
+<div class="sourceCode" id="cb607"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb607-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb607-1" tabindex="-1"></a><span class="fu">t.test</span>(tpm[<span class="st">&quot;SLC2A1&quot;</span>, <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)], tpm[<span class="st">&quot;SLC2A1&quot;</span>, <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>)])</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  tpm[&quot;SLC2A1&quot;, c(1, 2)] and tpm[&quot;SLC2A1&quot;, c(3, 4)]
+## t = -31.938, df = 1.1196, p-value = 0.01354
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -2460.877 -1295.615
+## sample estimates:
+## mean of x mean of y 
+##  1360.405  3238.651</code></pre>
+<p>The p-value is 0.01354, indicating a significant difference in <code>SLC2A1</code> expression between the two conditions. This suggests that <code>SLC2A1</code> may be upregulated under hypoxic conditions as well.</p>
+</div>
+<div id="analyzing-all-genes" class="section level3" number="12.6.3">
+<h3><span class="header-section-number">12.6.3</span> Analyzing All Genes</h3>
+<p>To analyze all genes in our dataset, we can create a custom function called <code>mytest</code> that performs t-tests for each gene pair and extracts the p-values.</p>
+<div class="sourceCode" id="cb609"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb609-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb609-1" tabindex="-1"></a>mytest <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">t.test</span>(x[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)], x[<span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">4</span>)], <span class="at">var.equal =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>p.value</span>
+<span id="cb609-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb609-2" tabindex="-1"></a>pvals <span class="ot">&lt;-</span> <span class="fu">apply</span>(tpm, <span class="dv">1</span>, mytest)</span>
+<span id="cb609-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb609-3" tabindex="-1"></a></span>
+<span id="cb609-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb609-4" tabindex="-1"></a><span class="fu">head</span>(pvals)</span></code></pre></div>
+<pre><code>##     DDX11L1      WASH7P       OR4F5   LOC729737      OR4F29      OR4F16 
+##         NaN 0.246130682         NaN 0.001173022         NaN 0.593224964</code></pre>
+<p>Here, we apply the <code>mytest</code> function to each row (gene) in our gene expression dataset (<code>tpm</code>) to calculate p-values.</p>
+<p>Finally, we count how many genes have p-values smaller than 0.01 to identify differentially expressed genes:</p>
+<div class="sourceCode" id="cb611"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb611-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb611-1" tabindex="-1"></a><span class="fu">sum</span>(pvals <span class="sc">&lt;</span> <span class="fl">0.01</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## [1] 3378</code></pre>
+<p><code>pvals&lt; 0.01</code> returns a logical vector of TRUE and FALSE. TRUE is 1 and FALSE is 0 under the hood in R. If you sum them up <code>sum(pvals&lt; 0.01, na.rm = TRUE)</code> will tell you how many TRUEs are in the vector.</p>
+<p>There are 3378 genes with p-values smaller than 0.01!</p>
+</div>
+<div id="conclusion-31" class="section level3" number="12.6.4">
+<h3><span class="header-section-number">12.6.4</span> Conclusion</h3>
+<p>In this lesson, we learned how to use t-tests to analyze gene expression data and identify differentially expressed genes. We examined specific genes and performed t-tests, understanding the significance of p-values and hypothesis testing. Additionally, we applied t-tests to all genes in the dataset to identify potential candidates for further investigation.</p>
+</div>
+</div>
+<div id="analyzing-gene-expression-data-with-ggplot2" class="section level2" number="12.7">
+<h2><span class="header-section-number">12.7</span> Analyzing Gene Expression Data with ggplot2</h2>
+<p>In this lesson, we will explore how to analyze gene expression data using the powerful ggplot2 library. We will focus on visualizing p-value distributions, comparing differentially expressed genes, and creating boxplots to gain insights into gene expression changes under different conditions.</p>
+<div id="import-libraries-and-load-data" class="section level3" number="12.7.1">
+<h3><span class="header-section-number">12.7.1</span> Import Libraries and Load Data</h3>
+<p>First, let’s import the necessary libraries and load your gene expression data. In this lesson, we assume you have a dataset containing gene names and p-values representing their significance.</p>
+<div class="sourceCode" id="cb613"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb613-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb613-1" tabindex="-1"></a><span class="co"># Import required libraries</span></span>
+<span id="cb613-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb613-2" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb613-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb613-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb613-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb613-4" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb613-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb613-5" tabindex="-1"></a></span>
+<span id="cb613-6"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb613-6" tabindex="-1"></a><span class="co"># Load your p-values data (replace &#39;pvals&#39; with your actual dataset)</span></span>
+<span id="cb613-7"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb613-7" tabindex="-1"></a>pval_df <span class="ot">&lt;-</span> pvals <span class="sc">%&gt;%</span></span>
+<span id="cb613-8"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb613-8" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">enframe</span>(<span class="at">name =</span> <span class="st">&quot;gene&quot;</span>, <span class="at">value =</span> <span class="st">&quot;pvalue&quot;</span>)</span>
+<span id="cb613-9"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb613-9" tabindex="-1"></a></span>
+<span id="cb613-10"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb613-10" tabindex="-1"></a><span class="co"># Display the first few rows of the p-value data</span></span>
+<span id="cb613-11"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb613-11" tabindex="-1"></a><span class="fu">head</span>(pval_df)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 2
+##   gene         pvalue
+##   &lt;chr&gt;         &lt;dbl&gt;
+## 1 DDX11L1   NaN      
+## 2 WASH7P      0.246  
+## 3 OR4F5     NaN      
+## 4 LOC729737   0.00117
+## 5 OR4F29    NaN      
+## 6 OR4F16      0.593</code></pre>
+<p>This code converts your gene names and corresponding p-values into a data frame, making it easier to work with in ggplot2.</p>
+</div>
+<div id="visualizing-p-value-distribution" class="section level3" number="12.7.2">
+<h3><span class="header-section-number">12.7.2</span> Visualizing P-Value Distribution</h3>
+<p>Next, let’s create a histogram to visualize the distribution of p-values:</p>
+<div class="sourceCode" id="cb615"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb615-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb615-1" tabindex="-1"></a><span class="co"># Create a histogram of p-values</span></span>
+<span id="cb615-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb615-2" tabindex="-1"></a><span class="fu">ggplot</span>(pval_df, <span class="fu">aes</span>(<span class="at">x =</span> pvalue)) <span class="sc">+</span></span>
+<span id="cb615-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb615-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">&quot;white&quot;</span>) <span class="sc">+</span></span>
+<span id="cb615-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb615-4" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb615-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb615-5" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;p-value distribution&quot;</span>)</span></code></pre></div>
+<p><img src="11_Final_project_analyze_RNAseq_from_GEO_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p>This code uses ggplot2 to create a histogram, providing insights into the distribution of p-values across your genes. Understanding p-value distribution can help assess the significance of your results.</p>
+</div>
+<div id="identifying-differentially-expressed-genes" class="section level3" number="12.7.3">
+<h3><span class="header-section-number">12.7.3</span> Identifying Differentially Expressed Genes</h3>
+<p>Now, we’ll focus on comparing gene expression between hypoxia and normoxia conditions, specifically looking at up-regulated genes. We’ll start by calculating the average expression levels for both conditions and identifying the up-regulated genes.</p>
+<div class="sourceCode" id="cb616"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb616-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb616-1" tabindex="-1"></a><span class="co"># Calculate average expression for normoxia and hypoxia conditions</span></span>
+<span id="cb616-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb616-2" tabindex="-1"></a>avg_normoxia <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(tpm[, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)])</span>
+<span id="cb616-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb616-3" tabindex="-1"></a>avg_hypoxia <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(tpm[, <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>)])</span>
+<span id="cb616-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb616-4" tabindex="-1"></a></span>
+<span id="cb616-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb616-5" tabindex="-1"></a><span class="co"># Identify up-regulated genes</span></span>
+<span id="cb616-6"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb616-6" tabindex="-1"></a>up_genes <span class="ot">&lt;-</span> (avg_hypoxia <span class="sc">-</span> avg_normoxia) <span class="sc">&gt;</span> <span class="dv">0</span></span>
+<span id="cb616-7"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb616-7" tabindex="-1"></a></span>
+<span id="cb616-8"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb616-8" tabindex="-1"></a><span class="co"># Get the names of up-regulated genes</span></span>
+<span id="cb616-9"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb616-9" tabindex="-1"></a>up_gene_names <span class="ot">&lt;-</span> <span class="fu">rownames</span>(tpm)[up_genes]</span>
+<span id="cb616-10"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb616-10" tabindex="-1"></a></span>
+<span id="cb616-11"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb616-11" tabindex="-1"></a><span class="fu">head</span>(up_gene_names)</span></code></pre></div>
+<pre><code>## [1] &quot;WASH7P&quot;       &quot;LOC729737&quot;    &quot;OR4F16&quot;       &quot;LOC100288069&quot; &quot;LINC02593&quot;   
+## [6] &quot;SAMD11&quot;</code></pre>
+<p>Here, we calculate the average expression for normoxia and hypoxia conditions and then identify up-regulated genes by comparing the averages. <code>up_gene_names</code> contains the names of these genes.</p>
+</div>
+<div id="selecting-differentially-expressed-genes" class="section level3" number="12.7.4">
+<h3><span class="header-section-number">12.7.4</span> Selecting Differentially Expressed Genes</h3>
+<p>Not all up-regulated genes may be significantly different. Let’s find the intersection of up-regulated genes with those that have a p-value less than 0.01 (significant up-regulation):</p>
+<div class="sourceCode" id="cb618"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb618-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb618-1" tabindex="-1"></a><span class="co"># Select differentially expressed genes (intersection of up-regulated genes and significant p-values)</span></span>
+<span id="cb618-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb618-2" tabindex="-1"></a>differential_genes <span class="ot">&lt;-</span> pvals[pvals <span class="sc">&lt;</span> <span class="fl">0.01</span> <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">is.na</span>(pvals)] <span class="sc">%&gt;%</span></span>
+<span id="cb618-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb618-3" tabindex="-1"></a>  <span class="fu">names</span>()</span>
+<span id="cb618-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb618-4" tabindex="-1"></a></span>
+<span id="cb618-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb618-5" tabindex="-1"></a><span class="co"># Find the intersection</span></span>
+<span id="cb618-6"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb618-6" tabindex="-1"></a>differential_up_genes <span class="ot">&lt;-</span> <span class="fu">intersect</span>(differential_genes, up_gene_names)</span>
+<span id="cb618-7"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb618-7" tabindex="-1"></a></span>
+<span id="cb618-8"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb618-8" tabindex="-1"></a><span class="fu">length</span>(differential_up_genes)</span></code></pre></div>
+<pre><code>## [1] 1990</code></pre>
+<p><code>differential_up_genes</code> now contains the names of genes that are both up-regulated and significantly different under hypoxia.</p>
+</div>
+<div id="boxplot-to-visualize-gene-expression-changes-between-the-two-conditions." class="section level3" number="12.7.5">
+<h3><span class="header-section-number">12.7.5</span> boxplot to visualize gene expression changes between the two conditions.</h3>
+<div id="preparing-the-data" class="section level4" number="12.7.5.1">
+<h4><span class="header-section-number">12.7.5.1</span> preparing the data</h4>
+<p>Now, let’s prepare our data for creating a boxplot to visualize gene expression changes between the two conditions. We will convert the gene expression data into a long format suitable for <code>ggplot2</code>:</p>
+<div class="sourceCode" id="cb620"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb620-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb620-1" tabindex="-1"></a><span class="co"># Convert gene expression data to long format</span></span>
+<span id="cb620-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb620-2" tabindex="-1"></a>tpm[differential_genes, ] <span class="sc">%&gt;%</span></span>
+<span id="cb620-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb620-3" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb620-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb620-4" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var =</span> <span class="st">&quot;gene&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb620-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb620-5" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="at">names_to =</span> <span class="st">&quot;sample&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;tpm&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 13,512 × 3
+##    gene      sample                 tpm
+##    &lt;chr&gt;     &lt;chr&gt;                &lt;dbl&gt;
+##  1 LOC729737 01_SW_sgCTRL_Norm   0.0768
+##  2 LOC729737 02_SW_sgCTRL_Norm   0.0985
+##  3 LOC729737 11_SW_sgCTRL_Hyp    0.411 
+##  4 LOC729737 12_SW_sgCTRL_Hyp    0.407 
+##  5 NOC2L     01_SW_sgCTRL_Norm 128.    
+##  6 NOC2L     02_SW_sgCTRL_Norm 124.    
+##  7 NOC2L     11_SW_sgCTRL_Hyp   73.4   
+##  8 NOC2L     12_SW_sgCTRL_Hyp   70.9   
+##  9 PERM1     01_SW_sgCTRL_Norm   0.176 
+## 10 PERM1     02_SW_sgCTRL_Norm   0.113 
+## # ℹ 13,502 more rows</code></pre>
+<p>This code converts the gene expression data into a long format with columns for gene names, sample names, and expression values.</p>
+<p>Add another column to denote the condition by separating the sample column to two columns: sample and condition</p>
+<div class="sourceCode" id="cb622"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb622-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb622-1" tabindex="-1"></a>tpm_df<span class="ot">&lt;-</span> tpm[differential_genes, ] <span class="sc">%&gt;%</span></span>
+<span id="cb622-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb622-2" tabindex="-1"></a>  <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb622-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb622-3" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">rownames_to_column</span>(<span class="at">var=</span><span class="st">&quot;gene&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb622-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb622-4" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="at">names_to =</span> <span class="st">&quot;sample&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;tpm&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb622-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb622-5" tabindex="-1"></a>  tidyr<span class="sc">::</span><span class="fu">separate</span>(sample, <span class="at">into =</span> <span class="fu">c</span>(<span class="st">&quot;sample&quot;</span>, <span class="st">&quot;condition&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;_sgCTRL_&quot;</span>)</span>
+<span id="cb622-6"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb622-6" tabindex="-1"></a></span>
+<span id="cb622-7"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb622-7" tabindex="-1"></a><span class="fu">head</span>(tpm_df)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   gene      sample condition      tpm
+##   &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;        &lt;dbl&gt;
+## 1 LOC729737 01_SW  Norm        0.0768
+## 2 LOC729737 02_SW  Norm        0.0985
+## 3 LOC729737 11_SW  Hyp         0.411 
+## 4 LOC729737 12_SW  Hyp         0.407 
+## 5 NOC2L     01_SW  Norm      128.    
+## 6 NOC2L     02_SW  Norm      124.</code></pre>
+</div>
+<div id="customizing-boxplot-order" class="section level4" number="12.7.5.2">
+<h4><span class="header-section-number">12.7.5.2</span> Customizing Boxplot Order</h4>
+<p>By default, ggplot2 orders boxplots alphabetically. To change the order, convert the condition column to a factor with the desired order:</p>
+<div class="sourceCode" id="cb624"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb624-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb624-1" tabindex="-1"></a><span class="co"># Define the order for boxplot</span></span>
+<span id="cb624-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb624-2" tabindex="-1"></a>tpm_df<span class="sc">$</span>condition <span class="ot">&lt;-</span> <span class="fu">factor</span>(tpm_df<span class="sc">$</span>condition, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">&quot;Norm&quot;</span>, <span class="st">&quot;Hyp&quot;</span>))</span></code></pre></div>
+<p>This code ensures that the boxplot orders the conditions as “Norm” followed by “Hyp.”</p>
+</div>
+</div>
+<div id="creating-the-boxplot" class="section level3" number="12.7.6">
+<h3><span class="header-section-number">12.7.6</span> Creating the Boxplot</h3>
+<p>Now, we can create the boxplot to visualize gene expression changes between the two conditions:</p>
+<div class="sourceCode" id="cb625"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb625-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb625-1" tabindex="-1"></a><span class="co"># Create the boxplot</span></span>
+<span id="cb625-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb625-2" tabindex="-1"></a><span class="fu">ggplot</span>(tpm_df, <span class="fu">aes</span>(<span class="at">x =</span> condition, <span class="at">y =</span> <span class="fu">log2</span>(tpm <span class="sc">+</span> <span class="dv">1</span>))) <span class="sc">+</span></span>
+<span id="cb625-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb625-3" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb625-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb625-4" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
+<p><img src="11_Final_project_analyze_RNAseq_from_GEO_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<p>This code uses <code>ggplot2</code> to create a boxplot, showing the distribution of gene expression values between the “Norm” and “Hyp” conditions. The <code>log2(tpm + 1)</code> transformation is often used to visualize RNA-Seq data.</p>
+</div>
+<div id="visualizing-raw-expression-values" class="section level3" number="12.7.7">
+<h3><span class="header-section-number">12.7.7</span> Visualizing Raw Expression Values</h3>
+<p>Sometimes, it’s essential to examine the raw expression values to identify outliers. Here, we use a boxplot to visualize the raw values of selected genes:</p>
+<div class="sourceCode" id="cb626"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb626-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb626-1" tabindex="-1"></a><span class="co"># Select specific genes (e.g., &quot;VEGFA&quot; and &quot;SLC2A1&quot;) for visualization</span></span>
+<span id="cb626-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb626-2" tabindex="-1"></a><span class="fu">ggplot</span>(tpm_df <span class="sc">%&gt;%</span></span>
+<span id="cb626-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb626-3" tabindex="-1"></a>         <span class="fu">filter</span>(gene <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;VEGFA&quot;</span>, <span class="st">&quot;SLC2A1&quot;</span>)), </span>
+<span id="cb626-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb626-4" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> condition, <span class="at">y =</span> <span class="fu">log2</span>(tpm <span class="sc">+</span> <span class="dv">1</span>))) <span class="sc">+</span></span>
+<span id="cb626-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb626-5" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb626-6"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb626-6" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
+<span id="cb626-7"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb626-7" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> gene) <span class="sc">+</span> </span>
+<span id="cb626-8"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb626-8" tabindex="-1"></a>  <span class="fu">theme_bw</span>(<span class="at">base_size =</span> <span class="dv">14</span>)</span></code></pre></div>
+<p><img src="11_Final_project_analyze_RNAseq_from_GEO_files/figure-html/unnamed-chunk-42-1.png" width="672" /></p>
+<p>This code creates scatter plots for selected genes and overlays boxplots to help visualize
+the distribution of the gene expression levels.</p>
+</div>
+<div id="conclusion-32" class="section level3" number="12.7.8">
+<h3><span class="header-section-number">12.7.8</span> Conclusion</h3>
+<p>In this lesson, we covered the entire process of analyzing gene expression data using ggplot2, from loading data to visualizing differential expression. Understanding the steps involved and customizing plots can provide valuable insights into your gene expression analysis.</p>
+</div>
+</div>
+<div id="correcting-for-multiple-comparisons-in-statistical-analysis" class="section level2" number="12.8">
+<h2><span class="header-section-number">12.8</span> Correcting for Multiple Comparisons in Statistical Analysis</h2>
+<p>This is a critical step when conducting hypothesis tests on a large number of data points, such as in genomics research. We will cover the need for correction, different methods to control errors, and demonstrate how to implement one of the widely-used methods, the False Discovery Rate (FDR) correction.</p>
+<div id="why-correct-for-multiple-comparisons" class="section level3" number="12.8.1">
+<h3><span class="header-section-number">12.8.1</span> Why Correct for Multiple Comparisons?</h3>
+<p>Imagine you are a scientist studying the gene expression levels of thousands of genes in response to a treatment. You perform statistical tests to identify which genes are significantly differentially expressed. If you run these tests without correction, you are likely to encounter a problem known as the “multiple comparisons problem.” In essence, the more tests you perform, the higher the chance of obtaining false positives (i.e., incorrectly identifying genes as significant).</p>
+<p>To address this issue, we need correction methods that control the probability of making at least one false discovery while testing multiple hypotheses. In this project, we will focus on the <code>False Discovery Rate (FDR)</code> correction method, specifically using the <code>Benjamini &amp; Hochberg (BH)</code> procedure.</p>
+</div>
+<div id="the-multiple-comparisons-example" class="section level3" number="12.8.2">
+<h3><span class="header-section-number">12.8.2</span> The Multiple Comparisons Example</h3>
+<p>Let’s illustrate the concept with a practical example. Suppose you have gene expression data from 23,250 genes and you want to identify those that are differentially expressed between two conditions (e.g., control and treatment). You perform a statistical test for each gene and obtain p-values.</p>
+<div class="sourceCode" id="cb627"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb627-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb627-1" tabindex="-1"></a><span class="co"># Sample code to generate random p-values for demonstration purposes</span></span>
+<span id="cb627-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb627-2" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="dv">23250</span>  <span class="co"># Number of genes</span></span>
+<span id="cb627-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb627-3" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span>    <span class="co"># Number of comparisons</span></span>
+<span id="cb627-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb627-4" tabindex="-1"></a>randomData <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(n <span class="sc">*</span> m), m, n)</span>
+<span id="cb627-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb627-5" tabindex="-1"></a>nullpvalues <span class="ot">&lt;-</span> <span class="fu">apply</span>(randomData, <span class="dv">1</span>, mytest)  <span class="co"># Simulated p-values</span></span>
+<span id="cb627-6"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb627-6" tabindex="-1"></a><span class="fu">hist</span>(nullpvalues)</span></code></pre></div>
+<p><img src="11_Final_project_analyze_RNAseq_from_GEO_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p>If you were to plot the histogram of these p-values, you might expect them to follow a uniform distribution (a flat line) under the null hypothesis (no differential expression). However, due to the nature of p-values as random variables, you will still observe some p-values below the commonly used significance level of 0.05, even when no genes are differentially expressed.</p>
+<p>Compare this histogram with the histogram for the real data. what do you see? Even if we randomly generated the data, you still see some p values are smaller than 0.05!! We randomly generated data, there should be No genes that deferentially expressed. However, we see a flat line across different p values.</p>
+<p>p values are random variables. Mathematically, one can demonstrate that under the null hypothesis (and some assumptions are met, in this case, the test statistic T follows standard normal distribution), p-values follow a uniform (0,1) distribution, which means that P(p &lt; p1) = p1.</p>
+<p>This means that the probability we see a p value smaller than p1 is equal to p1. That being said, with a 100 t-tests, under the null (no difference between control and treatment), we will see 1 test with a p value smaller than 0.01. And we will see 2 tests with a p value smaller than 0.02 etc.</p>
+<p>We have 23250 genes in the matrix, and we did 23250 comparisons at one time. This explains why we see <code>23250 * 0.05 = 1162</code> p-values are smaller than 0.05 in our randomly generated numbers. That’s exactly what we see in the null distribution of the p-values.</p>
+<blockquote>
+<p>In fact, checking the p-value distribution by histogram is a very important step during data analysis. You may want to read a blog post by David Robinson: <a href="http://varianceexplained.org/statistics/interpreting-pvalue-histogram/">How to interpret a p-value histogram</a>.</p>
+</blockquote>
+</div>
+<div id="correcting-for-multiple-comparisons-false-discovery-rate-fdr" class="section level3" number="12.8.3">
+<h3><span class="header-section-number">12.8.3</span> Correcting for Multiple Comparisons: False Discovery Rate (FDR)</h3>
+<p>How do we control the false positives for multiple comparisons? One way is to use the Bonferroni correction to correct the familywise error rate (FWER): define a particular comparison as statistically significant only when the P value is less than alpha(often 0.05) divided by the number (m) of comparisons (p &lt; alpha/m).</p>
+<p>Say we computed 100 t-tests, and got 100 p values, we only consider the genes with a p value smaller than 0.05/100 as significant. This approach is very conservative and is used in Genome-wide association studies (GWAS). Since we often compare millions of genetic variations between (tens of thousands) cases and controls, this threshold will be very small!</p>
+<p>Alternatively, we can use False Discovery Rate (FDR) to report the gene list. FDR = #false positives/# called significant. This approach does not use the term statistically significant but instead use the term discovery. Let’s control FDR for a gene list with FDR = 0.05. It means that of all the discoveries, 5% of them is expected to be false positives.</p>
+<p>Benjamini &amp; Hochberg (BH method) in 1995 proposed a way to control FDR: Let k be the largest i such that <code>p(i) &lt;= (i/m) * alpha</code>, (m is the number of comparisons) then reject H(i) for i =1, 2, …k</p>
+<p>This process controls the FDR at level alpha. The method sets a different threshold p value for each comparison. Say we computed 100 t-tests, and got 100 p values, and we want to control the FDR =0.05. We then rank the p values from small to big. if <code>p(1) &lt;= 1/100 * 0.05</code>, we then reject null hypothesis and accept the alternative. if <code>p(2) &lt; = 2/100 * 0.05</code>, we then reject the null and accept the alternative.</p>
+<div class="sourceCode" id="cb628"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb628-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-1" tabindex="-1"></a><span class="co">#remove the NAs</span></span>
+<span id="cb628-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-2" tabindex="-1"></a>pvals<span class="ot">&lt;-</span> pvals[<span class="sc">!</span><span class="fu">is.na</span>(pvals)]</span>
+<span id="cb628-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-3" tabindex="-1"></a></span>
+<span id="cb628-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-4" tabindex="-1"></a><span class="do">## order the pvals computed above and plot it.</span></span>
+<span id="cb628-5"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-5" tabindex="-1"></a>alpha<span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb628-6"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-6" tabindex="-1"></a></span>
+<span id="cb628-7"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-7" tabindex="-1"></a><span class="co">#m is the number of comparisons </span></span>
+<span id="cb628-8"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-8" tabindex="-1"></a>m<span class="ot">&lt;-</span> <span class="fu">length</span>(pvals)</span>
+<span id="cb628-9"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-9" tabindex="-1"></a></span>
+<span id="cb628-10"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-10" tabindex="-1"></a><span class="co"># let&#39;s arrange the p-value from small to big and get only the first 5000  </span></span>
+<span id="cb628-11"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-11" tabindex="-1"></a>top_5000_pvalue<span class="ot">&lt;-</span> pval_df <span class="sc">%&gt;%</span></span>
+<span id="cb628-12"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-12" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">arrange</span>(pvalue) <span class="sc">%&gt;%</span></span>
+<span id="cb628-13"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-13" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">rank =</span> <span class="fu">row_number</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb628-14"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-14" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5000</span>)</span>
+<span id="cb628-15"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-15" tabindex="-1"></a></span>
+<span id="cb628-16"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb628-16" tabindex="-1"></a><span class="fu">head</span>(top_5000_pvalue)  </span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   gene         pvalue  rank
+##   &lt;chr&gt;         &lt;dbl&gt; &lt;int&gt;
+## 1 PPFIA4  0.000000907     1
+## 2 GINS2   0.00000173      2
+## 3 ZFP36L2 0.00000197      3
+## 4 ECHS1   0.00000297      4
+## 5 MOB3A   0.00000392      5
+## 6 FLYWCH2 0.00000661      6</code></pre>
+<p>let’s plot</p>
+<div class="sourceCode" id="cb630"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb630-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb630-1" tabindex="-1"></a><span class="fu">ggplot</span>(top_5000_pvalue, <span class="fu">aes</span>(<span class="at">x=</span> rank, <span class="at">y =</span> pvalue))<span class="sc">+</span></span>
+<span id="cb630-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb630-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb630-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb630-3" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> alpha<span class="sc">/</span>m, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">linetype =</span> <span class="dv">2</span>) </span></code></pre></div>
+<p><img src="11_Final_project_analyze_RNAseq_from_GEO_files/figure-html/unnamed-chunk-45-1.png" width="672" /></p>
+<p>p values that are below the red dotted line are controlled at FDR of 0.05.</p>
+<p>We will use p.adjust function and the method “fdr” or “BH” to correct the p value, what the p.adjust function does is to recalculate the p-values.</p>
+<p>With the FDR definition, p value is only significant if <code>p(i)&lt;= (i/m) * alpha</code> We can rewrite it to <code>p(i) * m/i &lt;= alpha</code>. The p.adjust function returns <code>p(i) * m/i</code> the adjusted p-value. We can then only accept the returned the p values if <code>p.adjust(pvals) &lt;= alpha</code>.</p>
+<div class="sourceCode" id="cb631"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb631-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb631-1" tabindex="-1"></a>top_5000_pvalue <span class="sc">%&gt;%</span></span>
+<span id="cb631-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb631-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">padj =</span> pvalue <span class="sc">*</span> m<span class="sc">/</span>rank) <span class="sc">%&gt;%</span></span>
+<span id="cb631-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb631-3" tabindex="-1"></a>  <span class="fu">head</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 4
+##   gene         pvalue  rank   padj
+##   &lt;chr&gt;         &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
+## 1 PPFIA4  0.000000907     1 0.0161
+## 2 GINS2   0.00000173      2 0.0154
+## 3 ZFP36L2 0.00000197      3 0.0116
+## 4 ECHS1   0.00000297      4 0.0132
+## 5 MOB3A   0.00000392      5 0.0139
+## 6 FLYWCH2 0.00000661      6 0.0196</code></pre>
+<p>How many of those p-values are below the dotted red line?</p>
+<div class="sourceCode" id="cb633"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb633-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb633-1" tabindex="-1"></a>top_5000_pvalue <span class="sc">%&gt;%</span></span>
+<span id="cb633-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb633-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">padj =</span> pvalue <span class="sc">*</span> m<span class="sc">/</span>rank) <span class="sc">%&gt;%</span></span>
+<span id="cb633-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb633-3" tabindex="-1"></a>  <span class="fu">filter</span>(padj <span class="sc">&lt;=</span> alpha) <span class="sc">%&gt;%</span></span>
+<span id="cb633-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb633-4" tabindex="-1"></a>  <span class="fu">filter</span>(rank <span class="sc">==</span> <span class="fu">which.max</span>(rank))</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 4
+##   gene      pvalue  rank   padj
+##   &lt;chr&gt;      &lt;dbl&gt; &lt;int&gt;  &lt;dbl&gt;
+## 1 RNASEH2A 0.00893  3173 0.0500</code></pre>
+<p>There are total 3173 p-values that are significant after FDR correction.</p>
+<p>We can verify it using the p.adjust function in R:</p>
+<div class="sourceCode" id="cb635"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb635-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb635-1" tabindex="-1"></a>adjusted_pvalues<span class="ot">&lt;-</span> <span class="fu">p.adjust</span>(pvals, <span class="at">method=</span><span class="st">&quot;fdr&quot;</span>)</span>
+<span id="cb635-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb635-2" tabindex="-1"></a></span>
+<span id="cb635-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb635-3" tabindex="-1"></a><span class="fu">sum</span>(adjusted_pvalues <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span></code></pre></div>
+<pre><code>## [1] 3173</code></pre>
+<p>This is the same as what we calculated manually!</p>
+<p>We can plot a vertical line on the p-value ranking plot:</p>
+<div class="sourceCode" id="cb637"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb637-1"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb637-1" tabindex="-1"></a><span class="fu">ggplot</span>(top_5000_pvalue, <span class="fu">aes</span>(<span class="at">x=</span> rank, <span class="at">y =</span> pvalue))<span class="sc">+</span></span>
+<span id="cb637-2"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb637-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb637-3"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb637-3" tabindex="-1"></a>  <span class="fu">geom_abline</span>(<span class="at">slope =</span> alpha<span class="sc">/</span>m, <span class="at">intercept =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">linetype =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb637-4"><a href="final-project-analyzing-rnaseq-data-from-geo.html#cb637-4" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">3173</span>, <span class="at">linetype =</span> <span class="dv">2</span>, <span class="at">color =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="11_Final_project_analyze_RNAseq_from_GEO_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+</div>
+<div id="conclusion-33" class="section level3" number="12.8.4">
+<h3><span class="header-section-number">12.8.4</span> Conclusion</h3>
+<p>Correcting for multiple comparisons is essential when conducting statistical tests on a large number of hypotheses. The False Discovery Rate (FDR) correction, such as the Benjamini &amp; Hochberg method, allows us to control the rate of false discoveries while identifying significant results. This approach is valuable in various scientific disciplines to ensure the reliability of statistical findings.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="introduction-to-bioconductor.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/11_Final_project_analyze_RNAseq_from_GEO.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

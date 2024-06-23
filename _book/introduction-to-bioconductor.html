@@ -23,7 +23,7 @@
 <meta name="author" content="Ming Tommy Tang" />
 
 
-<meta name="date" content="2024-06-14" />
+<meta name="date" content="2024-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="data-visualization-with-ggplot2.html"/>
-
+<link rel="next" href="final-project-analyzing-rnaseq-data-from-geo.html"/>
 <script src="libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
@@ -555,6 +555,62 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="11.7" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#section-completed"><i class="fa fa-check"></i><b>11.7</b> Section completed</a></li>
 </ul></li>
+<li class="chapter" data-level="12" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html"><i class="fa fa-check"></i><b>12</b> Final Project: Analyzing RNAseq Data from GEO</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#final-project-overview"><i class="fa fa-check"></i><b>12.1</b> Final Project Overview</a></li>
+<li class="chapter" data-level="12.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#how-to-pre-process-rnaseq-data"><i class="fa fa-check"></i><b>12.2</b> How to pre-process RNAseq data</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#rnaseq-pre-processing-steps"><i class="fa fa-check"></i><b>12.2.1</b> RNAseq pre-processing steps</a></li>
+<li class="chapter" data-level="12.2.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#how-to-use-salmon-to-preprocess-geo-fastq-to-counts"><i class="fa fa-check"></i><b>12.2.2</b> How to use salmon to preprocess GEO fastq to counts</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#download-and-subset-count-matrix"><i class="fa fa-check"></i><b>12.3</b> Download and subset Count Matrix</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#downloading-the-count-matrix"><i class="fa fa-check"></i><b>12.3.1</b> Downloading the Count Matrix</a></li>
+<li class="chapter" data-level="12.3.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#reading-the-count-matrix-in-r"><i class="fa fa-check"></i><b>12.3.2</b> Reading the Count Matrix in R</a></li>
+<li class="chapter" data-level="12.3.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#examining-the-data"><i class="fa fa-check"></i><b>12.3.3</b> Examining the Data</a></li>
+<li class="chapter" data-level="12.3.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#subsetting-the-data"><i class="fa fa-check"></i><b>12.3.4</b> Subsetting the Data</a></li>
+<li class="chapter" data-level="12.3.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#converting-to-a-matrix"><i class="fa fa-check"></i><b>12.3.5</b> Converting to a Matrix</a></li>
+<li class="chapter" data-level="12.3.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#adding-row-names"><i class="fa fa-check"></i><b>12.3.6</b> Adding Row Names</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#calculate-the-total-exon-length-per-gene"><i class="fa fa-check"></i><b>12.4</b> Calculate the total exon length per gene</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#why-normalize-gene-counts-to-tpm"><i class="fa fa-check"></i><b>12.4.1</b> Why Normalize Gene Counts to TPM?</a></li>
+<li class="chapter" data-level="12.4.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#creating-a-function-for-normalization"><i class="fa fa-check"></i><b>12.4.2</b> Creating a function for normalization</a></li>
+<li class="chapter" data-level="12.4.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#join-the-exon-length-table"><i class="fa fa-check"></i><b>12.4.3</b> join the exon length table</a></li>
+<li class="chapter" data-level="12.4.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#what-genes-are-not-in-the-mapping-table"><i class="fa fa-check"></i><b>12.4.4</b> what genes are not in the mapping table?</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#normalizing-raw-counts-to-transcripts-per-million-tpm"><i class="fa fa-check"></i><b>12.5</b> Normalizing Raw Counts to Transcripts per Million (TPM)</a>
+<ul>
+<li class="chapter" data-level="12.5.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#the-count2tpm-function"><i class="fa fa-check"></i><b>12.5.1</b> The <code>count2tpm</code> Function:</a></li>
+<li class="chapter" data-level="12.5.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#applying-the-function"><i class="fa fa-check"></i><b>12.5.2</b> Applying the Function</a></li>
+<li class="chapter" data-level="12.5.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusions-1"><i class="fa fa-check"></i><b>12.5.3</b> Conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="12.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-gene-expression-data-using-t-tests"><i class="fa fa-check"></i><b>12.6</b> Analyzing Gene Expression Data Using t-Tests</a>
+<ul>
+<li class="chapter" data-level="12.6.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#hypothesis-testing-1"><i class="fa fa-check"></i><b>12.6.1</b> Hypothesis Testing</a></li>
+<li class="chapter" data-level="12.6.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-specific-genes"><i class="fa fa-check"></i><b>12.6.2</b> Analyzing Specific Genes</a></li>
+<li class="chapter" data-level="12.6.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-all-genes"><i class="fa fa-check"></i><b>12.6.3</b> Analyzing All Genes</a></li>
+<li class="chapter" data-level="12.6.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-31"><i class="fa fa-check"></i><b>12.6.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.7" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-gene-expression-data-with-ggplot2"><i class="fa fa-check"></i><b>12.7</b> Analyzing Gene Expression Data with ggplot2</a>
+<ul>
+<li class="chapter" data-level="12.7.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#import-libraries-and-load-data"><i class="fa fa-check"></i><b>12.7.1</b> Import Libraries and Load Data</a></li>
+<li class="chapter" data-level="12.7.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#visualizing-p-value-distribution"><i class="fa fa-check"></i><b>12.7.2</b> Visualizing P-Value Distribution</a></li>
+<li class="chapter" data-level="12.7.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#identifying-differentially-expressed-genes"><i class="fa fa-check"></i><b>12.7.3</b> Identifying Differentially Expressed Genes</a></li>
+<li class="chapter" data-level="12.7.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#selecting-differentially-expressed-genes"><i class="fa fa-check"></i><b>12.7.4</b> Selecting Differentially Expressed Genes</a></li>
+<li class="chapter" data-level="12.7.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#boxplot-to-visualize-gene-expression-changes-between-the-two-conditions."><i class="fa fa-check"></i><b>12.7.5</b> boxplot to visualize gene expression changes between the two conditions.</a></li>
+<li class="chapter" data-level="12.7.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#creating-the-boxplot"><i class="fa fa-check"></i><b>12.7.6</b> Creating the Boxplot</a></li>
+<li class="chapter" data-level="12.7.7" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#visualizing-raw-expression-values"><i class="fa fa-check"></i><b>12.7.7</b> Visualizing Raw Expression Values</a></li>
+<li class="chapter" data-level="12.7.8" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-32"><i class="fa fa-check"></i><b>12.7.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.8" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#correcting-for-multiple-comparisons-in-statistical-analysis"><i class="fa fa-check"></i><b>12.8</b> Correcting for Multiple Comparisons in Statistical Analysis</a>
+<ul>
+<li class="chapter" data-level="12.8.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#why-correct-for-multiple-comparisons"><i class="fa fa-check"></i><b>12.8.1</b> Why Correct for Multiple Comparisons?</a></li>
+<li class="chapter" data-level="12.8.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#the-multiple-comparisons-example"><i class="fa fa-check"></i><b>12.8.2</b> The Multiple Comparisons Example</a></li>
+<li class="chapter" data-level="12.8.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#correcting-for-multiple-comparisons-false-discovery-rate-fdr"><i class="fa fa-check"></i><b>12.8.3</b> Correcting for Multiple Comparisons: False Discovery Rate (FDR)</a></li>
+<li class="chapter" data-level="12.8.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-33"><i class="fa fa-check"></i><b>12.8.4</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
 
@@ -893,7 +949,7 @@ system.</p>
 ## # Genome: GRCh37
 ## # Nb of transcripts: 171683
 ## # Db created by: GenomicFeatures package from Bioconductor
-## # Creation time: 2024-06-14 23:08:30 -0400 (Fri, 14 Jun 2024)
+## # Creation time: 2024-06-20 16:07:13 -0400 (Thu, 20 Jun 2024)
 ## # GenomicFeatures version at creation time: 1.46.5
 ## # RSQLite version at creation time: 2.3.1
 ## # DBSCHEMAVERSION: 1.2</code></pre>
@@ -1949,12 +2005,43 @@ This visualization can provide insights into gene expression patterns in various
 <span id="cb553-2"><a href="introduction-to-bioconductor.html#cb553-2" tabindex="-1"></a>sanity_check_genes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;MSLN&quot;</span>, <span class="st">&quot;FOLH1&quot;</span>)</span>
 <span id="cb553-3"><a href="introduction-to-bioconductor.html#cb553-3" tabindex="-1"></a></span>
 <span id="cb553-4"><a href="introduction-to-bioconductor.html#cb553-4" tabindex="-1"></a><span class="co"># Extract the rows (genes) corresponding to sanity check genes</span></span>
-<span id="cb553-5"><a href="introduction-to-bioconductor.html#cb553-5" tabindex="-1"></a>sanity_check_data <span class="ot">&lt;-</span> tcga_mat[<span class="fu">rownames</span>(tcga_mat) <span class="sc">%in%</span> sanity_check_genes, ]</span>
+<span id="cb553-5"><a href="introduction-to-bioconductor.html#cb553-5" tabindex="-1"></a>sanity_check_data <span class="ot">&lt;-</span> tcga_mat[, <span class="fu">colnames</span>(tcga_mat) <span class="sc">%in%</span> sanity_check_genes]</span>
 <span id="cb553-6"><a href="introduction-to-bioconductor.html#cb553-6" tabindex="-1"></a></span>
 <span id="cb553-7"><a href="introduction-to-bioconductor.html#cb553-7" tabindex="-1"></a><span class="co"># Print the results</span></span>
 <span id="cb553-8"><a href="introduction-to-bioconductor.html#cb553-8" tabindex="-1"></a><span class="fu">print</span>(sanity_check_data)</span></code></pre></div>
-<pre><code>##      TACSTD2 VTCN1 MUC1 NECTIN4 FOLH1 FOLR1 CD276 MSLN CLDN6 ERBB2 MUC16 DLL3
-##      CEACAM5 PVR EPCAM PROM1 CD24 EGFR MET TNFRSF10B</code></pre>
+<pre><code>##          FOLH1       MSLN
+## ACC  1.6264037 0.04481252
+## BLCA 0.8918716 0.68716010
+## BRCA 1.4233695 0.44071809
+## CESC 0.7041431 5.62058497
+## CHOL 1.5456811 0.60189628
+## COAD 0.8062397 4.45458393
+## DLBC 0.2645891 0.35785162
+## ESCA 1.1132842 2.47373379
+## GBM  2.3137440 0.92682384
+## HNSC 1.1091992 1.96099164
+## KICH 0.9940703 0.05250724
+## KIRC 3.8988559 0.62610191
+## KIRP 0.4862326 3.31497246
+## LGG  2.5460983 0.72084397
+## LIHC 2.4297942 0.03555045
+## LUAD 1.1373591 6.40328757
+## LUSC 1.9452955 2.66588838
+## MESO 0.8397168 9.10430072
+## OV   1.3177417 8.95238588
+## PAAD 1.1797304 7.51409138
+## PCPG 1.4682181 0.04768524
+## PRAD 7.9254012 0.69895768
+## READ 0.7618605 4.71118780
+## SARC 1.5561093 0.18614478
+## SKCM 0.6182104 0.10666438
+## STAD 0.8882602 5.24125577
+## TGCT 0.7553944 0.51413379
+## THCA 1.3056050 0.33791649
+## THYM 0.2974423 0.22949846
+## UCEC 2.9885794 5.00045864
+## UCS  2.1128680 3.32976790
+## UVM  0.4841875 0.04446844</code></pre>
 <p>We see <code>MSLN</code> is high in <code>MESO</code>, <code>FOLH1</code> is high in prostate cancer (<code>PRAD</code>). We are probably on the right track!</p>
 </div>
 <div id="scaling-the-data" class="section level4" number="11.6.13.2">
@@ -1994,8 +2081,8 @@ Let’s make this final project a success together!</p>
           </div>
         </div>
       </div>
-<a href="data-visualization-with-ggplot2.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="data-visualization-with-ggplot2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="final-project-analyzing-rnaseq-data-from-geo.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
