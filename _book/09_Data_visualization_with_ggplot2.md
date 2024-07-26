@@ -414,13 +414,13 @@ P32
 
 ```
 ##       NC1       NC2       NC3       NC4       NC5       NC6       NC7       NC8 
-## "#FB0026" "#22E422" "#1C16FB" "#EDB6C3" "#FF16ED" "#16D7FE" "#E3C500" "#0D6D35" 
+## "#F70D00" "#F70D00" "#2AE01C" "#0026FB" "#F40075" "#D4C0D0" "#FB16F1" "#FEAF00" 
 ##       NC9      NC10      NC11      NC12      NC13      NC14      NC15      NC16 
-## "#CB1C71" "#FB8326" "#493D80" "#CB7CFD" "#833B16" "#9D0D86" "#A5CECC" "#5F95F5" 
+## "#16B6F6" "#2ADCB5" "#852A22" "#8A9916" "#7F329A" "#FC76C3" "#FA6916" "#1C5A47" 
 ##      NC17      NC18      NC19      NC20      NC21      NC22      NC23      NC24 
-## "#A0D363" "#00E0A4" "#5F4D49" "#D2BAF8" "#B4A46C" "#D02E2E" "#FFAD88" "#FD88C3" 
+## "#BD1CFC" "#F6B397" "#F70D00" "#385D88" "#9B90FE" "#77355D" "#65491C" "#7ACCDC" 
 ##      NC25      NC26      NC27      NC28      NC29      NC30      NC31      NC32 
-## "#00798F" "#FB00B7" "#D500FC" "#5626B7" "#16DDD4" "#FE0D78" "#FB8DF3" "#FDAE0D"
+## "#F3AAF5" "#ACCEA7" "#FF7A85" "#1C982A" "#FF00BD" "#BBC2FD" "#DE75F8" "#B20D9F"
 ```
 You see the [hex code](https://en.wikipedia.org/wiki/Web_colors) for the colors.
 

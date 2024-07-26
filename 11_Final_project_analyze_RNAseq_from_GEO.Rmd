@@ -1123,3 +1123,389 @@ In this lesson, we've explored the process of creating a perfect heatmap by sele
 
 Scaling is crucial for visualizing relative changes, and annotations provide context to help us interpret the heatmap effectively. Heatmaps are powerful tools for identifying trends and patterns within complex datasets, making them invaluable in fields like genomics and beyond. I highly recommend you to read the tutorial https://jokergoo.github.io/ComplexHeatmap-reference/book/. It is very comprehensive and we only covered a small number of features.
 
+## Pathway Analysis Using Over-Representation and Gene Set Enrichment Analysis
+
+In this lesson, we will delve into pathway analysis, a crucial step in the field of bioinformatics. Pathway analysis helps us understand the biological functions and processes associated with a set of genes or proteins. We will explore two widely used methods: Over-Representation Analysis (ORA) and Gene Set Enrichment Analysis (GSEA).
+
+Watch this YouTube video if you prefer:
+
+```{r echo=FALSE}
+library("vembedr")
+
+embed_url("https://www.youtube.com/watch?v=IKCDQEpuJDA")
+```
+
+### Understanding Pathway Analysis
+
+Pathway analysis is used to identify biological pathways or Gene Ontology (GO) terms that are significantly enriched in a set of genes. It helps us interpret the functional significance of a group of genes and can reveal insights into the underlying biology of a particular condition or experiment.
+
+For further understanding go here: https://yulab-smu.top/biomedical-knowledge-mining-book/enrichment-overview.html
+
+### Over-Representation Analysis (ORA)
+
+Over-Representation Analysis (ORA) is a method that compares the list of genes of interest (e.g., DEGs) to a background set (all genes in the experiment) to identify pathways that are over-represented among the genes of interest.
+
+Let's break down the steps for ORA:
+
+1. Conversion of Gene Symbols: Genes are often represented by symbols. We convert these symbols to Entrez IDs, which are unique identifiers for genes, using the clusterProfiler package.
+
+2. Selecting Background Genes: We filter out genes with zero expression (baseMean = 0) to create a list of background genes that were detected in the experiment.
+
+3. Enrichment Analysis: Using the Gene Ontology (GO) database, we perform enrichment analysis for specific categories, such as Biological Processes (BP), Cellular Components (CC), or Molecular Functions (MF). For example, we focus on BP in this code.
+
+4. Statistical Analysis: We apply statistical tests and corrections (e.g., Benjamini-Hochberg adjustment) to identify significantly enriched pathways.
+
+5. Visualization: We visualize the results using bar plots and dot plots to highlight the most enriched pathways.
+
+In many biological analyses, researchers work with gene symbols, which are human-readable names for genes. However, for more standardized and precise analysis, it is often necessary to convert these gene symbols to Entrez IDs. Entrez IDs are unique numeric identifiers assigned to genes in the National Center for Biotechnology Information (NCBI) Entrez database, providing a consistent way to refer to genes across various databases and tools.
+
+```{r}
+library(clusterProfiler)
+
+#convert gene symbol to Entrez ID 
+
+significant_genes_map<- clusterProfiler::bitr(geneID = significant_genes,
+                      fromType="SYMBOL", toType="ENTREZID",
+                      OrgDb="org.Hs.eg.db")
+
+head(significant_genes_map)
+```
+
+In many RNA sequencing (RNA-seq) experiments, researchers aim to identify genes that are differentially expressed or have some other relevant feature compared to a control or reference group. However, it's crucial to consider all the genes that were detected in the experiment, not just the differentially expressed ones. These detected genes are often referred to as "background genes."
+
+```{r}
+## background genes are genes that are detected in the RNAseq experiment 
+background_genes<- res %>% 
+  as.data.frame() %>% 
+  filter(baseMean != 0) %>%
+  tibble::rownames_to_column(var = "gene") %>%
+  pull(gene)
+
+
+res_df<- res %>% 
+  as.data.frame() %>% 
+  filter(baseMean != 0) %>%
+  tibble::rownames_to_column(var = "gene")
+
+background_genes_map<- bitr(geneID = background_genes, 
+                            fromType="SYMBOL", 
+                            toType="ENTREZID",
+                      OrgDb="org.Hs.eg.db")
+
+head(background_genes_map)
+```
+
+The resulting `background_genes_map` object contains a mapping between gene symbols and their corresponding Entrez IDs for the background genes. This mapping is essential for subsequent gene ontology enrichment analysis to ensure that the analysis considers standardized gene identifiers.
+
+### Some concepts to remember
+
+Gene Ontology(GO) defines concepts/classes used to describe gene function and relationships between these concepts. It classifies functions along three aspects:
+
+* MF: Molecular Function molecular activities of gene products
+
+* CC: Cellular Component where gene products are active
+
+* BP: Biological Process pathways and larger processes made up of the activities of multiple gene products
+
+GO terms are organized in a directed acyclic graph, where edges between terms represent parent-child relationship.
+
+Now let's perform a Gene Ontology (GO) enrichment analysis using the `enrichGO` function from the `clusterProfile`r package. GO enrichment analysis is a widely used technique in bioinformatics to determine whether a set of genes is overrepresented in specific functional categories, such as biological processes (BP), cellular components (CC), or molecular functions (MF).
+
+```{r}
+ego <- enrichGO(gene          = significant_genes_map$ENTREZID,
+                universe      = background_genes_map$ENTREZID,
+                OrgDb         = org.Hs.eg.db,
+                ont           = "BP",
+                pAdjustMethod = "BH",
+                pvalueCutoff  = 0.01,
+                qvalueCutoff  = 0.05,
+                readable      = TRUE)
+head(ego)
+```
+
+The code you see is used to find significantly enriched biological processes (BP) among a list of significant genes (`significant_genes_map$ENTREZID`) compared to a background set of genes (`background_genes_map$ENTREZID`). Here's what each parameter in the `enrichGO` function does:
+
+* gene: This is the list of significant genes that you want to analyze.
+
+* universe: The universe of genes against which you want to test for enrichment (in this case, the background genes).
+
+* OrgDb: Specifies the organism-specific gene annotation database (in this example, "org.Hs.eg.db" for Homo sapiens).
+
+* ont: Specifies the ontology to use (e.g., "BP" for Biological Process).
+
+* pAdjustMethod: The method used to adjust p-values for multiple testing (e.g., "BH" for Benjamini & Hochberg correction).
+
+* pvalueCutoff: The significance threshold for p-values.
+
+* qvalueCutoff: The significance threshold for q-values, which are adjusted p-values.
+
+* readable: A logical value indicating whether to include readable gene names.
+
+Here, you can see the top enriched GO terms related to biological processes, along with their respective statistics. 
+
+It is reassuring you see angiogenesis (hypoxia induces angiogenesis) and response to oxygen levels are the top GO terms that are enriched.
+
+This analysis helps researchers understand which biological processes are overrepresented in their list of significant genes, providing valuable insights into the underlying biology of the studied genes. 
+
+### Visualizations
+
+Now, let's plot a barplot to visualize the enriched GO terms. The `ego` object contains the enrichment results generated previously. Each bar in the plot represents a GO term, and the height of the bar indicates the significance or enrichment level of that term. The `showCategory` parameter specifies how many top categories you want to display in the plot. In this case, we are displaying the top 20 enriched GO terms related to biological processes.
+
+```{r}
+barplot(ego, showCategory=20) 
+```
+
+Now, let's a dotplot where similar to the barplot, each dot in the plot represents a GO term. The size and color of the dots convey information about the significance and enrichment level of each term. Larger and more colorful dots represent more significant terms. The ego object is used to generate this plot as well.
+
+```{r}
+dotplot(ego)
+```
+
+These visualizations are important because they provide a quick and intuitive way to understand which biological processes are most relevant or significantly enriched in your dataset. Researchers can use these plots to identify key pathways or functions associated with their genes of interest. 
+
+For example, in a genomics study, these plots could help identify the biological processes that are most affected by differentially expressed genes, shedding light on the underlying molecular mechanisms of a particular condition or disease.
+
+### Introduction to MSigDB
+
+You can check the docs [here](https://www.gsea-msigdb.org/gsea/msigdb).
+
+`MSigDB` (Molecular Signatures Database) is a widely used resource for gene set enrichment analysis. It provides curated collections of gene sets representing various biological processes, pathways, and functional categories. These gene sets are organized into different categories, making it easier to explore and analyze.
+
+The following are some of the key categories in MSigDB:
+
+* H (Hallmark gene sets): These are a set of 50 gene sets representing well-defined biological states or processes.
+
+* C1 (Positional gene sets): Gene sets based on chromosomal location.
+
+* C2 (Curated gene sets): Manually curated gene sets from various sources, including pathway databases.
+
+* C3 (Motif gene sets): Gene sets related to transcription factor binding motifs.
+
+* C4 (Computational gene sets): Gene sets generated through computational methods.
+
+* C5 (GO gene sets): Gene sets based on Gene Ontology terms.
+
+* C6 (Oncogenic signatures): Gene sets associated with cancer-related processes.
+
+* C7 (Immunologic signatures): Gene sets related to immune system processes.
+
+Let's start by loading the `msigdbr` package and accessing the MSigDB database. We'll specifically focus on the "Hallmark gene sets" (category H) for Homo sapiens (human).
+
+```{r}
+# Load the msigdbr package
+library(msigdbr)
+
+# Retrieve Hallmark gene sets for Homo sapiens
+m_df <- msigdbr(species = "Homo sapiens")
+
+head(m_df)
+```
+
+The`m_df` object now contains information about the Hallmark gene sets.
+
+Let's use the `msigdbr` function with the species parameter set to "Homo sapiens" and the category parameter set to "H" to retrieve Hallmark gene sets. We then use the `dplyr::select` function to extract only the columns containing the gene set names (gs_name) and associated entrez gene IDs (entrez_gene).
+
+```{r}
+m_t2g <- msigdbr(species = "Homo sapiens", category = "H") %>% 
+  dplyr::select(gs_name, entrez_gene)
+```
+
+To get an overview of the number of genes in each gene set, we can create a table:
+
+```{r}
+# Count the number of genes in each gene set
+table(m_t2g$gs_name)
+
+head(m_t2g)
+```
+
+Now that we have retrieved the Hallmark gene sets, let's perform gene set enrichment analysis using these sets. 
+
+We'll use a set of significant genes from our analysis (represented by `significant_genes_map$ENTREZID`) and the Hallmark gene sets (represented by `m_t2g`). This analysis will help us identify which Hallmark gene sets are enriched in our significant genes.
+
+```{r}
+em <- enricher(significant_genes_map$ENTREZID, TERM2GENE = m_t2g, 
+               universe = background_genes_map$ENTREZID)
+```
+
+Here, we are using the `enricher` function from the `msigdbr` package to perform the enrichment analysis. It takes as input the list of significant genes, the mapping between gene sets and genes (`TERM2GENE`), and the background gene set (typically all detected genes in the dataset).
+
+Now, let's examine the results of the enrichment analysis:
+
+```{r}
+head(em)
+```
+
+The `em` object contains information about the enriched gene sets, including their names, descriptions, p-values, and adjusted p-values (q-values). The q-value represents the corrected p-value and is often used to control for false discoveries in enrichment analysis.
+
+To visualize the enrichment results, we can create a dotplot that shows the enriched gene sets and their significance.
+
+```{r}
+dotplot(em)
+```
+
+The dotplot will display the enriched gene sets as dots, with the size and color of the dots representing the significance of enrichment. This visualization helps identify the most significantly enriched gene sets.
+
+Take a look, among the predefined gene sets, "HALLMARK HYPOXIA" is the pathway most strongly associated with the genes we are studying which makes perfect sense!
+
+### Gene Set Enrichment Analysis (GSEA)
+
+Gene Set Enrichment Analysis (GSEA) is an alternative approach that considers the entire list of genes ranked by their association with a phenotype or condition. Instead of just looking for over-represented pathways, GSEA assesses whether a predefined gene set (e.g., a pathway) shows a significant association with the phenotype across the entire ranked gene list.
+
+Let's break down the steps for GSEA:
+
+1. Accessing Gene Sets: We use the `msigdbr` package to access gene sets from resources like `MSigDB`. These gene sets represent predefined pathways or functional categories.
+
+2. Conversion of Gene Symbols: Similar to ORA, we convert gene symbols to Entrez IDs for consistency.
+
+3. Enrichment Analysis: We perform gene set enrichment analysis using the ranked gene list and predefined gene sets.
+
+4. Statistical Analysis: Statistical tests determine whether specific gene sets are enriched at the top or bottom of the ranked list.
+
+5. Visualization: We visualize the results using dot plots, which highlight gene sets enriched at the top or bottom of the ranked list.
+
+### GSEA in action
+
+Before we dive into GSEA, we need to prepare our gene expression data. We have a dataset represented as res_df, which contains information about genes, including their fold change and p-values. GSEA requires the data to be pre-ranked based on a metric that combines fold change and significance, such as signed fold change multiplied by the negative logarithm of the p-value.
+
+```{r}
+res_df <- res_df %>% 
+  mutate(signed_rank_stats = sign(log2FoldChange) * -log10(pvalue)) %>%
+  left_join(background_genes_map, by = c("gene" = "SYMBOL")) %>%
+  arrange(desc(signed_rank_stats))
+```
+
+One issue that may arise is the presence of infinite values in the data, which can cause errors during GSEA. To address this, we replace infinite values with large numbers so they will be ranked high:
+
+```{r}
+res_df <- res_df %>%
+  mutate(negative_log10pvalue = -log10(pvalue)) %>%
+  mutate(negative_log10pvalue = ifelse(is.infinite(negative_log10pvalue), 1000, negative_log10pvalue)) %>%
+  mutate(signed_rank_stats = sign(log2FoldChange) * negative_log10pvalue)
+```
+
+GSEA helps us determine whether a predefined set of genes, representing a biological pathway or function, is significantly enriched in our dataset. This analysis identifies whether genes within a specific set tend to be ranked higher or lower based on their association with a biological condition.
+
+In the code below, we perform GSEA using our pre-ranked gene list and a reference gene set, represented by `m_t2g`:
+
+```{r}
+gene_list <- res_df$signed_rank_stats
+names(gene_list) <- res_df$ENTREZID
+
+em2 <- GSEA(gene_list, TERM2GENE = m_t2g)
+
+head(em2)
+```
+
+This output includes several columns, such as the gene set ID, description, size, enrichment score, normalized enrichment score (NES), p-value, and more. Let's briefly explain some of these terms:
+
+* Enrichment Score (ES): Measures the degree to which a gene set is overrepresented at the top or bottom of the ranked list of genes.
+
+* Normalized Enrichment Score (NES): The ES adjusted for the size of the gene set and dataset.
+
+* P-value: Indicates the statistical significance of the enrichment.
+
+* FDR-adjusted p-value (q-value): Corrected p-value to account for multiple comparisons.
+
+If you want to visualize it in a table format, you can run:
+
+```{r eval=FALSE}
+em2@result %>% View()
+```
+
+Once you run it, a table or data frame containing the results of the GSEA analysis will be displayed, allowing you to examine the details of the enriched gene sets, their enrichment scores, p-values, and other relevant information.
+
+### Visualizing GSEA Results
+
+After performing GSEA and obtaining results, it's crucial to visualize these results effectively to gain insights and communicate findings. We'll use the gseaplot function to create visual representations of enriched gene sets.
+
+```{r}
+# save visualization in p1
+
+p1<- gseaplot(em2, geneSetID = "HALLMARK_G2M_CHECKPOINT", 
+              by = "runningScore", title = "HALLMARK_G2M_CHECKPOINT")
+p1
+# save visualization in p2
+
+p2 <- gseaplot(em2, geneSetID = "HALLMARK_HYPOXIA", 
+               by = "runningScore", title = "HALLMARK_HYPOXIA")
+
+p2
+
+```
+
+The X-axis is all your genes in the experiment (~ 20,000 in this case) pre-ranked by our metric. Each black bar is the gene in this gene set(pathway). You have an idea where are the genes located in the pre-ranked list.
+
+Enrichment Score (ES) on the y-axis is calculated by some metric that ES is positive if the gene set is located at the top of the pre-ranked gene list. ES is negative if the gene set is located at the bottom of the pre-ranked gene list.
+
+We see the hypoxia gene sets are at the front of the ranked list  and the G2M gene sets are at the end of the ranked list.
+
+This final step adds a vital dimension to our RNA-seq data analysis, enabling us to effectively convey the biological relevance of the enriched gene sets we've identified.
+
+### Conclusion
+
+In conclusion, pathway analysis is a powerful tool in bioinformatics, providing crucial insights into the biological functions and processes associated with genes and proteins. This lesson covered two main types of pathway analysis: Over-Representation Analysis (ORA) and Gene Set Enrichment Analysis (GSEA).
+
+**Over-Representation Analysis (ORA)** is best suited for scenarios where researchers have a specific list of genes of interest, such as differentially expressed genes (DEGs). ORA allows for the identification of pathways or functions that are significantly over-represented in this list, offering insights into the biological processes most affected by the condition or treatment under study.
+
+**Gene Set Enrichment Analysis (GSEA)**, on the other hand, is ideal for examining ranked lists of genes based on their association with a phenotype. Unlike ORA, GSEA does not rely on predefined cutoffs for significance and can provide a more nuanced view of how entire sets of genes related to specific biological processes or pathways are collectively associated with the phenotype.
+
+Both ORA and GSEA are essential methods in bioinformatics, each serving different purposes:
+
+* ORA provides a focused view on specific sets of genes, making it ideal for studies where the list of genes of interest is well-defined.
+
+* GSEA offers a broader perspective, considering the **entire** spectrum of gene expression to reveal more subtle shifts in gene sets related to particular biological themes.
+
+The choice between ORA and GSEA should be guided by the specific objectives of the research and the nature of the available data. By employing these methods, you can gain deeper insights into the complex interactions and functions of genes, leading to a better understanding of biological systems and the mechanisms underlying various conditions and diseases.
+
+## Congratulations for successfully completing this final project! 
+
+Your dedication and hard work have led you through a comprehensive journey in RNAseq data analysis, culminating in a thorough exploration of the hypoxia vs. normoxia comparison in the SW480 cell line.
+
+Together, we've navigated the complexities of genomics data handling and analysis techniques, from cleaning and preparing metadata to identifying differentially expressed genes and visualizing gene expression patterns. Your commitment to mastering these skills is truly commendable.
+
+As you move forward in your bioinformatics journey, remember that learning is a continuous process. The skills you've acquired here will serve as a solid foundation for tackling more advanced challenges in genomics and data analysis.
+
+Don't forget to utilize the Q&A section and comments for any lingering questions or clarifications. Your engagement with your peers and instructors enriches the learning experience for everyone involved.
+
+### Final words 
+
+Congratulations to all the students who have completed this enriching course on programming in biology with a focus on the R programming language! You've embarked on a fascinating journey into the world of computational analysis within the realm of biology, and you've successfully gained a valuable set of skills.
+
+Throughout this course, we've covered a wide range of topics, starting with the fundamental concepts of programming. We've explored the core programming skills that are essential for any field, delving into variables, data types, and expressions.
+
+The heart of the course introduced you to the powerful R programming language. You've learned basic data structures in R,  and how to use R for data manipulation, analysis, and visualization – skills that are indispensable for working with complex biological data.
+
+As you progressed, you delved into more advanced programming topics, and project management, and even explored the fascinating tidyverse ecosystem designed for data science.
+
+We didn't stop there. We ventured into the world of data visualization, a vital skill for interpreting and sharing your data findings effectively. You also gained insights into specific bioinformatics applications, from genomic data analysis to gene expression studies using Bioconductor packages.
+
+The culmination of your journey was the capstone project, where you applied your newfound skills to tackle real-world biological challenges by analyzing RNAseq data.
+
+In conclusion, you've equipped yourselves with a robust toolkit for programming, tailored to the intricate world of biology. These skills will serve as a strong foundation for your future endeavors in bioinformatics and computational biology. 
+
+Remember that your learning journey doesn't end here. Keep exploring, keep studying, and keep pushing the boundaries of what you can achieve in the dynamic field of biological sciences. 
+
+It takes effort to be good at anything. You've gained the basic but practical skills.  Keep practicing so you have a solid foundation. We encourage you to take on a real-world project and apply what you have learned to it. The best way to learn is by doing it.
+
+### Materials to read to uplift your R skills to the next level
+
+* [What They Forgot to Teach You About R](https://rstats.wtf/)
+
+* [Advanced R](https://adv-r.hadley.nz/)
+
+* [Big book of R](https://www.bigbookofr.com/index.html): The collection now stands at over 300 R books. Most of them are free.
+
+* [R inferion](https://github.com/crazyhottommy/getting-started-with-genomics-tools-and-resources/blob/master/R_inferno.pdf)
+
+* [Awesome Quarto](https://github.com/mcanouil/awesome-quarto)
+
+* [Orchestrating Single-Cell Analysis with Bioconductor](https://bioconductor.org/books/release/OSCA/). If you want to learn to use R for single-cell analysis. This is the book you should read.
+
+* [Rstudio cheatsheets](https://posit.co/resources/cheatsheets/)
+
+### Coding Challenge 
+
+You have learned a lot! To challenge yourself after this course, you can try to finish this coding experience using TCGA data as well https://github.com/crazyhottommy/coding_exercise_TCGA_infiltration
+
+It is a bit challenging and  you can ask questions on the forum to get help.

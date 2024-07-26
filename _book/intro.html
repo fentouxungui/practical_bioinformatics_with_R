@@ -23,7 +23,7 @@
 <meta name="author" content="Ming Tommy Tang" />
 
 
-<meta name="date" content="2024-06-20" />
+<meta name="date" content="2024-07-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -138,7 +138,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
+<li><a href="./">Master Real-world Bioinformatics analysis in R</a></li>
 
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
@@ -525,8 +525,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="11.4" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#real-world-applications-chip-seq"><i class="fa fa-check"></i><b>11.4</b> Real-World Applications: ChIP-seq</a>
 <ul>
-<li class="chapter" data-level="11.4.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#identify-promoters-that-overlap-with-the-peaks"><i class="fa fa-check"></i><b>11.4.1</b> Identify promoters that overlap with the peaks</a></li>
-<li class="chapter" data-level="11.4.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#use-the-chipseeker-package"><i class="fa fa-check"></i><b>11.4.2</b> use the ChIPseeker package</a></li>
+<li class="chapter" data-level="11.4.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#read-in-peak-file"><i class="fa fa-check"></i><b>11.4.1</b> read in peak file</a></li>
+<li class="chapter" data-level="11.4.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#identify-promoters-that-overlap-with-the-peaks"><i class="fa fa-check"></i><b>11.4.2</b> Identify promoters that overlap with the peaks</a></li>
+<li class="chapter" data-level="11.4.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#use-the-chipseeker-package"><i class="fa fa-check"></i><b>11.4.3</b> use the ChIPseeker package</a></li>
 </ul></li>
 <li class="chapter" data-level="11.5" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#analyzing-and-visualizing-genomic-data"><i class="fa fa-check"></i><b>11.5</b> Analyzing and Visualizing Genomic Data</a>
 <ul>
@@ -610,6 +611,55 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.8.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#correcting-for-multiple-comparisons-false-discovery-rate-fdr"><i class="fa fa-check"></i><b>12.8.3</b> Correcting for Multiple Comparisons: False Discovery Rate (FDR)</a></li>
 <li class="chapter" data-level="12.8.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-33"><i class="fa fa-check"></i><b>12.8.4</b> Conclusion</a></li>
 </ul></li>
+<li class="chapter" data-level="12.9" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-differential-gene-expression-with-deseq2"><i class="fa fa-check"></i><b>12.9</b> Analyzing Differential Gene Expression with DESeq2</a>
+<ul>
+<li class="chapter" data-level="12.9.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#create-a-sample-sheet"><i class="fa fa-check"></i><b>12.9.1</b> Create a Sample Sheet</a></li>
+<li class="chapter" data-level="12.9.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#create-a-deseq2-object"><i class="fa fa-check"></i><b>12.9.2</b> Create a DESeq2 Object</a></li>
+<li class="chapter" data-level="12.9.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#get-differential-results"><i class="fa fa-check"></i><b>12.9.3</b> Get Differential Results</a></li>
+<li class="chapter" data-level="12.9.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#explore-the-deseq2-results-and-create-visualizations."><i class="fa fa-check"></i><b>12.9.4</b> Explore the DESeq2 results and create visualizations.</a></li>
+<li class="chapter" data-level="12.9.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#examining-the-top-differentially-expressed-genes"><i class="fa fa-check"></i><b>12.9.5</b> Examining the Top Differentially Expressed Genes</a></li>
+<li class="chapter" data-level="12.9.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#labeling-genes-in-the-volcano-plot"><i class="fa fa-check"></i><b>12.9.6</b> Labeling Genes in the Volcano Plot</a></li>
+<li class="chapter" data-level="12.9.7" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#coloring-points-in-the-volcano-plot"><i class="fa fa-check"></i><b>12.9.7</b> Coloring Points in the Volcano Plot</a></li>
+<li class="chapter" data-level="12.9.8" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-34"><i class="fa fa-check"></i><b>12.9.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.10" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#principal-component-analysis-pca-using-deseq2"><i class="fa fa-check"></i><b>12.10</b> Principal Component Analysis (PCA) using DESeq2</a>
+<ul>
+<li class="chapter" data-level="12.10.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#what-is-principal-component-analysis-pca"><i class="fa fa-check"></i><b>12.10.1</b> What is Principal Component Analysis (PCA)?</a></li>
+<li class="chapter" data-level="12.10.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#why-use-pca"><i class="fa fa-check"></i><b>12.10.2</b> Why use PCA?</a></li>
+<li class="chapter" data-level="12.10.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#using-deseq2-for-pca-analysis"><i class="fa fa-check"></i><b>12.10.3</b> Using DESeq2 for PCA Analysis</a></li>
+<li class="chapter" data-level="12.10.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#plotting-pca-by-ourselves"><i class="fa fa-check"></i><b>12.10.4</b> Plotting PCA by ourselves</a></li>
+<li class="chapter" data-level="12.10.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#create-a-dataframe-for-visualization"><i class="fa fa-check"></i><b>12.10.5</b> Create a DataFrame for Visualization</a></li>
+<li class="chapter" data-level="12.10.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#plot-the-pca"><i class="fa fa-check"></i><b>12.10.6</b> Plot the PCA</a></li>
+<li class="chapter" data-level="12.10.7" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#comparison-with-deseq2s-plotpca"><i class="fa fa-check"></i><b>12.10.7</b> Comparison with DESeq2’s plotPCA</a></li>
+<li class="chapter" data-level="12.10.8" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-35"><i class="fa fa-check"></i><b>12.10.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.11" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#creating-a-perfect-heatmap"><i class="fa fa-check"></i><b>12.11</b> Creating a Perfect Heatmap</a>
+<ul>
+<li class="chapter" data-level="12.11.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#selecting-significant-genes"><i class="fa fa-check"></i><b>12.11.1</b> Selecting Significant Genes</a></li>
+<li class="chapter" data-level="12.11.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#creating-the-heatmap"><i class="fa fa-check"></i><b>12.11.2</b> Creating the Heatmap</a></li>
+<li class="chapter" data-level="12.11.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#why-scaling-is-important"><i class="fa fa-check"></i><b>12.11.3</b> Why Scaling is Important?</a></li>
+<li class="chapter" data-level="12.11.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#adding-annotations"><i class="fa fa-check"></i><b>12.11.4</b> Adding Annotations</a></li>
+<li class="chapter" data-level="12.11.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#the-impact-of-scaling"><i class="fa fa-check"></i><b>12.11.5</b> The Impact of Scaling</a></li>
+<li class="chapter" data-level="12.11.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-36"><i class="fa fa-check"></i><b>12.11.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.12" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#pathway-analysis-using-over-representation-and-gene-set-enrichment-analysis"><i class="fa fa-check"></i><b>12.12</b> Pathway Analysis Using Over-Representation and Gene Set Enrichment Analysis</a>
+<ul>
+<li class="chapter" data-level="12.12.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#understanding-pathway-analysis"><i class="fa fa-check"></i><b>12.12.1</b> Understanding Pathway Analysis</a></li>
+<li class="chapter" data-level="12.12.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#over-representation-analysis-ora"><i class="fa fa-check"></i><b>12.12.2</b> Over-Representation Analysis (ORA)</a></li>
+<li class="chapter" data-level="12.12.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#some-concepts-to-remember"><i class="fa fa-check"></i><b>12.12.3</b> Some concepts to remember</a></li>
+<li class="chapter" data-level="12.12.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#visualizations"><i class="fa fa-check"></i><b>12.12.4</b> Visualizations</a></li>
+<li class="chapter" data-level="12.12.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#introduction-to-msigdb"><i class="fa fa-check"></i><b>12.12.5</b> Introduction to MSigDB</a></li>
+<li class="chapter" data-level="12.12.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#gene-set-enrichment-analysis-gsea"><i class="fa fa-check"></i><b>12.12.6</b> Gene Set Enrichment Analysis (GSEA)</a></li>
+<li class="chapter" data-level="12.12.7" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#gsea-in-action"><i class="fa fa-check"></i><b>12.12.7</b> GSEA in action</a></li>
+<li class="chapter" data-level="12.12.8" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#visualizing-gsea-results"><i class="fa fa-check"></i><b>12.12.8</b> Visualizing GSEA Results</a></li>
+<li class="chapter" data-level="12.12.9" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-37"><i class="fa fa-check"></i><b>12.12.9</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.13" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#congratulations-for-successfully-completing-this-final-project"><i class="fa fa-check"></i><b>12.13</b> Congratulations for successfully completing this final project!</a>
+<ul>
+<li class="chapter" data-level="12.13.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#final-words"><i class="fa fa-check"></i><b>12.13.1</b> Final words</a></li>
+<li class="chapter" data-level="12.13.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#materials-to-read-to-uplift-your-r-skills-to-the-next-level"><i class="fa fa-check"></i><b>12.13.2</b> Materials to read to uplift your R skills to the next level</a></li>
+<li class="chapter" data-level="12.13.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#coding-challenge"><i class="fa fa-check"></i><b>12.13.3</b> Coding Challenge</a></li>
+</ul></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -637,6 +687,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">2.1</span> Meet your Instructor</h2>
 <p>Hello, Welcome! all the students!</p>
 <p>this is Tommy, your instructor for this course. Congratulations on signing up for this course. I am sure you will learn a lot. I created the first draft of this course during the holidays and with the help of ChatGPT, I was able to polish it quite a bit. This is not a perfect course, your feedback is greatly appreciated!</p>
+<p><img src="images/Ming_Tang_small.png" /></p>
 <p>A little bit more about me. With over a decade of experience in computational biology, I specialize in genomics, epigenomics, and (single-cell) transcriptomics data analysis. I have taken on pivotal roles in various cancer research projects, notably contributing to the NCI’s Cancer Moonshot initiative at the Dana-Farber Cancer Institute.</p>
 <p>I am now the Director of Computational Biology at Immunitas Therapeutics, we employ machine-learning techniques to investigate immune cells in human tumors by analyzing single-cell RNAseq, single-cell TCRseq, and spatial transcriptome data. Our goal is to develop novel therapeutics for cancer patients.</p>
 <p>I am a self-trained computational biologist. I fully understand how challenging it is to learn computational biology from scratch. That’s why beyond my professional work, I am passionate about promoting open science and improving bioinformatics education to equip biologists with computational skills. More about me can be found at my website <a href="https://divingintogeneticsandgenomics.com/" class="uri">https://divingintogeneticsandgenomics.com/</a>.</p>
