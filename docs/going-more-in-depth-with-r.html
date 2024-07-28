@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Going more in-depth with R | Master Real-world Bioinformatics analysis in R</title>
+  <meta name="description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Going more in-depth with R | Master Real-world Bioinformatics analysis in R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Going more in-depth with R | Master Real-world Bioinformatics analysis in R" />
+  
+  <meta name="twitter:description" content="This is an R course teaching you skills to do real-world bioinformatics" />
+  
+
+<meta name="author" content="Ming Tommy Tang" />
+
+
+<meta name="date" content="2024-07-28" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="controlling-the-flow-of-our-programs.html"/>
+<link rel="next" href="fundamental-data-structures-in-r.html"/>
+<script src="libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.0.1/anchor-sections.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.0.1/anchor-sections.js"></script>
+<link href="libs/vembedr-0.1.5/css/vembedr.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Master Real-world Bioinformatics analysis in R</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
+<li class="chapter" data-level="2" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>2</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="intro.html"><a href="intro.html#meet-your-instructor"><i class="fa fa-check"></i><b>2.1</b> Meet your Instructor</a></li>
+<li class="chapter" data-level="2.2" data-path="intro.html"><a href="intro.html#leveraging-our-online-community"><i class="fa fa-check"></i><b>2.2</b> Leveraging our online community</a></li>
+<li class="chapter" data-level="2.3" data-path="intro.html"><a href="intro.html#install-r-and-r-studio"><i class="fa fa-check"></i><b>2.3</b> Install R and R studio</a></li>
+<li class="chapter" data-level="2.4" data-path="intro.html"><a href="intro.html#the-role-of-programming-in-biology"><i class="fa fa-check"></i><b>2.4</b> The role of programming in Biology</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="intro.html"><a href="intro.html#what-are-programming-languages"><i class="fa fa-check"></i><b>2.4.1</b> What are programming languages?</a></li>
+<li class="chapter" data-level="2.4.2" data-path="intro.html"><a href="intro.html#why-programming-is-important-in-biology"><i class="fa fa-check"></i><b>2.4.2</b> Why programming is important in biology?</a></li>
+<li class="chapter" data-level="2.4.3" data-path="intro.html"><a href="intro.html#what-are-the-most-used-programming-languages-within-biology"><i class="fa fa-check"></i><b>2.4.3</b> What are the most used programming languages within biology?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html"><i class="fa fa-check"></i><b>3</b> Introduction to programming</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#what-is-an-algorithm"><i class="fa fa-check"></i><b>3.1</b> What is an algorithm?</a></li>
+<li class="chapter" data-level="3.2" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#why-are-algorithms-important-in-programming"><i class="fa fa-check"></i><b>3.2</b> Why are Algorithms Important in Programming?</a></li>
+<li class="chapter" data-level="3.3" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#a-real-world-example"><i class="fa fa-check"></i><b>3.3</b> A Real World Example:</a></li>
+<li class="chapter" data-level="3.4" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#variables-data-types-and-expressions"><i class="fa fa-check"></i><b>3.4</b> Variables, Data Types, and Expressions</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#variables"><i class="fa fa-check"></i><b>3.4.1</b> Variables</a></li>
+<li class="chapter" data-level="3.4.2" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#data-types"><i class="fa fa-check"></i><b>3.4.2</b> Data Types</a></li>
+<li class="chapter" data-level="3.4.3" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#expressions"><i class="fa fa-check"></i><b>3.4.3</b> Expressions</a></li>
+<li class="chapter" data-level="3.4.4" data-path="introduction-to-programming.html"><a href="introduction-to-programming.html#example-finding-the-average-number-of-bases-appearances-in-a-set-of-dna-strings"><i class="fa fa-check"></i><b>3.4.4</b> Example: Finding the average number of bases appearances in a set of DNA strings</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="getting-started-with-r-and-rstudio.html"><a href="getting-started-with-r-and-rstudio.html"><i class="fa fa-check"></i><b>4</b> Getting started with R and RStudio</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="getting-started-with-r-and-rstudio.html"><a href="getting-started-with-r-and-rstudio.html#what-is-r-and-why-is-it-used-in-biology"><i class="fa fa-check"></i><b>4.1</b> What is R and why is it used in Biology?</a></li>
+<li class="chapter" data-level="4.2" data-path="getting-started-with-r-and-rstudio.html"><a href="getting-started-with-r-and-rstudio.html#what-is-r"><i class="fa fa-check"></i><b>4.2</b> What is R?</a></li>
+<li class="chapter" data-level="4.3" data-path="getting-started-with-r-and-rstudio.html"><a href="getting-started-with-r-and-rstudio.html#why-is-r-used-in-biology"><i class="fa fa-check"></i><b>4.3</b> Why is R Used in Biology?</a></li>
+<li class="chapter" data-level="4.4" data-path="getting-started-with-r-and-rstudio.html"><a href="getting-started-with-r-and-rstudio.html#introduction-to-r-studio"><i class="fa fa-check"></i><b>4.4</b> Introduction to R-Studio</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html"><i class="fa fa-check"></i><b>5</b> Introduction to R for biologists</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#basic-data-types-in-r"><i class="fa fa-check"></i><b>5.1</b> Basic Data Types in R</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#before-starting"><i class="fa fa-check"></i><b>5.1.1</b> Before Starting</a></li>
+<li class="chapter" data-level="5.1.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#numeric"><i class="fa fa-check"></i><b>5.1.2</b> 1. Numeric</a></li>
+<li class="chapter" data-level="5.1.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#character-string"><i class="fa fa-check"></i><b>5.1.3</b> 2. Character (String)</a></li>
+<li class="chapter" data-level="5.1.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#integer"><i class="fa fa-check"></i><b>5.1.4</b> 3. Integer</a></li>
+<li class="chapter" data-level="5.1.5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#logical-boolean"><i class="fa fa-check"></i><b>5.1.5</b> 4. Logical (Boolean)</a></li>
+<li class="chapter" data-level="5.1.6" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#factor"><i class="fa fa-check"></i><b>5.1.6</b> 5. Factor</a></li>
+<li class="chapter" data-level="5.1.7" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#date-and-time"><i class="fa fa-check"></i><b>5.1.7</b> 6. Date and Time</a></li>
+<li class="chapter" data-level="5.1.8" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#complex"><i class="fa fa-check"></i><b>5.1.8</b> 7. Complex</a></li>
+<li class="chapter" data-level="5.1.9" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#missing-values-na"><i class="fa fa-check"></i><b>5.1.9</b> 8. Missing Values (NA)</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#the-key-concept-of-r-vectors"><i class="fa fa-check"></i><b>5.2</b> The key concept of R: Vectors</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#creating-numeric-and-character-vectors"><i class="fa fa-check"></i><b>5.2.1</b> Creating Numeric and Character Vectors</a></li>
+<li class="chapter" data-level="5.2.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#saving-vectors-to-variables"><i class="fa fa-check"></i><b>5.2.2</b> Saving Vectors to Variables</a></li>
+<li class="chapter" data-level="5.2.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#vectorized-calculations"><i class="fa fa-check"></i><b>5.2.3</b> Vectorized Calculations</a></li>
+<li class="chapter" data-level="5.2.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#performing-vectorized-calculations"><i class="fa fa-check"></i><b>5.2.4</b> Performing Vectorized Calculations</a></li>
+<li class="chapter" data-level="5.2.5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#operations-with-character-vectors"><i class="fa fa-check"></i><b>5.2.5</b> Operations with character vectors</a></li>
+<li class="chapter" data-level="5.2.6" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#logical-vectors"><i class="fa fa-check"></i><b>5.2.6</b> Logical Vectors</a></li>
+<li class="chapter" data-level="5.2.7" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#conclusion"><i class="fa fa-check"></i><b>5.2.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#subsetting-and-indexing"><i class="fa fa-check"></i><b>5.3</b> Subsetting and Indexing</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#indexing-in-r"><i class="fa fa-check"></i><b>5.3.1</b> Indexing in R</a></li>
+<li class="chapter" data-level="5.3.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#slicing-in-r"><i class="fa fa-check"></i><b>5.3.2</b> Slicing in R</a></li>
+<li class="chapter" data-level="5.3.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#negative-indexing"><i class="fa fa-check"></i><b>5.3.3</b> Negative Indexing</a></li>
+<li class="chapter" data-level="5.3.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#conclusion-1"><i class="fa fa-check"></i><b>5.3.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#understanding-and-manipulating-matrices"><i class="fa fa-check"></i><b>5.4</b> Understanding and Manipulating Matrices</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#creating-a-matrix"><i class="fa fa-check"></i><b>5.4.1</b> Creating a Matrix</a></li>
+<li class="chapter" data-level="5.4.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#adding-row-and-column-names"><i class="fa fa-check"></i><b>5.4.2</b> Adding Row and Column Names</a></li>
+<li class="chapter" data-level="5.4.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#subsetting-a-matrix"><i class="fa fa-check"></i><b>5.4.3</b> Subsetting a Matrix</a></li>
+<li class="chapter" data-level="5.4.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#calculations-with-matrices"><i class="fa fa-check"></i><b>5.4.4</b> Calculations with Matrices</a></li>
+<li class="chapter" data-level="5.4.5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#normalization"><i class="fa fa-check"></i><b>5.4.5</b> Normalization</a></li>
+<li class="chapter" data-level="5.4.6" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#conclusion-2"><i class="fa fa-check"></i><b>5.4.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#essential-functions-in-r"><i class="fa fa-check"></i><b>5.5</b> Essential Functions in R</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#length-function"><i class="fa fa-check"></i><b>5.5.1</b> <code>length</code> Function</a></li>
+<li class="chapter" data-level="5.5.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#unique-function"><i class="fa fa-check"></i><b>5.5.2</b> <code>unique</code> Function</a></li>
+<li class="chapter" data-level="5.5.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#sort-function"><i class="fa fa-check"></i><b>5.5.3</b> <code>sort</code> Function</a></li>
+<li class="chapter" data-level="5.5.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#cor-function"><i class="fa fa-check"></i><b>5.5.4</b> <code>cor</code> Function</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#functions-organizing-your-code-for-reusability"><i class="fa fa-check"></i><b>5.6</b> Functions: Organizing Your Code for Reusability</a>
+<ul>
+<li class="chapter" data-level="5.6.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#what-is-a-function"><i class="fa fa-check"></i><b>5.6.1</b> What is a Function?</a></li>
+<li class="chapter" data-level="5.6.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#creating-a-basic-function-calculating-the-mean"><i class="fa fa-check"></i><b>5.6.2</b> Creating a Basic Function: Calculating the Mean</a></li>
+<li class="chapter" data-level="5.6.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#using-the-custom-function"><i class="fa fa-check"></i><b>5.6.3</b> Using the Custom Function</a></li>
+<li class="chapter" data-level="5.6.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#returning-a-value-from-the-function"><i class="fa fa-check"></i><b>5.6.4</b> Returning a Value from the Function</a></li>
+<li class="chapter" data-level="5.6.5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#optional-omitting-the-return-statement"><i class="fa fa-check"></i><b>5.6.5</b> Optional: Omitting the return Statement</a></li>
+<li class="chapter" data-level="5.6.6" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#using-more-than-one-argument"><i class="fa fa-check"></i><b>5.6.6</b> Using more than one argument</a></li>
+<li class="chapter" data-level="5.6.7" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#understanding-missing-values-nas-in-r"><i class="fa fa-check"></i><b>5.6.7</b> Understanding Missing Values (NAs) in R</a></li>
+<li class="chapter" data-level="5.6.8" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#initial-attempt-a-function-without-handling-nas"><i class="fa fa-check"></i><b>5.6.8</b> Initial Attempt: A Function Without Handling NAs</a></li>
+<li class="chapter" data-level="5.6.9" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#adding-the-remove_na-argument"><i class="fa fa-check"></i><b>5.6.9</b> Adding the <code>remove_na</code> Argument</a></li>
+<li class="chapter" data-level="5.6.10" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#practical-application"><i class="fa fa-check"></i><b>5.6.10</b> Practical Application</a></li>
+<li class="chapter" data-level="5.6.11" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#getting-help-with-functions"><i class="fa fa-check"></i><b>5.6.11</b> Getting help with functions</a></li>
+<li class="chapter" data-level="5.6.12" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#a-real-world-example-1"><i class="fa fa-check"></i><b>5.6.12</b> A Real World Example</a></li>
+<li class="chapter" data-level="5.6.13" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#conclusion-3"><i class="fa fa-check"></i><b>5.6.13</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="5.7" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#common-mistakes-to-avoid"><i class="fa fa-check"></i><b>5.7</b> Common Mistakes to avoid</a>
+<ul>
+<li class="chapter" data-level="5.7.1" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#mixing-data-types"><i class="fa fa-check"></i><b>5.7.1</b> Mixing Data Types</a></li>
+<li class="chapter" data-level="5.7.2" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#forgetting-function-parentheses"><i class="fa fa-check"></i><b>5.7.2</b> Forgetting Function Parentheses</a></li>
+<li class="chapter" data-level="5.7.3" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#overwriting-built-in-functions"><i class="fa fa-check"></i><b>5.7.3</b> Overwriting Built-in Functions</a></li>
+<li class="chapter" data-level="5.7.4" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#misunderstanding-variable-scoping"><i class="fa fa-check"></i><b>5.7.4</b> Misunderstanding Variable Scoping</a></li>
+<li class="chapter" data-level="5.7.5" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#best-practices-for-variable-scoping-include"><i class="fa fa-check"></i><b>5.7.5</b> Best practices for variable scoping include</a></li>
+<li class="chapter" data-level="5.7.6" data-path="introduction-to-r-for-biologists.html"><a href="introduction-to-r-for-biologists.html#conclusion-4"><i class="fa fa-check"></i><b>5.7.6</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html"><i class="fa fa-check"></i><b>6</b> Controlling the flow of our programs</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#boolean-operators"><i class="fa fa-check"></i><b>6.1</b> Boolean Operators</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#comparison-operators"><i class="fa fa-check"></i><b>6.1.1</b> Comparison Operators</a></li>
+<li class="chapter" data-level="6.1.2" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#logical-operators"><i class="fa fa-check"></i><b>6.1.2</b> Logical Operators</a></li>
+<li class="chapter" data-level="6.1.3" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#conclusion-5"><i class="fa fa-check"></i><b>6.1.3</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#conditional-statements-if-else"><i class="fa fa-check"></i><b>6.2</b> Conditional statements (<code>if</code>, <code>else</code>)</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#the-if-statement"><i class="fa fa-check"></i><b>6.2.1</b> The <code>if</code> Statement</a></li>
+<li class="chapter" data-level="6.2.2" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#else-statement"><i class="fa fa-check"></i><b>6.2.2</b> <code>else</code> statement</a></li>
+<li class="chapter" data-level="6.2.3" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#else-if"><i class="fa fa-check"></i><b>6.2.3</b> <code>else if</code></a></li>
+<li class="chapter" data-level="6.2.4" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#exercise"><i class="fa fa-check"></i><b>6.2.4</b> Exercise</a></li>
+<li class="chapter" data-level="6.2.5" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#conclusion-6"><i class="fa fa-check"></i><b>6.2.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#loops"><i class="fa fa-check"></i><b>6.3</b> Loops</a>
+<ul>
+<li class="chapter" data-level="6.3.1" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#the-while-loop"><i class="fa fa-check"></i><b>6.3.1</b> The <code>while</code> Loop</a></li>
+<li class="chapter" data-level="6.3.2" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#while-loops-in-real-life"><i class="fa fa-check"></i><b>6.3.2</b> While Loops in Real Life</a></li>
+<li class="chapter" data-level="6.3.3" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#the-for-loop"><i class="fa fa-check"></i><b>6.3.3</b> The <code>for</code> Loop</a></li>
+<li class="chapter" data-level="6.3.4" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#conclusion-7"><i class="fa fa-check"></i><b>6.3.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#gene-expression-annotation-using-loops-and-control-structures"><i class="fa fa-check"></i><b>6.4</b> Gene Expression Annotation using Loops and Control Structures</a>
+<ul>
+<li class="chapter" data-level="6.4.1" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#the-data"><i class="fa fa-check"></i><b>6.4.1</b> The Data</a></li>
+<li class="chapter" data-level="6.4.2" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#creating-annotations"><i class="fa fa-check"></i><b>6.4.2</b> Creating Annotations</a></li>
+<li class="chapter" data-level="6.4.3" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#the-loop"><i class="fa fa-check"></i><b>6.4.3</b> The Loop</a></li>
+<li class="chapter" data-level="6.4.4" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#output"><i class="fa fa-check"></i><b>6.4.4</b> Output</a></li>
+<li class="chapter" data-level="6.4.5" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#putting-it-all-together"><i class="fa fa-check"></i><b>6.4.5</b> Putting it all together</a></li>
+<li class="chapter" data-level="6.4.6" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#conclusion-8"><i class="fa fa-check"></i><b>6.4.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6.5" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#lets-solve-a-challenge"><i class="fa fa-check"></i><b>6.5</b> Let’s solve a Challenge</a></li>
+<li class="chapter" data-level="6.6" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#solution"><i class="fa fa-check"></i><b>6.6</b> Solution</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#using-a-for-loop"><i class="fa fa-check"></i><b>6.6.1</b> using a for loop</a></li>
+<li class="chapter" data-level="6.6.2" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#vectorized-solution"><i class="fa fa-check"></i><b>6.6.2</b> vectorized solution</a></li>
+</ul></li>
+<li class="chapter" data-level="6.7" data-path="controlling-the-flow-of-our-programs.html"><a href="controlling-the-flow-of-our-programs.html#section-complete"><i class="fa fa-check"></i><b>6.7</b> Section complete</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html"><i class="fa fa-check"></i><b>7</b> Going more in-depth with R</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#handling-missing-values"><i class="fa fa-check"></i><b>7.1</b> Handling Missing Values</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#understanding-na-in-r"><i class="fa fa-check"></i><b>7.1.1</b> Understanding NA in R</a></li>
+<li class="chapter" data-level="7.1.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#identifying-missing-values"><i class="fa fa-check"></i><b>7.1.2</b> Identifying Missing Values</a></li>
+<li class="chapter" data-level="7.1.3" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#remove-missing-values"><i class="fa fa-check"></i><b>7.1.3</b> remove missing values</a></li>
+<li class="chapter" data-level="7.1.4" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#real-life-note"><i class="fa fa-check"></i><b>7.1.4</b> real-life note</a></li>
+<li class="chapter" data-level="7.1.5" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#conclusion-9"><i class="fa fa-check"></i><b>7.1.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#introduction-to-statistical-tests-and-p-values"><i class="fa fa-check"></i><b>7.2</b> Introduction to Statistical Tests and P-Values</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#practical-application-of-statistical-test-with-r"><i class="fa fa-check"></i><b>7.2.1</b> Practical Application of statistical test with R</a></li>
+<li class="chapter" data-level="7.2.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#conclusion-10"><i class="fa fa-check"></i><b>7.2.2</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#understanding-r-packages"><i class="fa fa-check"></i><b>7.3</b> Understanding R Packages</a>
+<ul>
+<li class="chapter" data-level="7.3.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#what-is-an-r-package"><i class="fa fa-check"></i><b>7.3.1</b> What is an R Package?</a></li>
+<li class="chapter" data-level="7.3.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#why-use-r-packages"><i class="fa fa-check"></i><b>7.3.2</b> Why Use R Packages?</a></li>
+<li class="chapter" data-level="7.3.3" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#how-to-use-a-package"><i class="fa fa-check"></i><b>7.3.3</b> How to use a package?</a></li>
+<li class="chapter" data-level="7.3.4" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#embracing-errors"><i class="fa fa-check"></i><b>7.3.4</b> Embracing Errors</a></li>
+<li class="chapter" data-level="7.3.5" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#how-to-look-for-package-docs-within-r-studio"><i class="fa fa-check"></i><b>7.3.5</b> How to look for package docs within R studio?</a></li>
+<li class="chapter" data-level="7.3.6" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#exploring-package-vignettes"><i class="fa fa-check"></i><b>7.3.6</b> Exploring Package Vignettes</a></li>
+<li class="chapter" data-level="7.3.7" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#practical-tip"><i class="fa fa-check"></i><b>7.3.7</b> Practical Tip</a></li>
+<li class="chapter" data-level="7.3.8" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#conclusion-11"><i class="fa fa-check"></i><b>7.3.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#exploring-functions-in-different-packages-avoiding-collisions-and-accessing-them"><i class="fa fa-check"></i><b>7.4</b> Exploring Functions in Different Packages: Avoiding Collisions and Accessing Them</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#using-double-colon"><i class="fa fa-check"></i><b>7.4.1</b> Using Double Colon (<code>::</code>)</a></li>
+<li class="chapter" data-level="7.4.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#conclusion-12"><i class="fa fa-check"></i><b>7.4.2</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#writing-custom-scripts"><i class="fa fa-check"></i><b>7.5</b> Writing Custom Scripts</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#your-working-directory"><i class="fa fa-check"></i><b>7.5.1</b> Your Working Directory</a></li>
+<li class="chapter" data-level="7.5.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#writing-functions-in-scripts"><i class="fa fa-check"></i><b>7.5.2</b> Writing Functions in Scripts</a></li>
+<li class="chapter" data-level="7.5.3" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#importing-functions-from-scripts"><i class="fa fa-check"></i><b>7.5.3</b> Importing Functions from Scripts</a></li>
+</ul></li>
+<li class="chapter" data-level="7.6" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#data-io"><i class="fa fa-check"></i><b>7.6</b> Data I/O</a>
+<ul>
+<li class="chapter" data-level="7.6.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#built-in-functions"><i class="fa fa-check"></i><b>7.6.1</b> Built-In Functions</a></li>
+<li class="chapter" data-level="7.6.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#real-world-applications"><i class="fa fa-check"></i><b>7.6.2</b> Real-World Applications</a></li>
+<li class="chapter" data-level="7.6.3" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#conclusion-13"><i class="fa fa-check"></i><b>7.6.3</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7.7" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#best-practices-in-modular-programming-and-project-management"><i class="fa fa-check"></i><b>7.7</b> Best Practices in Modular Programming and Project Management</a>
+<ul>
+<li class="chapter" data-level="7.7.1" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#introduction-to-modular-programming"><i class="fa fa-check"></i><b>7.7.1</b> Introduction to Modular Programming</a></li>
+<li class="chapter" data-level="7.7.2" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#breaking-down-your-project"><i class="fa fa-check"></i><b>7.7.2</b> Breaking Down Your Project</a></li>
+<li class="chapter" data-level="7.7.3" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#conclusion-14"><i class="fa fa-check"></i><b>7.7.3</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="7.8" data-path="going-more-in-depth-with-r.html"><a href="going-more-in-depth-with-r.html#section-complete-1"><i class="fa fa-check"></i><b>7.8</b> Section complete</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html"><i class="fa fa-check"></i><b>8</b> Fundamental Data Structures in R</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#named-vectors"><i class="fa fa-check"></i><b>8.1</b> Named Vectors</a>
+<ul>
+<li class="chapter" data-level="8.1.1" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#what-is-a-named-vector"><i class="fa fa-check"></i><b>8.1.1</b> What is a Named Vector?</a></li>
+<li class="chapter" data-level="8.1.2" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#using-names-to-subset-a-vector"><i class="fa fa-check"></i><b>8.1.2</b> Using Names to Subset a Vector</a></li>
+<li class="chapter" data-level="8.1.3" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#named-vectors-as-dictionary-like-structures"><i class="fa fa-check"></i><b>8.1.3</b> Named Vectors as Dictionary-Like Structures</a></li>
+<li class="chapter" data-level="8.1.4" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#real-life-example"><i class="fa fa-check"></i><b>8.1.4</b> Real-life example</a></li>
+<li class="chapter" data-level="8.1.5" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#reordering-and-subsetting-with-names"><i class="fa fa-check"></i><b>8.1.5</b> Reordering and Subsetting with Names</a></li>
+<li class="chapter" data-level="8.1.6" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#conclusion-15"><i class="fa fa-check"></i><b>8.1.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#lists"><i class="fa fa-check"></i><b>8.2</b> Lists</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#introduction-to-lists"><i class="fa fa-check"></i><b>8.2.1</b> Introduction to Lists</a></li>
+<li class="chapter" data-level="8.2.2" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#creating-a-list"><i class="fa fa-check"></i><b>8.2.2</b> Creating a List</a></li>
+<li class="chapter" data-level="8.2.3" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#accessing-list-elements"><i class="fa fa-check"></i><b>8.2.3</b> Accessing List Elements</a></li>
+<li class="chapter" data-level="8.2.4" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#conclusions"><i class="fa fa-check"></i><b>8.2.4</b> Conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#dataframes"><i class="fa fa-check"></i><b>8.3</b> Dataframes</a>
+<ul>
+<li class="chapter" data-level="8.3.1" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#what-is-a-data-frame"><i class="fa fa-check"></i><b>8.3.1</b> What is a Data Frame?</a></li>
+<li class="chapter" data-level="8.3.2" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#creating-a-data-frame"><i class="fa fa-check"></i><b>8.3.2</b> Creating a Data Frame</a></li>
+<li class="chapter" data-level="8.3.3" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#accessing-columns"><i class="fa fa-check"></i><b>8.3.3</b> Accessing Columns</a></li>
+<li class="chapter" data-level="8.3.4" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#subsetting-a-data-frame"><i class="fa fa-check"></i><b>8.3.4</b> Subsetting a Data Frame</a></li>
+<li class="chapter" data-level="8.3.5" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#conclusion-16"><i class="fa fa-check"></i><b>8.3.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#how-to-represent-categorical-data-in-r-understanding-factors"><i class="fa fa-check"></i><b>8.4</b> How to Represent Categorical Data in R? Understanding Factors</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#creating-factors"><i class="fa fa-check"></i><b>8.4.1</b> Creating Factors</a></li>
+<li class="chapter" data-level="8.4.2" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#changing-levels"><i class="fa fa-check"></i><b>8.4.2</b> Changing levels</a></li>
+<li class="chapter" data-level="8.4.3" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#converting-factors"><i class="fa fa-check"></i><b>8.4.3</b> Converting Factors</a></li>
+<li class="chapter" data-level="8.4.4" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#customizing-factor-levels"><i class="fa fa-check"></i><b>8.4.4</b> Customizing Factor Levels</a></li>
+<li class="chapter" data-level="8.4.5" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#creating-factors-from-character-vectors"><i class="fa fa-check"></i><b>8.4.5</b> Creating Factors from Character Vectors</a></li>
+<li class="chapter" data-level="8.4.6" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#subsetting-factors"><i class="fa fa-check"></i><b>8.4.6</b> Subsetting Factors</a></li>
+<li class="chapter" data-level="8.4.7" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#removing-unused-levels"><i class="fa fa-check"></i><b>8.4.7</b> Removing Unused Levels</a></li>
+<li class="chapter" data-level="8.4.8" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#conclusion-17"><i class="fa fa-check"></i><b>8.4.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="fundamental-data-structures-in-r.html"><a href="fundamental-data-structures-in-r.html#section-complete-2"><i class="fa fa-check"></i><b>8.5</b> Section Complete</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html"><i class="fa fa-check"></i><b>9</b> Introduction to the tidyverse ecosystem</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#what-is-the-tidyverse"><i class="fa fa-check"></i><b>9.1</b> What is the Tidyverse?</a></li>
+<li class="chapter" data-level="9.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#key-tidyverse-packages"><i class="fa fa-check"></i><b>9.2</b> Key Tidyverse Packages</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#dplyr"><i class="fa fa-check"></i><b>9.2.1</b> dplyr</a></li>
+<li class="chapter" data-level="9.2.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#a-note-on-the-pipe"><i class="fa fa-check"></i><b>9.2.2</b> A note on the pipe</a></li>
+<li class="chapter" data-level="9.2.3" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#ggplot2"><i class="fa fa-check"></i><b>9.2.3</b> ggplot2</a></li>
+<li class="chapter" data-level="9.2.4" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#tidyr"><i class="fa fa-check"></i><b>9.2.4</b> tidyr</a></li>
+<li class="chapter" data-level="9.2.5" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#readr"><i class="fa fa-check"></i><b>9.2.5</b> readr</a></li>
+<li class="chapter" data-level="9.2.6" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#tibble"><i class="fa fa-check"></i><b>9.2.6</b> tibble</a></li>
+<li class="chapter" data-level="9.2.7" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#stringr"><i class="fa fa-check"></i><b>9.2.7</b> stringr</a></li>
+<li class="chapter" data-level="9.2.8" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#forcats"><i class="fa fa-check"></i><b>9.2.8</b> forcats</a></li>
+<li class="chapter" data-level="9.2.9" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#real-world-applications-1"><i class="fa fa-check"></i><b>9.2.9</b> Real-World Applications</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#tibble-and-readr---modern-data-structures-in-r"><i class="fa fa-check"></i><b>9.3</b> Tibble and Readr - Modern Data Structures in R</a>
+<ul>
+<li class="chapter" data-level="9.3.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#tibbles-a-better-way-to-store-data"><i class="fa fa-check"></i><b>9.3.1</b> Tibbles: A Better Way to Store Data</a></li>
+<li class="chapter" data-level="9.3.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#rownames-and-tibbles"><i class="fa fa-check"></i><b>9.3.2</b> Rownames and Tibbles</a></li>
+<li class="chapter" data-level="9.3.3" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#reading-data-with-readr"><i class="fa fa-check"></i><b>9.3.3</b> Reading Data with readr</a></li>
+<li class="chapter" data-level="9.3.4" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#using-tibbles-with-imported-data"><i class="fa fa-check"></i><b>9.3.4</b> Using Tibbles with Imported Data</a></li>
+<li class="chapter" data-level="9.3.5" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#note-on-reading-excel-files"><i class="fa fa-check"></i><b>9.3.5</b> Note on reading Excel files</a></li>
+<li class="chapter" data-level="9.3.6" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-18"><i class="fa fa-check"></i><b>9.3.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#the-tidy-data-format"><i class="fa fa-check"></i><b>9.4</b> The tidy data format</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#the-importance-of-tidy-data"><i class="fa fa-check"></i><b>9.4.1</b> The Importance of Tidy Data</a></li>
+<li class="chapter" data-level="9.4.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#long-format-vs.-wide-format"><i class="fa fa-check"></i><b>9.4.2</b> Long Format vs. Wide Format</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#introducing-dplyr-your-data-wrangling-toolkit"><i class="fa fa-check"></i><b>9.5</b> Introducing dplyr: Your Data Wrangling Toolkit</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#selecting-specific-columns"><i class="fa fa-check"></i><b>9.5.1</b> Selecting Specific Columns</a></li>
+<li class="chapter" data-level="9.5.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#adding-new-columns"><i class="fa fa-check"></i><b>9.5.2</b> Adding New Columns</a></li>
+<li class="chapter" data-level="9.5.3" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#reordering-columns"><i class="fa fa-check"></i><b>9.5.3</b> Reordering Columns</a></li>
+<li class="chapter" data-level="9.5.4" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#filtering-data"><i class="fa fa-check"></i><b>9.5.4</b> Filtering Data</a></li>
+<li class="chapter" data-level="9.5.5" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#summarizing-data"><i class="fa fa-check"></i><b>9.5.5</b> Summarizing Data</a></li>
+<li class="chapter" data-level="9.5.6" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#sorting-data"><i class="fa fa-check"></i><b>9.5.6</b> Sorting Data</a></li>
+<li class="chapter" data-level="9.5.7" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-19"><i class="fa fa-check"></i><b>9.5.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#stringr-your-essential-toolkit-to-manipulate-strings"><i class="fa fa-check"></i><b>9.6</b> stringr: your essential toolkit to manipulate strings</a></li>
+<li class="chapter" data-level="9.7" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#purrr-ditch-your-for-loops"><i class="fa fa-check"></i><b>9.7</b> purrr: ditch your for loops</a>
+<ul>
+<li class="chapter" data-level="9.7.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#nesting-data-with-nest"><i class="fa fa-check"></i><b>9.7.1</b> Nesting Data with nest()</a></li>
+<li class="chapter" data-level="9.7.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#map-and-its-variants"><i class="fa fa-check"></i><b>9.7.2</b> <code>map()</code> and Its Variants</a></li>
+<li class="chapter" data-level="9.7.3" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#note-on-anonymous-functions"><i class="fa fa-check"></i><b>9.7.3</b> Note on Anonymous functions</a></li>
+<li class="chapter" data-level="9.7.4" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-20"><i class="fa fa-check"></i><b>9.7.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="9.8" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#tidying-metadata-from-geo."><i class="fa fa-check"></i><b>9.8</b> Tidying metadata from GEO.</a>
+<ul>
+<li class="chapter" data-level="9.8.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#prerequisites"><i class="fa fa-check"></i><b>9.8.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="9.8.2" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#getting-started"><i class="fa fa-check"></i><b>9.8.2</b> Getting Started</a></li>
+<li class="chapter" data-level="9.8.3" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#tidying-the-metadata"><i class="fa fa-check"></i><b>9.8.3</b> Tidying the Metadata</a></li>
+<li class="chapter" data-level="9.8.4" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#converting-to-a-tidy-data-frame"><i class="fa fa-check"></i><b>9.8.4</b> Converting to a Tidy Data Frame</a></li>
+<li class="chapter" data-level="9.8.5" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#bonus-reading-multiple-tsv-files"><i class="fa fa-check"></i><b>9.8.5</b> Bonus: Reading Multiple TSV Files</a></li>
+</ul></li>
+<li class="chapter" data-level="9.9" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#section-complete-3"><i class="fa fa-check"></i><b>9.9</b> Section Complete</a>
+<ul>
+<li class="chapter" data-level="9.9.1" data-path="introduction-to-the-tidyverse-ecosystem.html"><a href="introduction-to-the-tidyverse-ecosystem.html#conclusion-21"><i class="fa fa-check"></i><b>9.9.1</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html"><i class="fa fa-check"></i><b>10</b> Data visualization with ggplot2</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#creating-scatter-plots"><i class="fa fa-check"></i><b>10.1</b> Creating Scatter Plots</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#prerequisites-1"><i class="fa fa-check"></i><b>10.1.1</b> Prerequisites</a></li>
+<li class="chapter" data-level="10.1.2" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#loading-and-exploring-the-data"><i class="fa fa-check"></i><b>10.1.2</b> Loading and Exploring the Data</a></li>
+<li class="chapter" data-level="10.1.3" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#filtering-the-data"><i class="fa fa-check"></i><b>10.1.3</b> Filtering the Data</a></li>
+<li class="chapter" data-level="10.1.4" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#creating-a-scatter-plot"><i class="fa fa-check"></i><b>10.1.4</b> Creating a Scatter Plot</a></li>
+<li class="chapter" data-level="10.1.5" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#calculating-correlation"><i class="fa fa-check"></i><b>10.1.5</b> Calculating Correlation</a></li>
+<li class="chapter" data-level="10.1.6" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#hypothesis-testing"><i class="fa fa-check"></i><b>10.1.6</b> Hypothesis Testing</a></li>
+<li class="chapter" data-level="10.1.7" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#adding-a-regression-line"><i class="fa fa-check"></i><b>10.1.7</b> Adding a Regression Line</a></li>
+<li class="chapter" data-level="10.1.8" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#conclusion-22"><i class="fa fa-check"></i><b>10.1.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#understanding-distributions-with-histograms"><i class="fa fa-check"></i><b>10.2</b> Understanding Distributions with Histograms</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#creating-a-basic-histogram"><i class="fa fa-check"></i><b>10.2.1</b> Creating a Basic Histogram</a></li>
+<li class="chapter" data-level="10.2.2" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#customizing-histogram-bins"><i class="fa fa-check"></i><b>10.2.2</b> Customizing Histogram Bins</a></li>
+<li class="chapter" data-level="10.2.3" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#conclusion-23"><i class="fa fa-check"></i><b>10.2.3</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#visualizing-data-distribution-with-boxplots-and-violin-plots"><i class="fa fa-check"></i><b>10.3</b> Visualizing Data Distribution with Boxplots and Violin Plots</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#creating-a-basic-boxplot"><i class="fa fa-check"></i><b>10.3.1</b> Creating a Basic Boxplot</a></li>
+<li class="chapter" data-level="10.3.2" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#rotating-x-axis-labels"><i class="fa fa-check"></i><b>10.3.2</b> Rotating X-axis Labels</a></li>
+<li class="chapter" data-level="10.3.3" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#adding-color-to-boxplots"><i class="fa fa-check"></i><b>10.3.3</b> Adding Color to Boxplots</a></li>
+<li class="chapter" data-level="10.3.4" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#customizing-color-palettes"><i class="fa fa-check"></i><b>10.3.4</b> Customizing Color Palettes</a></li>
+<li class="chapter" data-level="10.3.5" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#applying-custom-color-palette"><i class="fa fa-check"></i><b>10.3.5</b> Applying Custom Color Palette</a></li>
+<li class="chapter" data-level="10.3.6" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#reordering-boxplots"><i class="fa fa-check"></i><b>10.3.6</b> Reordering Boxplots</a></li>
+<li class="chapter" data-level="10.3.7" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#using-violin-plots"><i class="fa fa-check"></i><b>10.3.7</b> Using Violin Plots</a></li>
+<li class="chapter" data-level="10.3.8" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#conclusion-24"><i class="fa fa-check"></i><b>10.3.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#creating-bar-plots-to-visualize-median-epcam-levels-by-cancer-type"><i class="fa fa-check"></i><b>10.4</b> Creating Bar Plots to Visualize Median EPCAM Levels by Cancer Type</a>
+<ul>
+<li class="chapter" data-level="10.4.1" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#calculating-median-epcam-levels-by-cancer-type"><i class="fa fa-check"></i><b>10.4.1</b> Calculating Median EPCAM Levels by Cancer Type</a></li>
+<li class="chapter" data-level="10.4.2" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#creating-a-basic-bar-plot"><i class="fa fa-check"></i><b>10.4.2</b> Creating a Basic Bar Plot</a></li>
+<li class="chapter" data-level="10.4.3" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#reordering-the-bars"><i class="fa fa-check"></i><b>10.4.3</b> Reordering the Bars</a></li>
+<li class="chapter" data-level="10.4.4" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#reversing-the-order"><i class="fa fa-check"></i><b>10.4.4</b> Reversing the Order</a></li>
+<li class="chapter" data-level="10.4.5" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#note-on-factor-levels"><i class="fa fa-check"></i><b>10.4.5</b> Note on factor levels</a></li>
+<li class="chapter" data-level="10.4.6" data-path="data-visualization-with-ggplot2.html"><a href="data-visualization-with-ggplot2.html#conclusion-25"><i class="fa fa-check"></i><b>10.4.6</b> Conclusion</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html"><i class="fa fa-check"></i><b>11</b> Introduction to BioConductor</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#introduction-to-biocmanager"><i class="fa fa-check"></i><b>11.1</b> Introduction to BiocManager</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#why-use-biocmanager"><i class="fa fa-check"></i><b>11.1.1</b> Why Use BiocManager?</a></li>
+<li class="chapter" data-level="11.1.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#installing-biocmanager"><i class="fa fa-check"></i><b>11.1.2</b> Installing BiocManager</a></li>
+<li class="chapter" data-level="11.1.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#installing-bioconductor-packages"><i class="fa fa-check"></i><b>11.1.3</b> Installing Bioconductor Packages</a></li>
+<li class="chapter" data-level="11.1.4" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#updating-bioconductor-packages"><i class="fa fa-check"></i><b>11.1.4</b> Updating Bioconductor Packages</a></li>
+<li class="chapter" data-level="11.1.5" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#checking-for-valid-bioconductor-versions"><i class="fa fa-check"></i><b>11.1.5</b> Checking for Valid Bioconductor Versions</a></li>
+<li class="chapter" data-level="11.1.6" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#conclusion-26"><i class="fa fa-check"></i><b>11.1.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#working-with-genomic-coordinates-and-regions-in-r"><i class="fa fa-check"></i><b>11.2</b> Working with Genomic Coordinates and Regions in R</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#introduction-to-genomicranges"><i class="fa fa-check"></i><b>11.2.1</b> Introduction to GenomicRanges</a></li>
+<li class="chapter" data-level="11.2.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#basic-operations-with-genomicranges"><i class="fa fa-check"></i><b>11.2.2</b> Basic Operations with GenomicRanges</a></li>
+<li class="chapter" data-level="11.2.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#calculating-width-of-each-genomic-interval"><i class="fa fa-check"></i><b>11.2.3</b> Calculating width of Each Genomic Interval</a></li>
+<li class="chapter" data-level="11.2.4" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#start-and-end-positions"><i class="fa fa-check"></i><b>11.2.4</b> Start and End Positions</a></li>
+<li class="chapter" data-level="11.2.5" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#strand-information"><i class="fa fa-check"></i><b>11.2.5</b> Strand Information</a></li>
+<li class="chapter" data-level="11.2.6" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#shifting-the-genomic-range"><i class="fa fa-check"></i><b>11.2.6</b> Shifting the Genomic Range</a></li>
+<li class="chapter" data-level="11.2.7" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#subsetting"><i class="fa fa-check"></i><b>11.2.7</b> Subsetting</a></li>
+<li class="chapter" data-level="11.2.8" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#flanking-regions"><i class="fa fa-check"></i><b>11.2.8</b> Flanking Regions</a></li>
+<li class="chapter" data-level="11.2.9" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#resizing"><i class="fa fa-check"></i><b>11.2.9</b> Resizing</a></li>
+<li class="chapter" data-level="11.2.10" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#based-and-1-based-coordinate-system"><i class="fa fa-check"></i><b>11.2.10</b> 0 based and 1 based coordinate system</a></li>
+<li class="chapter" data-level="11.2.11" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#other-packages"><i class="fa fa-check"></i><b>11.2.11</b> Other packages</a></li>
+<li class="chapter" data-level="11.2.12" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#accessing-genome-annotations"><i class="fa fa-check"></i><b>11.2.12</b> Accessing Genome Annotations</a></li>
+<li class="chapter" data-level="11.2.13" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#understanding-genomic-biotypes"><i class="fa fa-check"></i><b>11.2.13</b> Understanding Genomic Biotypes</a></li>
+<li class="chapter" data-level="11.2.14" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#creating-a-transcript-database-txdb"><i class="fa fa-check"></i><b>11.2.14</b> Creating a Transcript Database (TxDb)</a></li>
+<li class="chapter" data-level="11.2.15" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#extracting-exons-introns-and-intergenic-regions"><i class="fa fa-check"></i><b>11.2.15</b> Extracting Exons, Introns, and Intergenic Regions</a></li>
+<li class="chapter" data-level="11.2.16" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#merging-all-exons"><i class="fa fa-check"></i><b>11.2.16</b> Merging All Exons</a></li>
+<li class="chapter" data-level="11.2.17" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#introns"><i class="fa fa-check"></i><b>11.2.17</b> Introns</a></li>
+<li class="chapter" data-level="11.2.18" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#getting-all-genes"><i class="fa fa-check"></i><b>11.2.18</b> Getting All Genes</a></li>
+<li class="chapter" data-level="11.2.19" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#promoters"><i class="fa fa-check"></i><b>11.2.19</b> Promoters</a></li>
+<li class="chapter" data-level="11.2.20" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#full-genome"><i class="fa fa-check"></i><b>11.2.20</b> Full Genome</a></li>
+<li class="chapter" data-level="11.2.21" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#full-transcriptome"><i class="fa fa-check"></i><b>11.2.21</b> Full Transcriptome</a></li>
+<li class="chapter" data-level="11.2.22" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#intergenic-regions"><i class="fa fa-check"></i><b>11.2.22</b> Intergenic Regions</a></li>
+<li class="chapter" data-level="11.2.23" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#exploring-untranslated-regions-utrs"><i class="fa fa-check"></i><b>11.2.23</b> Exploring Untranslated Regions (UTRs)</a></li>
+<li class="chapter" data-level="11.2.24" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#conclusion-27"><i class="fa fa-check"></i><b>11.2.24</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#exploring-cpg-islands-and-shores-in-genomic-data"><i class="fa fa-check"></i><b>11.3</b> Exploring CpG Islands and Shores in Genomic Data</a>
+<ul>
+<li class="chapter" data-level="11.3.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#introduction-to-cpg-islands"><i class="fa fa-check"></i><b>11.3.1</b> Introduction to CpG Islands</a></li>
+<li class="chapter" data-level="11.3.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#fetching-cpg-island-coordinates"><i class="fa fa-check"></i><b>11.3.2</b> Fetching CpG Island Coordinates</a></li>
+<li class="chapter" data-level="11.3.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#defining-cpg-shores"><i class="fa fa-check"></i><b>11.3.3</b> Defining CpG Shores</a></li>
+<li class="chapter" data-level="11.3.4" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#combining-and-analyzing-cpg-shores"><i class="fa fa-check"></i><b>11.3.4</b> Combining and Analyzing CpG Shores</a></li>
+<li class="chapter" data-level="11.3.5" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#conclusion-28"><i class="fa fa-check"></i><b>11.3.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="11.4" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#real-world-applications-chip-seq"><i class="fa fa-check"></i><b>11.4</b> Real-World Applications: ChIP-seq</a>
+<ul>
+<li class="chapter" data-level="11.4.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#read-in-peak-file"><i class="fa fa-check"></i><b>11.4.1</b> read in peak file</a></li>
+<li class="chapter" data-level="11.4.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#identify-promoters-that-overlap-with-the-peaks"><i class="fa fa-check"></i><b>11.4.2</b> Identify promoters that overlap with the peaks</a></li>
+<li class="chapter" data-level="11.4.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#use-the-chipseeker-package"><i class="fa fa-check"></i><b>11.4.3</b> use the ChIPseeker package</a></li>
+</ul></li>
+<li class="chapter" data-level="11.5" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#analyzing-and-visualizing-genomic-data"><i class="fa fa-check"></i><b>11.5</b> Analyzing and Visualizing Genomic Data</a>
+<ul>
+<li class="chapter" data-level="11.5.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#deseq2"><i class="fa fa-check"></i><b>11.5.1</b> DESeq2</a></li>
+<li class="chapter" data-level="11.5.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#geoquery"><i class="fa fa-check"></i><b>11.5.2</b> GEOquery</a></li>
+<li class="chapter" data-level="11.5.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#converting-gene-ids"><i class="fa fa-check"></i><b>11.5.3</b> Converting Gene IDs</a></li>
+<li class="chapter" data-level="11.5.4" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#complexheatmap"><i class="fa fa-check"></i><b>11.5.4</b> ComplexHeatmap</a></li>
+<li class="chapter" data-level="11.5.5" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#conclusion-29"><i class="fa fa-check"></i><b>11.5.5</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="11.6" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#real-world-example---tcga-analysis"><i class="fa fa-check"></i><b>11.6</b> Real-World Example - TCGA Analysis</a>
+<ul>
+<li class="chapter" data-level="11.6.1" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#introduction-to-tcga"><i class="fa fa-check"></i><b>11.6.1</b> Introduction to TCGA</a></li>
+<li class="chapter" data-level="11.6.2" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#why-analyze-tcga-data"><i class="fa fa-check"></i><b>11.6.2</b> Why Analyze TCGA Data?</a></li>
+<li class="chapter" data-level="11.6.3" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#getting-started-1"><i class="fa fa-check"></i><b>11.6.3</b> Getting Started</a></li>
+<li class="chapter" data-level="11.6.4" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-1-install-and-load-required-packages"><i class="fa fa-check"></i><b>11.6.4</b> Step 1: Install and Load Required Packages</a></li>
+<li class="chapter" data-level="11.6.5" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-2-retrieve-tcga-project-information"><i class="fa fa-check"></i><b>11.6.5</b> Step 2: Retrieve TCGA Project Information</a></li>
+<li class="chapter" data-level="11.6.6" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-3-create-a-rangedsummarizedexperiment-object"><i class="fa fa-check"></i><b>11.6.6</b> Step 3: Create a RangedSummarizedExperiment Object</a></li>
+<li class="chapter" data-level="11.6.7" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-4-explore-tcga-data"><i class="fa fa-check"></i><b>11.6.7</b> Step 4: Explore TCGA Data</a></li>
+<li class="chapter" data-level="11.6.8" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-5-data-transformation---converting-raw-counts-to-tpm"><i class="fa fa-check"></i><b>11.6.8</b> Step 5: Data Transformation - Converting Raw Counts to TPM</a></li>
+<li class="chapter" data-level="11.6.9" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-6-combine-data-and-metadata"><i class="fa fa-check"></i><b>11.6.9</b> Step 6: Combine Data and Metadata</a></li>
+<li class="chapter" data-level="11.6.10" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-7-renaming-metadata-columns"><i class="fa fa-check"></i><b>11.6.10</b> Step 7: Renaming Metadata Columns</a></li>
+<li class="chapter" data-level="11.6.11" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-8-merging-into-a-single-dataframe"><i class="fa fa-check"></i><b>11.6.11</b> Step 8: Merging into a single DataFrame</a></li>
+<li class="chapter" data-level="11.6.12" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-9-create-a-gene-expression-heatmap"><i class="fa fa-check"></i><b>11.6.12</b> Step 9: Create a Gene Expression Heatmap</a></li>
+<li class="chapter" data-level="11.6.13" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#step-10-sanity-check-and-scaling-of-gene-expression"><i class="fa fa-check"></i><b>11.6.13</b> Step 10: Sanity Check and Scaling of Gene Expression</a></li>
+<li class="chapter" data-level="11.6.14" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#conclusion-30"><i class="fa fa-check"></i><b>11.6.14</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="11.7" data-path="introduction-to-bioconductor.html"><a href="introduction-to-bioconductor.html#section-completed"><i class="fa fa-check"></i><b>11.7</b> Section completed</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html"><i class="fa fa-check"></i><b>12</b> Final Project: Analyzing RNAseq Data from GEO</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#final-project-overview"><i class="fa fa-check"></i><b>12.1</b> Final Project Overview</a></li>
+<li class="chapter" data-level="12.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#how-to-pre-process-rnaseq-data"><i class="fa fa-check"></i><b>12.2</b> How to pre-process RNAseq data</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#rnaseq-pre-processing-steps"><i class="fa fa-check"></i><b>12.2.1</b> RNAseq pre-processing steps</a></li>
+<li class="chapter" data-level="12.2.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#how-to-use-salmon-to-preprocess-geo-fastq-to-counts"><i class="fa fa-check"></i><b>12.2.2</b> How to use salmon to preprocess GEO fastq to counts</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#download-and-subset-count-matrix"><i class="fa fa-check"></i><b>12.3</b> Download and subset Count Matrix</a>
+<ul>
+<li class="chapter" data-level="12.3.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#downloading-the-count-matrix"><i class="fa fa-check"></i><b>12.3.1</b> Downloading the Count Matrix</a></li>
+<li class="chapter" data-level="12.3.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#reading-the-count-matrix-in-r"><i class="fa fa-check"></i><b>12.3.2</b> Reading the Count Matrix in R</a></li>
+<li class="chapter" data-level="12.3.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#examining-the-data"><i class="fa fa-check"></i><b>12.3.3</b> Examining the Data</a></li>
+<li class="chapter" data-level="12.3.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#subsetting-the-data"><i class="fa fa-check"></i><b>12.3.4</b> Subsetting the Data</a></li>
+<li class="chapter" data-level="12.3.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#converting-to-a-matrix"><i class="fa fa-check"></i><b>12.3.5</b> Converting to a Matrix</a></li>
+<li class="chapter" data-level="12.3.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#adding-row-names"><i class="fa fa-check"></i><b>12.3.6</b> Adding Row Names</a></li>
+</ul></li>
+<li class="chapter" data-level="12.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#calculate-the-total-exon-length-per-gene"><i class="fa fa-check"></i><b>12.4</b> Calculate the total exon length per gene</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#why-normalize-gene-counts-to-tpm"><i class="fa fa-check"></i><b>12.4.1</b> Why Normalize Gene Counts to TPM?</a></li>
+<li class="chapter" data-level="12.4.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#creating-a-function-for-normalization"><i class="fa fa-check"></i><b>12.4.2</b> Creating a function for normalization</a></li>
+<li class="chapter" data-level="12.4.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#join-the-exon-length-table"><i class="fa fa-check"></i><b>12.4.3</b> join the exon length table</a></li>
+<li class="chapter" data-level="12.4.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#what-genes-are-not-in-the-mapping-table"><i class="fa fa-check"></i><b>12.4.4</b> what genes are not in the mapping table?</a></li>
+</ul></li>
+<li class="chapter" data-level="12.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#normalizing-raw-counts-to-transcripts-per-million-tpm"><i class="fa fa-check"></i><b>12.5</b> Normalizing Raw Counts to Transcripts per Million (TPM)</a>
+<ul>
+<li class="chapter" data-level="12.5.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#the-count2tpm-function"><i class="fa fa-check"></i><b>12.5.1</b> The <code>count2tpm</code> Function:</a></li>
+<li class="chapter" data-level="12.5.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#applying-the-function"><i class="fa fa-check"></i><b>12.5.2</b> Applying the Function</a></li>
+<li class="chapter" data-level="12.5.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusions-1"><i class="fa fa-check"></i><b>12.5.3</b> Conclusions</a></li>
+</ul></li>
+<li class="chapter" data-level="12.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-gene-expression-data-using-t-tests"><i class="fa fa-check"></i><b>12.6</b> Analyzing Gene Expression Data Using t-Tests</a>
+<ul>
+<li class="chapter" data-level="12.6.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#hypothesis-testing-1"><i class="fa fa-check"></i><b>12.6.1</b> Hypothesis Testing</a></li>
+<li class="chapter" data-level="12.6.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-specific-genes"><i class="fa fa-check"></i><b>12.6.2</b> Analyzing Specific Genes</a></li>
+<li class="chapter" data-level="12.6.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-all-genes"><i class="fa fa-check"></i><b>12.6.3</b> Analyzing All Genes</a></li>
+<li class="chapter" data-level="12.6.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-31"><i class="fa fa-check"></i><b>12.6.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.7" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-gene-expression-data-with-ggplot2"><i class="fa fa-check"></i><b>12.7</b> Analyzing Gene Expression Data with ggplot2</a>
+<ul>
+<li class="chapter" data-level="12.7.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#import-libraries-and-load-data"><i class="fa fa-check"></i><b>12.7.1</b> Import Libraries and Load Data</a></li>
+<li class="chapter" data-level="12.7.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#visualizing-p-value-distribution"><i class="fa fa-check"></i><b>12.7.2</b> Visualizing P-Value Distribution</a></li>
+<li class="chapter" data-level="12.7.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#identifying-differentially-expressed-genes"><i class="fa fa-check"></i><b>12.7.3</b> Identifying Differentially Expressed Genes</a></li>
+<li class="chapter" data-level="12.7.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#selecting-differentially-expressed-genes"><i class="fa fa-check"></i><b>12.7.4</b> Selecting Differentially Expressed Genes</a></li>
+<li class="chapter" data-level="12.7.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#boxplot-to-visualize-gene-expression-changes-between-the-two-conditions."><i class="fa fa-check"></i><b>12.7.5</b> boxplot to visualize gene expression changes between the two conditions.</a></li>
+<li class="chapter" data-level="12.7.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#creating-the-boxplot"><i class="fa fa-check"></i><b>12.7.6</b> Creating the Boxplot</a></li>
+<li class="chapter" data-level="12.7.7" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#visualizing-raw-expression-values"><i class="fa fa-check"></i><b>12.7.7</b> Visualizing Raw Expression Values</a></li>
+<li class="chapter" data-level="12.7.8" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-32"><i class="fa fa-check"></i><b>12.7.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.8" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#correcting-for-multiple-comparisons-in-statistical-analysis"><i class="fa fa-check"></i><b>12.8</b> Correcting for Multiple Comparisons in Statistical Analysis</a>
+<ul>
+<li class="chapter" data-level="12.8.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#why-correct-for-multiple-comparisons"><i class="fa fa-check"></i><b>12.8.1</b> Why Correct for Multiple Comparisons?</a></li>
+<li class="chapter" data-level="12.8.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#the-multiple-comparisons-example"><i class="fa fa-check"></i><b>12.8.2</b> The Multiple Comparisons Example</a></li>
+<li class="chapter" data-level="12.8.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#correcting-for-multiple-comparisons-false-discovery-rate-fdr"><i class="fa fa-check"></i><b>12.8.3</b> Correcting for Multiple Comparisons: False Discovery Rate (FDR)</a></li>
+<li class="chapter" data-level="12.8.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-33"><i class="fa fa-check"></i><b>12.8.4</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.9" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#analyzing-differential-gene-expression-with-deseq2"><i class="fa fa-check"></i><b>12.9</b> Analyzing Differential Gene Expression with DESeq2</a>
+<ul>
+<li class="chapter" data-level="12.9.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#create-a-sample-sheet"><i class="fa fa-check"></i><b>12.9.1</b> Create a Sample Sheet</a></li>
+<li class="chapter" data-level="12.9.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#create-a-deseq2-object"><i class="fa fa-check"></i><b>12.9.2</b> Create a DESeq2 Object</a></li>
+<li class="chapter" data-level="12.9.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#get-differential-results"><i class="fa fa-check"></i><b>12.9.3</b> Get Differential Results</a></li>
+<li class="chapter" data-level="12.9.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#explore-the-deseq2-results-and-create-visualizations."><i class="fa fa-check"></i><b>12.9.4</b> Explore the DESeq2 results and create visualizations.</a></li>
+<li class="chapter" data-level="12.9.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#examining-the-top-differentially-expressed-genes"><i class="fa fa-check"></i><b>12.9.5</b> Examining the Top Differentially Expressed Genes</a></li>
+<li class="chapter" data-level="12.9.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#labeling-genes-in-the-volcano-plot"><i class="fa fa-check"></i><b>12.9.6</b> Labeling Genes in the Volcano Plot</a></li>
+<li class="chapter" data-level="12.9.7" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#coloring-points-in-the-volcano-plot"><i class="fa fa-check"></i><b>12.9.7</b> Coloring Points in the Volcano Plot</a></li>
+<li class="chapter" data-level="12.9.8" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-34"><i class="fa fa-check"></i><b>12.9.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.10" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#principal-component-analysis-pca-using-deseq2"><i class="fa fa-check"></i><b>12.10</b> Principal Component Analysis (PCA) using DESeq2</a>
+<ul>
+<li class="chapter" data-level="12.10.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#what-is-principal-component-analysis-pca"><i class="fa fa-check"></i><b>12.10.1</b> What is Principal Component Analysis (PCA)?</a></li>
+<li class="chapter" data-level="12.10.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#why-use-pca"><i class="fa fa-check"></i><b>12.10.2</b> Why use PCA?</a></li>
+<li class="chapter" data-level="12.10.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#using-deseq2-for-pca-analysis"><i class="fa fa-check"></i><b>12.10.3</b> Using DESeq2 for PCA Analysis</a></li>
+<li class="chapter" data-level="12.10.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#plotting-pca-by-ourselves"><i class="fa fa-check"></i><b>12.10.4</b> Plotting PCA by ourselves</a></li>
+<li class="chapter" data-level="12.10.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#create-a-dataframe-for-visualization"><i class="fa fa-check"></i><b>12.10.5</b> Create a DataFrame for Visualization</a></li>
+<li class="chapter" data-level="12.10.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#plot-the-pca"><i class="fa fa-check"></i><b>12.10.6</b> Plot the PCA</a></li>
+<li class="chapter" data-level="12.10.7" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#comparison-with-deseq2s-plotpca"><i class="fa fa-check"></i><b>12.10.7</b> Comparison with DESeq2’s plotPCA</a></li>
+<li class="chapter" data-level="12.10.8" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-35"><i class="fa fa-check"></i><b>12.10.8</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.11" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#creating-a-perfect-heatmap"><i class="fa fa-check"></i><b>12.11</b> Creating a Perfect Heatmap</a>
+<ul>
+<li class="chapter" data-level="12.11.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#selecting-significant-genes"><i class="fa fa-check"></i><b>12.11.1</b> Selecting Significant Genes</a></li>
+<li class="chapter" data-level="12.11.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#creating-the-heatmap"><i class="fa fa-check"></i><b>12.11.2</b> Creating the Heatmap</a></li>
+<li class="chapter" data-level="12.11.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#why-scaling-is-important"><i class="fa fa-check"></i><b>12.11.3</b> Why Scaling is Important?</a></li>
+<li class="chapter" data-level="12.11.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#adding-annotations"><i class="fa fa-check"></i><b>12.11.4</b> Adding Annotations</a></li>
+<li class="chapter" data-level="12.11.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#the-impact-of-scaling"><i class="fa fa-check"></i><b>12.11.5</b> The Impact of Scaling</a></li>
+<li class="chapter" data-level="12.11.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-36"><i class="fa fa-check"></i><b>12.11.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.12" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#pathway-analysis-using-over-representation-and-gene-set-enrichment-analysis"><i class="fa fa-check"></i><b>12.12</b> Pathway Analysis Using Over-Representation and Gene Set Enrichment Analysis</a>
+<ul>
+<li class="chapter" data-level="12.12.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#understanding-pathway-analysis"><i class="fa fa-check"></i><b>12.12.1</b> Understanding Pathway Analysis</a></li>
+<li class="chapter" data-level="12.12.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#over-representation-analysis-ora"><i class="fa fa-check"></i><b>12.12.2</b> Over-Representation Analysis (ORA)</a></li>
+<li class="chapter" data-level="12.12.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#some-concepts-to-remember"><i class="fa fa-check"></i><b>12.12.3</b> Some concepts to remember</a></li>
+<li class="chapter" data-level="12.12.4" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#visualizations"><i class="fa fa-check"></i><b>12.12.4</b> Visualizations</a></li>
+<li class="chapter" data-level="12.12.5" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#introduction-to-msigdb"><i class="fa fa-check"></i><b>12.12.5</b> Introduction to MSigDB</a></li>
+<li class="chapter" data-level="12.12.6" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#gene-set-enrichment-analysis-gsea"><i class="fa fa-check"></i><b>12.12.6</b> Gene Set Enrichment Analysis (GSEA)</a></li>
+<li class="chapter" data-level="12.12.7" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#gsea-in-action"><i class="fa fa-check"></i><b>12.12.7</b> GSEA in action</a></li>
+<li class="chapter" data-level="12.12.8" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#visualizing-gsea-results"><i class="fa fa-check"></i><b>12.12.8</b> Visualizing GSEA Results</a></li>
+<li class="chapter" data-level="12.12.9" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#conclusion-37"><i class="fa fa-check"></i><b>12.12.9</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="12.13" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#congratulations-for-successfully-completing-this-final-project"><i class="fa fa-check"></i><b>12.13</b> Congratulations for successfully completing this final project!</a>
+<ul>
+<li class="chapter" data-level="12.13.1" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#final-words"><i class="fa fa-check"></i><b>12.13.1</b> Final words</a></li>
+<li class="chapter" data-level="12.13.2" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#materials-to-read-to-uplift-your-r-skills-to-the-next-level"><i class="fa fa-check"></i><b>12.13.2</b> Materials to read to uplift your R skills to the next level</a></li>
+<li class="chapter" data-level="12.13.3" data-path="final-project-analyzing-rnaseq-data-from-geo.html"><a href="final-project-analyzing-rnaseq-data-from-geo.html#coding-challenge"><i class="fa fa-check"></i><b>12.13.3</b> Coding Challenge</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Master Real-world Bioinformatics analysis in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="going-more-in-depth-with-r" class="section level1" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Going more in-depth with R</h1>
+<div id="handling-missing-values" class="section level2" number="7.1">
+<h2><span class="header-section-number">7.1</span> Handling Missing Values</h2>
+<p>In bioinformatics, dealing with missing data is a common challenge. Missing values can arise from various sources, including experimental limitations or data collection errors. It’s crucial to understand how to identify and handle these missing values effectively to ensure the accuracy of your analyses. In R, missing values are represented by <code>NA</code>, indicating the absence of a value. In this tutorial, we will explore key properties of <code>NA</code>, learn how to identify missing values, and discover techniques to handle them in your gene expression datasets.</p>
+<div id="understanding-na-in-r" class="section level3" number="7.1.1">
+<h3><span class="header-section-number">7.1.1</span> Understanding NA in R</h3>
+<div id="propagation-of-na" class="section level4" number="7.1.1.1">
+<h4><span class="header-section-number">7.1.1.1</span> Propagation of <code>NA</code>:</h4>
+<p>When performing operations on vectors or data frames, most functions in R will propagate <code>NA</code> values. This means that if even a single element within a vector is <code>NA</code>, the result of the operation will also be <code>NA</code>. For example:</p>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="going-more-in-depth-with-r.html#cb211-1" tabindex="-1"></a><span class="co"># Example vector with missing values</span></span>
+<span id="cb211-2"><a href="going-more-in-depth-with-r.html#cb211-2" tabindex="-1"></a>gene_expression <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">15</span>, <span class="cn">NA</span>, <span class="dv">25</span>, <span class="dv">18</span>, <span class="cn">NA</span>, <span class="dv">30</span>)</span>
+<span id="cb211-3"><a href="going-more-in-depth-with-r.html#cb211-3" tabindex="-1"></a></span>
+<span id="cb211-4"><a href="going-more-in-depth-with-r.html#cb211-4" tabindex="-1"></a><span class="co"># Performing a calculation on the vector</span></span>
+<span id="cb211-5"><a href="going-more-in-depth-with-r.html#cb211-5" tabindex="-1"></a>result <span class="ot">&lt;-</span> gene_expression <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb211-6"><a href="going-more-in-depth-with-r.html#cb211-6" tabindex="-1"></a></span>
+<span id="cb211-7"><a href="going-more-in-depth-with-r.html#cb211-7" tabindex="-1"></a>result</span></code></pre></div>
+<pre><code>## [1] 20 30 NA 50 36 NA 60</code></pre>
+<p>As you can see, the presence of <code>NA</code> in the <code>gene_expression</code> vector leads to <code>NA</code> values in the result vector.</p>
+</div>
+<div id="handling-na-in-summary-statistics" class="section level4" number="7.1.1.2">
+<h4><span class="header-section-number">7.1.1.2</span> Handling NA in Summary Statistics</h4>
+<p>By default, <code>NA</code> values are omitted from summary statistics like the mean, median, or standard deviation. However, specialized functions often allow you to handle <code>NA</code> values explicitly using the na.rm parameter. For instance:</p>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="going-more-in-depth-with-r.html#cb213-1" tabindex="-1"></a><span class="co"># Calculate the mean, ignoring NA values</span></span>
+<span id="cb213-2"><a href="going-more-in-depth-with-r.html#cb213-2" tabindex="-1"></a>mean_expression <span class="ot">&lt;-</span> <span class="fu">mean</span>(gene_expression, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb213-3"><a href="going-more-in-depth-with-r.html#cb213-3" tabindex="-1"></a>mean_expression</span></code></pre></div>
+<pre><code>## [1] 19.6</code></pre>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="going-more-in-depth-with-r.html#cb215-1" tabindex="-1"></a><span class="co"># NA propgates</span></span>
+<span id="cb215-2"><a href="going-more-in-depth-with-r.html#cb215-2" tabindex="-1"></a>mean_expression <span class="ot">&lt;-</span> <span class="fu">mean</span>(gene_expression)</span>
+<span id="cb215-3"><a href="going-more-in-depth-with-r.html#cb215-3" tabindex="-1"></a>mean_expression</span></code></pre></div>
+<pre><code>## [1] NA</code></pre>
+</div>
+</div>
+<div id="identifying-missing-values" class="section level3" number="7.1.2">
+<h3><span class="header-section-number">7.1.2</span> Identifying Missing Values</h3>
+<p>To identify missing values in your data, you can use the <code>is.na()</code> function. It returns a logical vector where <code>TRUE</code> indicates a missing value. For example:</p>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="going-more-in-depth-with-r.html#cb217-1" tabindex="-1"></a><span class="co"># Identify missing values</span></span>
+<span id="cb217-2"><a href="going-more-in-depth-with-r.html#cb217-2" tabindex="-1"></a>missing_values <span class="ot">&lt;-</span> <span class="fu">is.na</span>(gene_expression)</span>
+<span id="cb217-3"><a href="going-more-in-depth-with-r.html#cb217-3" tabindex="-1"></a></span>
+<span id="cb217-4"><a href="going-more-in-depth-with-r.html#cb217-4" tabindex="-1"></a>missing_values</span></code></pre></div>
+<pre><code>## [1] FALSE FALSE  TRUE FALSE FALSE  TRUE FALSE</code></pre>
+</div>
+<div id="remove-missing-values" class="section level3" number="7.1.3">
+<h3><span class="header-section-number">7.1.3</span> remove missing values</h3>
+<p>Now, let’s explore how to handle missing values in your gene expression dataset. Suppose you want to remove missing values to clean your data. You can do this using subsetting with the logical vector we created earlier:</p>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="going-more-in-depth-with-r.html#cb219-1" tabindex="-1"></a><span class="co"># Remove missing values</span></span>
+<span id="cb219-2"><a href="going-more-in-depth-with-r.html#cb219-2" tabindex="-1"></a>clean_data <span class="ot">&lt;-</span> gene_expression[<span class="sc">!</span>missing_values]</span>
+<span id="cb219-3"><a href="going-more-in-depth-with-r.html#cb219-3" tabindex="-1"></a></span>
+<span id="cb219-4"><a href="going-more-in-depth-with-r.html#cb219-4" tabindex="-1"></a>clean_data</span></code></pre></div>
+<pre><code>## [1] 10 15 25 18 30</code></pre>
+<p>The <code>clean_data</code> vector now contains only the non-missing values from the original <code>gene_expression</code> vector.</p>
+</div>
+<div id="real-life-note" class="section level3" number="7.1.4">
+<h3><span class="header-section-number">7.1.4</span> real-life note</h3>
+<p>In real life, the data are usually messy. People use different ways to represent missing values. It can be <code>-</code>, <code>N/A</code>, <code>NULL</code> etc. see below</p>
+<p><img src="images/NA.png" /></p>
+<p>More often, you have data in a dataframe. You can use the <code>table(df$column_name, useNA="ifany")</code> function to check all the possible values and you will spot the <code>NAs</code>.</p>
+<p>See this old post from me <a href="https://rpubs.com/crazyhottommy/when_NA_is_not_NA" class="uri">https://rpubs.com/crazyhottommy/when_NA_is_not_NA</a></p>
+</div>
+<div id="conclusion-9" class="section level3" number="7.1.5">
+<h3><span class="header-section-number">7.1.5</span> Conclusion</h3>
+<p>Handling missing values is a crucial skill in bioinformatics, as it ensures the reliability of your analyses. Whether you’re calculating summary statistics or performing complex analyses, understanding how to work with missing data is an essential part of your bioinformatics toolkit.</p>
+</div>
+</div>
+<div id="introduction-to-statistical-tests-and-p-values" class="section level2" number="7.2">
+<h2><span class="header-section-number">7.2</span> Introduction to Statistical Tests and P-Values</h2>
+<p>We often need to determine whether there are significant differences between groups of data. Let’s consider a scenario where we have two sets of cells: a control group and a treatment group (which could represent various treatments like chemical or radiation exposure). Our goal is to assess if a particular gene, let’s call it Gene A, exhibits differential expression under treatment conditions. Each group has 12 replicates.</p>
+<p>We typically start with a null hypothesis (H0), which suggests that there is no difference in gene expression for Gene A after treatment, and an alternative hypothesis (H1), which suggests that Gene A’s expression changes after treatment.</p>
+<p>Now, we perform a statistical test, like the t-test, on the averages of the two groups. If the test yields a p-value, say p = 0.035, and we’ve set a significance threshold (alpha) of 0.05, we compare these values. A p-value of 0.035 is less than 0.05, which leads us to reject the null hypothesis, concluding that Gene A’s expression significantly changes after treatment.</p>
+<blockquote>
+<p>But what does a p-value of 0.035 really mean?</p>
+</blockquote>
+<p>A p-value starts with the assumption that the null hypothesis is true. In this context, a p-value of 0.035 means that under the null hypothesis, the probability of observing the observed difference in gene expression after treatment is 0.035, which is quite low. By selecting a significance level of 0.05, we establish a threshold for significance. When the p-value falls below this threshold, we reject the null hypothesis in favor of the alternative hypothesis. Thus, understanding the null hypothesis is crucial for interpreting the p-value’s significance.</p>
+<div id="practical-application-of-statistical-test-with-r" class="section level3" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> Practical Application of statistical test with R</h3>
+<p>Let’s dive deeper into t-tests and their practical application using R:</p>
+<div id="two-sample-t-test" class="section level4" number="7.2.1.1">
+<h4><span class="header-section-number">7.2.1.1</span> Two-Sample t-Test</h4>
+<p>In bioinformatics, the two-sample t-test is a valuable tool for comparing the means of two groups when you have continuous data, such as gene expression levels. It assesses whether the difference between the two group means is statistically significant.</p>
+<p>Let’s consider an example with two sets of gene expression data, ‘condition1’ and ‘condition2’:</p>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="going-more-in-depth-with-r.html#cb221-1" tabindex="-1"></a><span class="co"># Gene expression data for two conditions</span></span>
+<span id="cb221-2"><a href="going-more-in-depth-with-r.html#cb221-2" tabindex="-1"></a>condition1 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">12</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">25</span>)</span>
+<span id="cb221-3"><a href="going-more-in-depth-with-r.html#cb221-3" tabindex="-1"></a>condition2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">8</span>, <span class="dv">10</span>, <span class="dv">7</span>, <span class="dv">9</span>)</span>
+<span id="cb221-4"><a href="going-more-in-depth-with-r.html#cb221-4" tabindex="-1"></a></span>
+<span id="cb221-5"><a href="going-more-in-depth-with-r.html#cb221-5" tabindex="-1"></a><span class="co"># Perform a two-sample t-test</span></span>
+<span id="cb221-6"><a href="going-more-in-depth-with-r.html#cb221-6" tabindex="-1"></a>t_test_result <span class="ot">&lt;-</span> <span class="fu">t.test</span>(condition1, condition2)</span>
+<span id="cb221-7"><a href="going-more-in-depth-with-r.html#cb221-7" tabindex="-1"></a>t_test_result</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  condition1 and condition2
+## t = 3.2426, df = 3.3053, p-value = 0.04159
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##   0.6450826 18.3549174
+## sample estimates:
+## mean of x mean of y 
+##      18.0       8.5</code></pre>
+<p>In this example, the t-test yields a p-value of 0.04159. This p-value represents the probability of observing the difference in gene expression between ‘condition1’ and ‘condition2’ if the null hypothesis were true (i.e., no difference). Since 0.04159 is less than the typical significance level of 0.05, we reject the null hypothesis, indicating that there is a statistically significant difference in gene expression between the two conditions.</p>
+</div>
+<div id="one-sided-t-test" class="section level4" number="7.2.1.2">
+<h4><span class="header-section-number">7.2.1.2</span> One-Sided t-Test</h4>
+<p>In some cases, you may be interested in whether one group’s mean is greater than the other. This is where one-sided t-tests come into play.</p>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="going-more-in-depth-with-r.html#cb223-1" tabindex="-1"></a><span class="co"># Perform a one-sided t-test (condition1 &gt; condition2)</span></span>
+<span id="cb223-2"><a href="going-more-in-depth-with-r.html#cb223-2" tabindex="-1"></a><span class="fu">t.test</span>(condition1, condition2, <span class="at">alternative =</span> <span class="st">&quot;greater&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  condition1 and condition2
+## t = 3.2426, df = 3.3053, p-value = 0.0208
+## alternative hypothesis: true difference in means is greater than 0
+## 95 percent confidence interval:
+##  2.857331      Inf
+## sample estimates:
+## mean of x mean of y 
+##      18.0       8.5</code></pre>
+<p>In this example, the p-value is 0.0208. This test specifically checks if the gene expression in ‘condition1’ is greater than in ‘condition2’. By specifying the ‘alternative’ parameter as ‘greater,’ we focus our test on this direction. Again, the p-value is compared to the significance level to make a determination.</p>
+</div>
+<div id="non-parametric-test" class="section level4" number="7.2.1.3">
+<h4><span class="header-section-number">7.2.1.3</span> Non-Parametric Test</h4>
+<p>The t-test assumes that the data follows a normal distribution. If this assumption is not met, you can use non-parametric tests like the Wilcoxon rank-sum test.</p>
+<div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="going-more-in-depth-with-r.html#cb225-1" tabindex="-1"></a><span class="fu">wilcox.test</span>(condition1, condition2)</span></code></pre></div>
+<pre><code>## 
+##  Wilcoxon rank sum exact test
+## 
+## data:  condition1 and condition2
+## W = 16, p-value = 0.02857
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<p>In this example, the p-value is 0.02857. The Wilcoxon rank-sum test is valuable when your data doesn’t meet the normality assumption, making it a robust choice for analyzing gene expression or other biological data.</p>
+<p>These t-tests are essential tools in bioinformatics for assessing the significance of differences between groups, helping researchers make data-driven decisions in various experimental scenarios.</p>
+</div>
+</div>
+<div id="conclusion-10" class="section level3" number="7.2.2">
+<h3><span class="header-section-number">7.2.2</span> Conclusion</h3>
+<p>Understanding statistical tests and p-values is fundamental in the field of bioinformatics. These tools empower researchers to determine whether observed differences in data are statistically significant, enabling informed decisions and discoveries in the world of life sciences. The t-test, with its variations and non-parametric alternatives, is a powerful ally when comparing groups and assessing changes in gene expression or other biological phenomena. By grasping the significance of p-values and the interplay with null and alternative hypotheses, you can confidently interpret the results of your analyses, paving the way for meaningful insights and breakthroughs in bioinformatics.</p>
+</div>
+</div>
+<div id="understanding-r-packages" class="section level2" number="7.3">
+<h2><span class="header-section-number">7.3</span> Understanding R Packages</h2>
+<p>In R, packages are similar to complementary toolboxes that can significantly enhance your data analysis capabilities. Think of R as your basic toolkit, but packages are the specialized instruments that make complex tasks easier. In this lesson, we’ll embark on a journey to understand what R packages are, how to find them, install them, and put them to use in your data analysis.</p>
+<div id="what-is-an-r-package" class="section level3" number="7.3.1">
+<h3><span class="header-section-number">7.3.1</span> What is an R Package?</h3>
+<p>At its core, R provides a set of fundamental functions and features. However, when you dive into more complex tasks like genomics workflows or advanced statistical analysis, you’ll quickly realize that creating everything from scratch is neither efficient nor practical. That’s where R packages come in! These are like pre-made modules created by the R community, containing specialized functions and tools for various tasks.</p>
+<p>We have learned functions in R. An R package is a collection of R functions, data, and code organized in a specific directory structure. It allows users to bundle related functionality, making it easier to distribute, share, and reuse code.</p>
+<ul>
+<li>Purpose: Packages provide a way to extend R’s capabilities. They can contain functions, datasets, documentation, and more. Using packages enhances code organization, collaboration, and efficiency.</li>
+</ul>
+</div>
+<div id="why-use-r-packages" class="section level3" number="7.3.2">
+<h3><span class="header-section-number">7.3.2</span> Why Use R Packages?</h3>
+<p>Imagine you need to perform complex statistical analysis, visualize data, or carry out genomics-related tasks. Instead of writing extensive code from scratch, R packages allow you to leverage the expertise of other researchers and developers. These packages encapsulate data processing routines, saving you time and effort.</p>
+</div>
+<div id="how-to-use-a-package" class="section level3" number="7.3.3">
+<h3><span class="header-section-number">7.3.3</span> How to use a package?</h3>
+<div id="installation" class="section level4" number="7.3.3.1">
+<h4><span class="header-section-number">7.3.3.1</span> Installation</h4>
+<p>To use an R package, you first need to install it. Most packages are hosted on CRAN (Comprehensive R Archive Network), which is the primary repository for R packages. You can install a package using the <code>install.packages()</code> function. For example, if you want to install the popular <code>ggplot2</code> package for data visualization:</p>
+<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="going-more-in-depth-with-r.html#cb227-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</span></code></pre></div>
+<p>Once installed, you need to load the package into your current R session using the <code>library()</code> function:</p>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="going-more-in-depth-with-r.html#cb228-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code></pre></div>
+<p>This action makes all the functions and tools from the <code>ggplot2</code> package available for use in your environment.</p>
+</div>
+<div id="installing-specialized-packages" class="section level4" number="7.3.3.2">
+<h4><span class="header-section-number">7.3.3.2</span> Installing specialized packages</h4>
+<p>For specialized fields like biology or bioinformatics, Bioconductor is a valuable resource. Bioconductor provides a vast array of genomics and statistics packages tailored to these domains. To install Bioconductor packages, you first need to check if you have the <code>BiocManager</code> package installed and then use it to install other packages. For instance, to install the <code>DESeq2</code> package for differential expression analysis:</p>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="going-more-in-depth-with-r.html#cb229-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;BiocManager&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb229-2"><a href="going-more-in-depth-with-r.html#cb229-2" tabindex="-1"></a>    <span class="fu">install.packages</span>(<span class="st">&quot;BiocManager&quot;</span>)</span>
+<span id="cb229-3"><a href="going-more-in-depth-with-r.html#cb229-3" tabindex="-1"></a></span>
+<span id="cb229-4"><a href="going-more-in-depth-with-r.html#cb229-4" tabindex="-1"></a>BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;DESeq2&quot;</span>)</span></code></pre></div>
+<p>Remember, you typically only need to install a package once on your machine.</p>
+<p>Sometimes, people host their R packages on <code>github</code>. To install an package from
+github you need an R package called <code>devtools</code>. Install it first</p>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="going-more-in-depth-with-r.html#cb230-1" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)</span></code></pre></div>
+<p>Then we can use it to install packages from github:</p>
+<p>e.g., this package <a href="https://github.com/immunogenomics/presto" class="uri">https://github.com/immunogenomics/presto</a></p>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="going-more-in-depth-with-r.html#cb231-1" tabindex="-1"></a><span class="fu">library</span>(devtools)</span>
+<span id="cb231-2"><a href="going-more-in-depth-with-r.html#cb231-2" tabindex="-1"></a></span>
+<span id="cb231-3"><a href="going-more-in-depth-with-r.html#cb231-3" tabindex="-1"></a><span class="fu">install_github</span>(<span class="st">&quot;immunogenomics/presto&quot;</span>)</span></code></pre></div>
+</div>
+<div id="putting-packages-to-work" class="section level4" number="7.3.3.3">
+<h4><span class="header-section-number">7.3.3.3</span> Putting Packages to Work</h4>
+<p>Once you’ve installed and loaded a package, you can harness its power. For example, let’s say you want to perform differential expression analysis on your count data:</p>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="going-more-in-depth-with-r.html#cb232-1" tabindex="-1"></a><span class="fu">library</span>(DESeq2)</span>
+<span id="cb232-2"><a href="going-more-in-depth-with-r.html#cb232-2" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">5</span>, <span class="dv">20</span>, <span class="dv">8</span>, <span class="dv">12</span>, <span class="dv">18</span>, <span class="dv">25</span>, <span class="dv">30</span>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb232-3"><a href="going-more-in-depth-with-r.html#cb232-3" tabindex="-1"></a></span>
+<span id="cb232-4"><a href="going-more-in-depth-with-r.html#cb232-4" tabindex="-1"></a><span class="fu">rownames</span>(counts) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Gene1&quot;</span>, <span class="st">&quot;Gene2&quot;</span>, <span class="st">&quot;Gene3&quot;</span>)</span>
+<span id="cb232-5"><a href="going-more-in-depth-with-r.html#cb232-5" tabindex="-1"></a></span>
+<span id="cb232-6"><a href="going-more-in-depth-with-r.html#cb232-6" tabindex="-1"></a><span class="fu">colnames</span>(counts) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Sample1&quot;</span>, <span class="st">&quot;Sample2&quot;</span>, <span class="st">&quot;Sample3&quot;</span>)</span>
+<span id="cb232-7"><a href="going-more-in-depth-with-r.html#cb232-7" tabindex="-1"></a></span>
+<span id="cb232-8"><a href="going-more-in-depth-with-r.html#cb232-8" tabindex="-1"></a><span class="co"># create a &#39;samples&#39; dataframe</span></span>
+<span id="cb232-9"><a href="going-more-in-depth-with-r.html#cb232-9" tabindex="-1"></a>samples <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">condition =</span> <span class="fu">c</span>(<span class="st">&quot;Control&quot;</span>, <span class="st">&quot;Treatment&quot;</span>, <span class="st">&quot;Control&quot;</span>), </span>
+<span id="cb232-10"><a href="going-more-in-depth-with-r.html#cb232-10" tabindex="-1"></a>              <span class="at">misc1 =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>),</span>
+<span id="cb232-11"><a href="going-more-in-depth-with-r.html#cb232-11" tabindex="-1"></a>              <span class="at">misc2 =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>))</span>
+<span id="cb232-12"><a href="going-more-in-depth-with-r.html#cb232-12" tabindex="-1"></a></span>
+<span id="cb232-13"><a href="going-more-in-depth-with-r.html#cb232-13" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSetFromMatrix</span>(<span class="at">countData =</span> counts, </span>
+<span id="cb232-14"><a href="going-more-in-depth-with-r.html#cb232-14" tabindex="-1"></a>                              <span class="at">colData =</span> samples, </span>
+<span id="cb232-15"><a href="going-more-in-depth-with-r.html#cb232-15" tabindex="-1"></a>                              <span class="at">design =</span> <span class="sc">~</span> condition) </span>
+<span id="cb232-16"><a href="going-more-in-depth-with-r.html#cb232-16" tabindex="-1"></a></span>
+<span id="cb232-17"><a href="going-more-in-depth-with-r.html#cb232-17" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
+<span id="cb232-18"><a href="going-more-in-depth-with-r.html#cb232-18" tabindex="-1"></a></span>
+<span id="cb232-19"><a href="going-more-in-depth-with-r.html#cb232-19" tabindex="-1"></a>res</span></code></pre></div>
+<pre><code>## class: DESeqDataSet 
+## dim: 3 3 
+## metadata(1): version
+## assays(4): counts mu H cooks
+## rownames(3): Gene1 Gene2 Gene3
+## rowData names(22): baseMean baseVar ... deviance maxCooks
+## colnames(3): Sample1 Sample2 Sample3
+## colData names(4): condition misc1 misc2 sizeFactor</code></pre>
+<p>In this example, we use the <code>DESeq2</code> package to handle the analysis. This package takes care of normalization and statistical calculations behind the scenes.</p>
+</div>
+</div>
+<div id="embracing-errors" class="section level3" number="7.3.4">
+<h3><span class="header-section-number">7.3.4</span> Embracing Errors</h3>
+<p>As you explore new packages, don’t be alarmed if you encounter errors during installation. Error messages can be your allies, providing valuable information. If the message seems mysterious, copy it and try googling it, or seek help from online forums like <code>biostars.org</code>, <code>seqanswers.com</code>, or <code>support.bioconductor.org</code>. Error messages are part of the learning process, and you’ll soon become skilled at deciphering them.</p>
+</div>
+<div id="how-to-look-for-package-docs-within-r-studio" class="section level3" number="7.3.5">
+<h3><span class="header-section-number">7.3.5</span> How to look for package docs within R studio?</h3>
+<p>Once a package is loaded, you can access its documentation using the <code>help()</code> function or the <code>?</code> operator. Simply provide the name of the function from the package as the argument to <code>help()</code> or follow <code>?</code> with the function name. For instance:</p>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="going-more-in-depth-with-r.html#cb234-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb234-2"><a href="going-more-in-depth-with-r.html#cb234-2" tabindex="-1"></a>?select</span></code></pre></div>
+<pre><code>## Help on topic &#39;select&#39; was found in the following packages:
+## 
+##   Package               Library
+##   AnnotationDbi         /Library/Frameworks/R.framework/Versions/4.1/Resources/library
+##   dplyr                 /Library/Frameworks/R.framework/Versions/4.1/Resources/library
+## 
+## 
+## Using the first match ...</code></pre>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="going-more-in-depth-with-r.html#cb236-1" tabindex="-1"></a><span class="fu">help</span>(<span class="st">&quot;select&quot;</span>)</span></code></pre></div>
+<pre><code>## Help on topic &#39;select&#39; was found in the following packages:
+## 
+##   Package               Library
+##   AnnotationDbi         /Library/Frameworks/R.framework/Versions/4.1/Resources/library
+##   dplyr                 /Library/Frameworks/R.framework/Versions/4.1/Resources/library
+## 
+## 
+## Using the first match ...</code></pre>
+<p>This command opens the documentation for the <code>select()</code> function from the <code>dplyr</code> package, providing details on its usage and arguments.</p>
+</div>
+<div id="exploring-package-vignettes" class="section level3" number="7.3.6">
+<h3><span class="header-section-number">7.3.6</span> Exploring Package Vignettes</h3>
+<p>Many R packages include vignettes, which are comprehensive documents detailing package functionalities, use cases, and examples. You can access these vignettes using the <code>browseVignettes()</code> function. Syntax:</p>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="going-more-in-depth-with-r.html#cb238-1" tabindex="-1"></a><span class="fu">browseVignettes</span>(package_name)</span></code></pre></div>
+<p>For example:</p>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="going-more-in-depth-with-r.html#cb239-1" tabindex="-1"></a><span class="fu">browseVignettes</span>(<span class="st">&quot;dplyr&quot;</span>)</span></code></pre></div>
+<p>Executing this command opens a list of available vignettes for the dplyr package, allowing you to explore specific topics in detail.</p>
+</div>
+<div id="practical-tip" class="section level3" number="7.3.7">
+<h3><span class="header-section-number">7.3.7</span> Practical Tip</h3>
+<p>When looking for packages, you can search for specific ones related to your data type or analysis task. For instance, if you’re working with DNA methylation data, you can search for packages like “DNA methylation bioconductor” in google.</p>
+</div>
+<div id="conclusion-11" class="section level3" number="7.3.8">
+<h3><span class="header-section-number">7.3.8</span> Conclusion</h3>
+<p>In conclusion, R packages are your companions on the journey of data analysis. They allow you to stand on the shoulders of the community and streamline your work. As you advance in your data science or bioinformatics endeavors, you’ll discover that these packages play a pivotal role in making your tasks more efficient and effective.</p>
+</div>
+</div>
+<div id="exploring-functions-in-different-packages-avoiding-collisions-and-accessing-them" class="section level2" number="7.4">
+<h2><span class="header-section-number">7.4</span> Exploring Functions in Different Packages: Avoiding Collisions and Accessing Them</h2>
+<p>One of the key skills you’ll develop is harnessing the power of packages or libraries in R to extend its functionality. However, it’s crucial to understand how to navigate and use functions when multiple packages offer functions with the same name, as collisions can occur. In this tutorial, we’ll demystify this concept and show you how to access functions from different packages without loading them, enabling you to choose which one to use.</p>
+<p>Imagine you’re working on a project that requires both <code>dplyr</code> for data frame wrangling and <code>AnnotationDbi</code> for mapping gene IDs. You know that both packages offer a <code>select</code> function. Here’s where the challenge arises: if you load both libraries, the function in the later-loaded library will override the previous one. So, how do you access the <code>select</code> function from the desired package?</p>
+<div id="using-double-colon" class="section level3" number="7.4.1">
+<h3><span class="header-section-number">7.4.1</span> Using Double Colon (<code>::</code>)</h3>
+<p>The answer lies in the double colon (<code>::</code>) operator. You can specify the package along with the function name to avoid ambiguity. Let’s look at some examples:</p>
+<div id="data-selection" class="section level4" number="7.4.1.1">
+<h4><span class="header-section-number">7.4.1.1</span> Data Selection</h4>
+<p>Suppose you are working with data frames and need to select specific columns. The dplyr package offers a <code>select</code> function for this task, but there is also a select function in the <code>AnnotationDbi</code> package. To avoid confusion, use the following approach:</p>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="going-more-in-depth-with-r.html#cb240-1" tabindex="-1"></a><span class="co"># Select data columns using &#39;select&#39; from &#39;dplyr&#39; and &#39;AnnotationDbi&#39; packages</span></span>
+<span id="cb240-2"><a href="going-more-in-depth-with-r.html#cb240-2" tabindex="-1"></a>selected_data_dplyr <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">select</span>(data_frame, column1, column2)</span>
+<span id="cb240-3"><a href="going-more-in-depth-with-r.html#cb240-3" tabindex="-1"></a>selected_data_AnnotationDbi <span class="ot">&lt;-</span> AnnotationDbi<span class="sc">::</span><span class="fu">select</span>(x, keys, columns, keytype)</span></code></pre></div>
+<p>Here, we illustrate how to select specific columns using ‘select’ functions from both the <code>dplyr</code> and <code>AnnotationDbi</code> packages.</p>
+</div>
+<div id="data-reduction" class="section level4" number="7.4.1.2">
+<h4><span class="header-section-number">7.4.1.2</span> Data Reduction</h4>
+<p>Imagine you need to reduce a dataset to a single value. The <code>purrr</code> package offers a <code>reduce</code> function for this purpose, and so does the GenomicRanges package. Here’s how to differentiate between them:</p>
+<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="going-more-in-depth-with-r.html#cb241-1" tabindex="-1"></a><span class="co"># Reduce data using &#39;reduce&#39; from &#39;purrr&#39; and &#39;GenomicRanges&#39; packages</span></span>
+<span id="cb241-2"><a href="going-more-in-depth-with-r.html#cb241-2" tabindex="-1"></a>reduced_data_purrr <span class="ot">&lt;-</span> purrr<span class="sc">::</span><span class="fu">reduce</span>(data_list, reducer_function)</span>
+<span id="cb241-3"><a href="going-more-in-depth-with-r.html#cb241-3" tabindex="-1"></a>reduced_data_GenomicRanges <span class="ot">&lt;-</span> GenomicRanges<span class="sc">::</span><span class="fu">reduce</span>(gr)</span></code></pre></div>
+<p>For data reduction, we show how to use <code>reduce</code> functions from <code>purrr</code> and <code>GenomicRanges</code> packages.</p>
+</div>
+<div id="set-operations" class="section level4" number="7.4.1.3">
+<h4><span class="header-section-number">7.4.1.3</span> Set Operations</h4>
+<p>In some cases, you may need to find the differences between two sets of data. The <code>GenomicRanges</code> package offers a <code>setdiff</code> function, but base R also has a <code>setdiff</code> function. Here’s how to use them separately:</p>
+<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="going-more-in-depth-with-r.html#cb242-1" tabindex="-1"></a><span class="co"># Perform set difference using &#39;setdiff&#39; from &#39;GenomicRanges&#39; and base R</span></span>
+<span id="cb242-2"><a href="going-more-in-depth-with-r.html#cb242-2" tabindex="-1"></a>set_diff_GenomicRanges <span class="ot">&lt;-</span> GenomicRanges<span class="sc">::</span><span class="fu">setdiff</span>(gr1, gr2)</span>
+<span id="cb242-3"><a href="going-more-in-depth-with-r.html#cb242-3" tabindex="-1"></a>set_diff_base_R <span class="ot">&lt;-</span> base<span class="sc">::</span><span class="fu">setdiff</span>(set1, set2)</span></code></pre></div>
+<p>Lastly, for set operations, we demonstrate how to perform set differences using <code>setdiff</code> functions from <code>GenomicRanges</code> and base R.</p>
+<blockquote>
+<p>These examples might seem abstract, but in the real world, you’ll encounter situations where different packages offer functions with the same name but cater to distinct needs. By mastering the ‘::’ operator, you gain the ability to choose the right tool for the job, ensuring that your data analysis and manipulation are precise and tailored to your specific requirements.</p>
+</blockquote>
+</div>
+</div>
+<div id="conclusion-12" class="section level3" number="7.4.2">
+<h3><span class="header-section-number">7.4.2</span> Conclusion</h3>
+<p>Accessing functions from packages without loading them is a powerful technique that allows you to resolve function collisions and use the right function for your specific needs. It’s a valuable skill for any data analyst or programmer working with R packages, ensuring that your code runs smoothly and produces accurate results.</p>
+</div>
+</div>
+<div id="writing-custom-scripts" class="section level2" number="7.5">
+<h2><span class="header-section-number">7.5</span> Writing Custom Scripts</h2>
+<p>Writing organized and modular code is crucial for improving code readability, maintainability, and reusability. In this lesson, we will explore the process of creating, organizing, and loading scripts in R, with a focus on modular programming. We assume no prior computer science experience, making this lesson beginner-friendly.</p>
+<p>This will be our hypothetical project structure:</p>
+<div class="sourceCode" id="cb243"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb243-1"><a href="going-more-in-depth-with-r.html#cb243-1" tabindex="-1"></a><span class="ex">my_awesome_project</span></span>
+<span id="cb243-2"><a href="going-more-in-depth-with-r.html#cb243-2" tabindex="-1"></a><span class="ex">├──</span> data</span>
+<span id="cb243-3"><a href="going-more-in-depth-with-r.html#cb243-3" tabindex="-1"></a>    <span class="ex">├──</span> data.csv</span>
+<span id="cb243-4"><a href="going-more-in-depth-with-r.html#cb243-4" tabindex="-1"></a><span class="ex">└──</span> scripts</span>
+<span id="cb243-5"><a href="going-more-in-depth-with-r.html#cb243-5" tabindex="-1"></a>    <span class="ex">├──</span> data_loading.R</span>
+<span id="cb243-6"><a href="going-more-in-depth-with-r.html#cb243-6" tabindex="-1"></a>    <span class="ex">├──</span> main_script.R</span>
+<span id="cb243-7"><a href="going-more-in-depth-with-r.html#cb243-7" tabindex="-1"></a><span class="ex">└──</span> results</span>
+<span id="cb243-8"><a href="going-more-in-depth-with-r.html#cb243-8" tabindex="-1"></a>    <span class="ex">├──</span> intermediate_table.csv</span>
+<span id="cb243-9"><a href="going-more-in-depth-with-r.html#cb243-9" tabindex="-1"></a>    <span class="ex">├──</span> figure.pdf</span></code></pre></div>
+<div id="your-working-directory" class="section level3" number="7.5.1">
+<h3><span class="header-section-number">7.5.1</span> Your Working Directory</h3>
+<blockquote>
+<p>In R, the working directory is like a current location on your computer where R will look for files and where it will save files by default. It’s important to set the working directory correctly because it helps R know where to find and store your data and scripts.</p>
+</blockquote>
+<p>People tend to use <code>setwd()</code> to set their working directory.</p>
+<div class="sourceCode" id="cb244"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb244-1"><a href="going-more-in-depth-with-r.html#cb244-1" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">&quot;/path/to/your/project&quot;</span>)</span></code></pre></div>
+<p>However, this makes the analysis not reproducible. If people take your code and run in their own computer,the file paths are different.</p>
+<p><strong>Tip:</strong> For more advanced users, you may want to stay away from <code>setwd()</code> and use the <code>here()</code> function for reproducibility. Read this blog post for more information <a href="https://www.tidyverse.org/blog/2017/12/workflow-vs-script/" class="uri">https://www.tidyverse.org/blog/2017/12/workflow-vs-script/</a></p>
+<p>In RStudio, you can create a new R script by following these steps:</p>
+<ul>
+<li><p>Click on “File” in the top menu.</p></li>
+<li><p>Select “New File” and then “R Script.”</p></li>
+</ul>
+<p>This will open a new R script file where you can write your code.</p>
+</div>
+<div id="writing-functions-in-scripts" class="section level3" number="7.5.2">
+<h3><span class="header-section-number">7.5.2</span> Writing Functions in Scripts</h3>
+<p>To make your code modular, you can define functions within your script files. Functions allow you to encapsulate specific tasks, making your code more readable and reusable. For example:</p>
+<div class="sourceCode" id="cb245"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb245-1"><a href="going-more-in-depth-with-r.html#cb245-1" tabindex="-1"></a><span class="co"># data_loading.R</span></span>
+<span id="cb245-2"><a href="going-more-in-depth-with-r.html#cb245-2" tabindex="-1"></a>load_data <span class="ot">&lt;-</span> <span class="cf">function</span>(file_path) {</span>
+<span id="cb245-3"><a href="going-more-in-depth-with-r.html#cb245-3" tabindex="-1"></a>  data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(file_path)</span>
+<span id="cb245-4"><a href="going-more-in-depth-with-r.html#cb245-4" tabindex="-1"></a>  <span class="fu">return</span>(data)</span>
+<span id="cb245-5"><a href="going-more-in-depth-with-r.html#cb245-5" tabindex="-1"></a>}</span></code></pre></div>
+<p>This function, <code>load_data</code> reads data from a CSV file and returns it. Save this script as <code>data_loading.R</code> in the <code>scripts</code> folder.</p>
+</div>
+<div id="importing-functions-from-scripts" class="section level3" number="7.5.3">
+<h3><span class="header-section-number">7.5.3</span> Importing Functions from Scripts</h3>
+<p>Now that you’ve defined a function in a script, you can import it into your main script for use. To do this, use the <code>source()</code> function:</p>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="going-more-in-depth-with-r.html#cb246-1" tabindex="-1"></a><span class="co"># main_script.R</span></span>
+<span id="cb246-2"><a href="going-more-in-depth-with-r.html#cb246-2" tabindex="-1"></a><span class="fu">source</span>(<span class="st">&quot;scripts/data_loading.R&quot;</span>)</span>
+<span id="cb246-3"><a href="going-more-in-depth-with-r.html#cb246-3" tabindex="-1"></a></span>
+<span id="cb246-4"><a href="going-more-in-depth-with-r.html#cb246-4" tabindex="-1"></a><span class="co"># Now you can use the imported function</span></span>
+<span id="cb246-5"><a href="going-more-in-depth-with-r.html#cb246-5" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> <span class="fu">load_data</span>(<span class="st">&quot;data/my_data.csv&quot;</span>)</span></code></pre></div>
+<p>The <code>source()</code> function reads and evaluates the code in the specified script file, making the <code>load_data</code> function available for use in <code>main_script.R</code>.</p>
+<p>In this dummy example, the <code>data_loading</code> function is very simple, but in real life analysis, it can be more complicated: search on the web, crawl the files, download them
+to the local computer and then read into R.</p>
+</div>
+</div>
+<div id="data-io" class="section level2" number="7.6">
+<h2><span class="header-section-number">7.6</span> Data I/O</h2>
+<p>In this lesson, we’ll dive into the fundamental skills of handling data in R. Being proficient in inputting and outputting data is essential for automating data analysis workflows. We’ll explore how to import, explore, and export files using R, all while cultivating good coding habits.</p>
+<div id="built-in-functions" class="section level3" number="7.6.1">
+<h3><span class="header-section-number">7.6.1</span> Built-In Functions</h3>
+<blockquote>
+<p>Built-in functions are pre-made tools in a programming language or software that do specific jobs without you having to create them from scratch or find extra tools elsewhere. They simplify common tasks in coding and are readily available for use.</p>
+</blockquote>
+<div id="importing-data" class="section level4" number="7.6.1.1">
+<h4><span class="header-section-number">7.6.1.1</span> Importing Data</h4>
+<p>When working with data analysis, one of the common challenges is reading data into R. Two common file formats for data storage are tab-separated/delimited values (TSV) and comma-separated values (CSV).</p>
+<p>R comes to the rescue with functions designed to understand these languages - <code>read.csv()</code> and <code>read.table()</code>. These functions are like translators for R, helping it understand the data you provide.</p>
+<p>Let’s begin by importing an example gene expression file. You can download it from this <a href="https://osf.io/yeun5">link</a>. We will use <code>read.csv()</code> to load the data into R.</p>
+<div class="sourceCode" id="cb247"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb247-1"><a href="going-more-in-depth-with-r.html#cb247-1" tabindex="-1"></a><span class="co"># Import data from a CSV file</span></span>
+<span id="cb247-2"><a href="going-more-in-depth-with-r.html#cb247-2" tabindex="-1"></a><span class="co"># by default the downloaded file will be in your Downloads folder</span></span>
+<span id="cb247-3"><a href="going-more-in-depth-with-r.html#cb247-3" tabindex="-1"></a>tcga_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;~/Downloads/TCGA_cancer_genes_expression.csv&quot;</span>)</span></code></pre></div>
+<p>This code reads the data from the CSV file and stores it in the tcga_data dataframe. Now, we can manipulate and analyze this dataset.</p>
+</div>
+<div id="exploring-data" class="section level4" number="7.6.1.2">
+<h4><span class="header-section-number">7.6.1.2</span> Exploring Data</h4>
+<p>To understand the data, it’s crucial to explore its structure. One way to do this is by examining the unique values in a specific column. In the following code, we count the occurrences of each cancer study type:</p>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="going-more-in-depth-with-r.html#cb248-1" tabindex="-1"></a><span class="co"># Count the occurrences of each study type</span></span>
+<span id="cb248-2"><a href="going-more-in-depth-with-r.html#cb248-2" tabindex="-1"></a><span class="fu">table</span>(tcga_data<span class="sc">$</span>study)</span></code></pre></div>
+<pre><code>## 
+##  ACC BLCA BRCA CESC CHOL COAD DLBC ESCA  GBM HNSC KICH KIRC KIRP LAML  LGG LIHC 
+##   79  433 1256  309   45  546   48  198  175  548   91  618  323  178  532  424 
+## LUAD LUSC MESO   OV PAAD PCPG PRAD READ SARC SKCM STAD TGCT THCA THYM UCEC  UCS 
+##  601  555   87  430  183  187  558  177  265  473  453  156  572  122  589   57 
+##  UVM 
+##   80</code></pre>
+</div>
+<div id="data-inspection" class="section level4" number="7.6.1.3">
+<h4><span class="header-section-number">7.6.1.3</span> Data Inspection</h4>
+<p>To get a quick look at the data, we can use the head() function, which displays the first six rows of the dataframe:</p>
+<div class="sourceCode" id="cb250"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb250-1"><a href="going-more-in-depth-with-r.html#cb250-1" tabindex="-1"></a><span class="co"># Display the first 6 rows of the dataframe</span></span>
+<span id="cb250-2"><a href="going-more-in-depth-with-r.html#cb250-2" tabindex="-1"></a><span class="fu">head</span>(tcga_data)</span></code></pre></div>
+<pre><code>##                                      X    TACSTD2      VTCN1       MUC1
+## 1 43e715bf-28d9-4b5e-b762-8cd1b69a430e  0.7035937 0.00000000 0.67502205
+## 2 1a5db9fc-2abd-4e1b-b5ef-b1cf5e5f3872 25.4360736 0.00000000 2.01525394
+## 3 93b382e4-9c9a-43f5-bd3b-502cc260b886  1.5756197 0.00000000 0.90784666
+## 4 1f39dadd-3655-474e-ba4c-a5bd32c97a8b  0.2702156 0.09099681 0.04293345
+## 5 8c8c09b9-ec83-45ec-bc4c-0ba92de60acb  0.4122814 0.00000000 0.11484380
+## 6 85a86b91-4f24-4e77-ae2d-520f8e205efc  4.5469193 4.85973690 0.04208195
+##      NECTIN4     FOLH1      FOLR1     CD276       MSLN      CLDN6     ERBB2
+## 1 0.08620727  7.213342 0.00000000  52.75981 0.06674445 0.09704962  1.879518
+## 2 0.07279804 23.552286 0.12154673  78.78551 0.95554610 0.25458796  7.777976
+## 3 0.69905270  2.853812 1.01000271 145.84399 0.04563568 0.25701910  2.905926
+## 4 0.01652257  1.157070 0.27942068  48.45022 0.03154912 0.24746913  4.914280
+## 5 0.03168398  2.408137 0.04922458  42.25592 0.26968788 0.12576720  1.494744
+## 6 0.06828305  1.010411 0.02248965  20.63795 0.01336404 0.01823883 13.474689
+##          MUC16       DLL3 CEACAM5      PVR     EPCAM       PROM1       CD24
+## 1 0.0011479879 0.49589978       0 52.08113  4.521984 0.025311008 0.55036003
+## 2 0.0008049670 2.52244014       0 40.87926  9.530414 0.023576862 9.67272890
+## 3 0.0026190288 0.77074712       0 33.26727 42.358567 0.000000000 0.06939934
+## 4 0.0051705741 0.10636402       0 28.26457 16.316524 0.007783431 0.84522244
+## 5 0.0004894306 0.04483123       0 41.66776 12.529742 0.019204339 0.21369023
+## 6 0.0000000000 0.01184285       0 30.18711  2.430109 0.043719865 4.95506593
+##        EGFR        MET TNFRSF10B            tcga.tcga_barcode
+## 1  1.286481  0.9320235  12.80547 TCGA-OR-A5KU-01A-11R-A29S-07
+## 2  5.373307  8.0610999  31.46289 TCGA-P6-A5OG-01A-22R-A29S-07
+## 3  4.600918  0.1295387  65.57967 TCGA-OR-A5K5-01A-11R-A29S-07
+## 4  3.010374  2.9728030  24.31636 TCGA-OR-A5K4-01A-11R-A29S-07
+## 5 16.476552 19.7360055  21.11014 TCGA-OR-A5LP-01A-11R-A29S-07
+## 6  2.010338  8.6087283  37.91574 TCGA-PK-A5H9-01A-11R-A29S-07
+##   tcga.cgc_sample_sample_type study sample_type
+## 1               Primary Tumor   ACC      cancer
+## 2               Primary Tumor   ACC      cancer
+## 3               Primary Tumor   ACC      cancer
+## 4               Primary Tumor   ACC      cancer
+## 5               Primary Tumor   ACC      cancer
+## 6               Primary Tumor   ACC      cancer</code></pre>
+<p>This visual check helps us spot any potential issues early in the analysis. You may notice that the first column name is ‘X,’ which can happen when the data file has no column header.
+The output will display a table with the study abbreviations and their respective counts, providing insights into the dataset.</p>
+</div>
+<div id="data-anomalies" class="section level4" number="7.6.1.4">
+<h4><span class="header-section-number">7.6.1.4</span> Data Anomalies</h4>
+<p>In some cases, data anomalies may arise, such as missing column names. For example, when opening the data in Excel, the first column may appear empty. In R, it defaults to using ‘X’ for that missing column name.</p>
+<p>To inspect the last six rows of the data:</p>
+<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="going-more-in-depth-with-r.html#cb252-1" tabindex="-1"></a><span class="co"># Display the last 6 rows of the dataframe</span></span>
+<span id="cb252-2"><a href="going-more-in-depth-with-r.html#cb252-2" tabindex="-1"></a><span class="fu">tail</span>(tcga_data)</span></code></pre></div>
+<pre><code>##                                          X    TACSTD2      VTCN1      MUC1
+## 11343 9506723f-9193-4d8e-bd97-8a0062ab2f9c 0.08154275 0.06388402 0.2653041
+## 11344 3ee533bd-5832-4007-8f1f-439166256eb0 0.09602460 0.00000000 0.5017033
+## 11345 a2c71c07-af0c-4016-808c-dfef458c91c7 0.11766953 0.06015085 1.0880740
+## 11346 98b2a7f8-a7bd-4da2-8541-950e44d9acd7 0.00000000 0.00000000 0.6843479
+## 11347 d3fc3968-b263-4756-bf7f-1941f70b04da 0.23376567 0.00000000 0.4993842
+## 11348 f5b9b89b-6821-43ee-bcfd-623689d03af9 0.04404158 0.00000000 0.5674195
+##           NECTIN4      FOLH1      FOLR1    CD276      MSLN       CLDN6
+## 11343 0.027466444 0.55495200 0.00000000 16.30346 0.0000000 0.000000000
+## 11344 0.000000000 0.28053151 0.00000000 30.29320 0.0000000 0.000000000
+## 11345 0.070299290 1.48065011 0.39058212 52.87115 0.0000000 0.328483815
+## 11346 0.011930801 0.09355531 1.69415825 28.02235 0.0000000 0.002753009
+## 11347 0.011465502 0.38806433 0.04872839 26.70443 0.0000000 0.000000000
+## 11348 0.006823029 0.20336014 0.37653301 27.12231 0.1554201 0.003539148
+##           ERBB2 MUC16       DLL3     CEACAM5       PVR      EPCAM      PROM1
+## 11343  9.768257     0  5.0197156 0.000000000 14.792782 0.67698452 0.04564542
+## 11344 16.990612     0 13.6913305 0.000000000 13.244923 0.53035459 0.12887000
+## 11345 17.496578     0  6.9048415 0.001147923 38.883462 0.32233902 0.07192491
+## 11346 14.669438     0  3.8565185 0.000000000  8.523324 0.00000000 0.07007871
+## 11347  8.645711     0  0.7416064 0.000000000 12.697792 0.00000000 0.10824816
+## 11348 21.718607     0  5.5137596 0.000000000 11.473157 0.04096058 0.01835981
+##             CD24      EGFR       MET TNFRSF10B            tcga.tcga_barcode
+## 11343 0.11377251 0.1559625  67.49615 22.528273 TCGA-VD-A8K7-01B-11R-A405-07
+## 11344 0.03138053 0.1998664  89.53855  5.072147 TCGA-VD-A8KB-01A-11R-A405-07
+## 11345 0.08860096 1.0542988 200.75676 10.206628 TCGA-V4-A9EI-01A-11R-A405-07
+## 11346 0.06745506 0.3034171  10.81844  3.908425 TCGA-V4-A9EY-01A-11R-A405-07
+## 11347 0.10317872 0.1465101  49.09478  2.825917 TCGA-VD-AA8N-01A-11R-A405-07
+## 11348 0.34742178 0.2299831  19.00013  3.644837 TCGA-V4-A9ET-01A-11R-A405-07
+##       tcga.cgc_sample_sample_type study sample_type
+## 11343               Primary Tumor   UVM      cancer
+## 11344               Primary Tumor   UVM      cancer
+## 11345               Primary Tumor   UVM      cancer
+## 11346               Primary Tumor   UVM      cancer
+## 11347               Primary Tumor   UVM      cancer
+## 11348               Primary Tumor   UVM      cancer</code></pre>
+<p>This helps identify any anomalies or inconsistencies towards the end of the dataset.</p>
+</div>
+<div id="exporting-data" class="section level4" number="7.6.1.5">
+<h4><span class="header-section-number">7.6.1.5</span> Exporting Data</h4>
+<p>Once we’ve processed and analyzed the data, it’s essential to save our results. We can export edited datasets using the <code>write.csv()</code> function. For instance, if we want to save the first six rows of the dataframe to a new CSV file:</p>
+<div class="sourceCode" id="cb254"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb254-1"><a href="going-more-in-depth-with-r.html#cb254-1" tabindex="-1"></a><span class="co"># Export the first 6 rows to a new CSV file</span></span>
+<span id="cb254-2"><a href="going-more-in-depth-with-r.html#cb254-2" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">head</span>(tcga_data), <span class="st">&quot;~/Downloads/top_6_tcga.csv&quot;</span>)</span></code></pre></div>
+<p>This code creates a new CSV file containing the selected data.</p>
+</div>
+</div>
+<div id="real-world-applications" class="section level3" number="7.6.2">
+<h3><span class="header-section-number">7.6.2</span> Real-World Applications</h3>
+<ul>
+<li><p>Importing Data: Imagine you work in a research lab and need to analyze experimental results stored in CSV files. You can use R to import and process this data efficiently.</p></li>
+<li><p>Data Exploration: If you are a data analyst, you might use R to explore datasets, count occurrences of specific values, and gain insights to guide your analysis.</p></li>
+<li><p>Data Cleaning: Data often comes with anomalies or missing values. R can help you identify and address these issues before conducting statistical analyses.</p></li>
+<li><p>Data Export: Whether you’re conducting research or generating reports, exporting your analysis results to share with colleagues or stakeholders is a common requirement.</p></li>
+</ul>
+</div>
+<div id="conclusion-13" class="section level3" number="7.6.3">
+<h3><span class="header-section-number">7.6.3</span> Conclusion</h3>
+<p>In this lesson, we’ve covered the basics of handling data in R. You’ve learned how to import, explore, and export data, which are crucial skills for automating data analysis workflows. These skills will serve as a strong foundation for your journey into data science and analysis.</p>
+<p>For more detailed information on these functions or any other aspect of R, you can always refer to the documentation by typing <code>?function_name</code> in R, such as <code>?read.table</code>, to access the help page for that function.</p>
+</div>
+</div>
+<div id="best-practices-in-modular-programming-and-project-management" class="section level2" number="7.7">
+<h2><span class="header-section-number">7.7</span> Best Practices in Modular Programming and Project Management</h2>
+<p>When using the R programming language, it is crucial to write code that is well-organized, reusable, and scalable. This guide will introduce you to best practices for modular programming and project management, making it accessible even if you have no prior experience in computer science. We will cover the following topics:</p>
+<div id="introduction-to-modular-programming" class="section level3" number="7.7.1">
+<h3><span class="header-section-number">7.7.1</span> Introduction to Modular Programming</h3>
+<p>When you find yourself copying and pasting the same code more than twice, it’s a clear signal that it’s time to write a function. Functions in R allow you to encapsulate a set of instructions into a reusable block of code. This not only enhances code readability but also promotes reusability and maintainability.</p>
+<div id="why-use-functions" class="section level4" number="7.7.1.1">
+<h4><span class="header-section-number">7.7.1.1</span> Why Use Functions?</h4>
+<p>Imagine you are working on a data analysis project that involves multiple steps like loading data, data manipulation, and visualization. Instead of having one long script that combines all these tasks, you can break it down into smaller, more manageable functions. Here’s an example:</p>
+<div class="sourceCode" id="cb255"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb255-1"><a href="going-more-in-depth-with-r.html#cb255-1" tabindex="-1"></a>get_count_data <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb255-2"><a href="going-more-in-depth-with-r.html#cb255-2" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;expression.csv&quot;</span>)</span>
+<span id="cb255-3"><a href="going-more-in-depth-with-r.html#cb255-3" tabindex="-1"></a>  counts <span class="ot">&lt;-</span> <span class="fu">filter_zeros</span>(counts)</span>
+<span id="cb255-4"><a href="going-more-in-depth-with-r.html#cb255-4" tabindex="-1"></a>  <span class="fu">normalize</span>(counts)</span>
+<span id="cb255-5"><a href="going-more-in-depth-with-r.html#cb255-5" tabindex="-1"></a>}</span></code></pre></div>
+<p>In this code, <code>get_count_data</code> is a function responsible for loading data, filtering out zeros, and normalizing the data. Now, when you need to access the data in your analysis, you can simply call this function:</p>
+<div class="sourceCode" id="cb256"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb256-1"><a href="going-more-in-depth-with-r.html#cb256-1" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">get_count_data</span>()</span></code></pre></div>
+</div>
+<div id="benefits-of-modular-functions" class="section level4" number="7.7.1.2">
+<h4><span class="header-section-number">7.7.1.2</span> Benefits of Modular Functions</h4>
+<ul>
+<li><p>Code Reusability: You can reuse these functions across different projects, saving time and effort. If you need to modify data loading or normalization logic, you only have to do it in one place.</p></li>
+<li><p>Code Clarity: Functions make your code more readable and maintainable. Each function encapsulates a specific part of your workflow, making it easier to understand.</p></li>
+<li><p>Easy Debugging: Smaller functions are easier to debug than long scripts. If there’s an issue with data loading, you only need to focus on the get_count_data function.</p></li>
+<li><p>Scalability: As your project grows, you can easily add new functions to handle additional tasks without disrupting the existing code.</p></li>
+</ul>
+</div>
+</div>
+<div id="breaking-down-your-project" class="section level3" number="7.7.2">
+<h3><span class="header-section-number">7.7.2</span> Breaking Down Your Project</h3>
+<p>To further enhance modularity in your data analysis projects, it’s advisable to break down your project into separate files and directories. This structure simplifies project management and encourages a more organized workflow.</p>
+<p>A typical project structure might look like this:</p>
+<div class="sourceCode" id="cb257"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb257-1"><a href="going-more-in-depth-with-r.html#cb257-1" tabindex="-1"></a><span class="ex">project</span></span>
+<span id="cb257-2"><a href="going-more-in-depth-with-r.html#cb257-2" tabindex="-1"></a><span class="ex">├──</span> data</span>
+<span id="cb257-3"><a href="going-more-in-depth-with-r.html#cb257-3" tabindex="-1"></a><span class="ex">├──</span> results</span>
+<span id="cb257-4"><a href="going-more-in-depth-with-r.html#cb257-4" tabindex="-1"></a><span class="ex">└──</span> scripts</span>
+<span id="cb257-5"><a href="going-more-in-depth-with-r.html#cb257-5" tabindex="-1"></a>    <span class="ex">├──</span> data_loading.R</span>
+<span id="cb257-6"><a href="going-more-in-depth-with-r.html#cb257-6" tabindex="-1"></a>    <span class="ex">├──</span> downstream.R</span>
+<span id="cb257-7"><a href="going-more-in-depth-with-r.html#cb257-7" tabindex="-1"></a>    <span class="ex">├──</span> preprocessing.R</span>
+<span id="cb257-8"><a href="going-more-in-depth-with-r.html#cb257-8" tabindex="-1"></a>    <span class="ex">└──</span> visualization.R</span></code></pre></div>
+<p>Here’s what each component represents:</p>
+<ul>
+<li><p>data: This directory contains your data files or datasets.</p></li>
+<li><p>results: This is where you can store the results of your analysis, such as plots, tables, or reports.</p></li>
+<li><p>scripts: This directory is divided into separate files, each responsible for a specific part of your analysis.</p></li>
+</ul>
+<p>Watch the video to understand how to set up a project fold structure and use
+the package <a href="https://github.com/jennybc/here_here"><code>here</code></a> to avoid using <code>setwd()</code>.</p>
+<div class="vembedr">
+<div>
+<iframe src="https://www.youtube.com/embed/wXXhp9sXqao" width="533" height="300" frameborder="0" allowfullscreen="" data-external="1"></iframe>
+</div>
+</div>
+<p>In this Real-World RNAseq analysis Example, we</p>
+<ol style="list-style-type: decimal">
+<li><p>Loading Data and Preprocessing: By creating a <code>data_loading</code> function and <code>preprocessing</code> function, you can easily load, clean, and merge data from various sources in a consistent manner.</p></li>
+<li><p>Exploratory Data Analysis (EDA): During EDA, you might need to create various visualizations for different aspects of your data. Separating visualization code into a dedicated script makes it easier to experiment with different plots and ensures a consistent look and feel across your project.</p></li>
+<li><p>Statistical Modeling: When building predictive models, you can encapsulate the modeling process into a function called downstream.R. This allows you to apply the same model to different datasets or update the model with ease when new data becomes available.</p></li>
+</ol>
+<p>Even better if you apply a consistent naming convention to all your scripts. In this case, you know the order of the scripts you used for each project.</p>
+<div class="sourceCode" id="cb258"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb258-1"><a href="going-more-in-depth-with-r.html#cb258-1" tabindex="-1"></a><span class="ex">project</span></span>
+<span id="cb258-2"><a href="going-more-in-depth-with-r.html#cb258-2" tabindex="-1"></a><span class="ex">├──</span> data</span>
+<span id="cb258-3"><a href="going-more-in-depth-with-r.html#cb258-3" tabindex="-1"></a><span class="ex">├──</span> results</span>
+<span id="cb258-4"><a href="going-more-in-depth-with-r.html#cb258-4" tabindex="-1"></a><span class="ex">└──</span> scripts</span>
+<span id="cb258-5"><a href="going-more-in-depth-with-r.html#cb258-5" tabindex="-1"></a>    <span class="ex">├──</span> 01_data_loading.R</span>
+<span id="cb258-6"><a href="going-more-in-depth-with-r.html#cb258-6" tabindex="-1"></a>    <span class="ex">├──</span> 02_preprocessing.R</span>
+<span id="cb258-7"><a href="going-more-in-depth-with-r.html#cb258-7" tabindex="-1"></a>    <span class="ex">├──</span> 03_visualization.R</span>
+<span id="cb258-8"><a href="going-more-in-depth-with-r.html#cb258-8" tabindex="-1"></a>    <span class="ex">└──</span> 04_downstream.R</span></code></pre></div>
+<p>Advantages of Project Structure:</p>
+<ul>
+<li><p>Clear Organization: By segregating your code into different files, you have a clear view of which script handles what aspect of your analysis.</p></li>
+<li><p>Focused Files: Each script file can focus on a specific task, making it easier to work on and understand.</p></li>
+<li><p>Easy Collaboration: When collaborating with others, this structure allows team members to work on different parts of the project simultaneously.</p></li>
+<li><p>Version Control: If you use version control systems like Git, having separate files for different tasks facilitates tracking changes and collaboration.</p></li>
+</ul>
+<p>You should take advantage of the <a href="https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects">R project feature</a> in Rstudio.</p>
+</div>
+<div id="conclusion-14" class="section level3" number="7.7.3">
+<h3><span class="header-section-number">7.7.3</span> Conclusion</h3>
+<p>In summary, adopting modular programming practices and organizing your data analysis projects effectively in R not only enhances code quality but also simplifies project management. Functions serve as reusable building blocks, while a well-structured project directory keeps your work organized and maintainable. Embracing these principles will help you become a more efficient and effective data analyst, regardless of your level of experience.</p>
+</div>
+</div>
+<div id="section-complete-1" class="section level2" number="7.8">
+<h2><span class="header-section-number">7.8</span> Section complete</h2>
+<p>Congratulations on completing this section of the course! You’ve tackled complex topics such as handling missing values, explored statistical tests and P-values, and expanded your knowledge of R packages. Your understanding of functions within different packages has equipped you with strategies for efficient access and avoidance of collisions. Not only have you improved your scripting skills, but you’ve also mastered effective data input/output management.</p>
+<p>Your are making great progress, and these skills are essential for advanced data analysis. As you continue your journey in R, remember that these concepts form the foundation for further growth in modular programming and beyond.</p>
+<p>Maintain your momentum as you move into the next section, where we’ll build upon this foundation. If you have any questions, our community’s Q&amp;A section and lesson-specific comments are available for support.</p>
+<p>Let’s continue exploring together with curiosity and determination!</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="controlling-the-flow-of-our-programs.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="fundamental-data-structures-in-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/06-Going_more_in-depth_with_R.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
